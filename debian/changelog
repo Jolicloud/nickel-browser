@@ -1,0 +1,60 @@
+chromium-browser (5.0.307.11~r39572-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+
+  * Bump gyp Build-Depends to >= 0.1~svn785
+    - update debian/control
+  * Add --no-circular-check to gyp_chromium to prevent gyp from failing
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 27 Feb 2010 17:07:23 +0100
+
+chromium-browser (5.0.307.7~r38400+0-0ubuntu1) lucid; urgency=low
+
+  * Disable WANT_SYSTEM_LIBS since it makes Gmail/GCal crash (libxml,
+    libxslt, ..). See http://crbug.com/34725 (LP: #522078)
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Mon, 15 Feb 2010 12:17:07 +0100
+
+chromium-browser (5.0.307.7~r38400-0ubuntu1) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+  * Re-add the -l10n strict version dependency on chromium-browser
+    - update debian/control
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 12 Feb 2010 22:00:39 +0100
+
+chromium-browser (5.0.307.5~r37950+0-0ubuntu1) lucid; urgency=low
+
+  * Drop third_party/libxml from STRIPPED_SYSTEM_LIB_DIRS
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 10 Feb 2010 18:46:55 +0100
+
+chromium-browser (5.0.307.5~r37950-0ubuntu1) lucid; urgency=low
+
+  * Add libxss-dev to Build-Depends, the new browser sync engine needs
+    X11/extensions/scrnsaver.h
+    - update debian/control
+  * Add a safety net to get-orig-source when fetching sources for a channel
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 09 Feb 2010 17:07:18 +0100
+
+chromium-browser (4.0.305.0~svn20100123r36929-0ubuntu1) lucid; urgency=low
+
+  [ Fabien Tassin <fta@ubuntu.com> ]
+  * Initial release. (Closes: #520324, LP: #387765)
+
+  [ Alexander Sack <asac@ubuntu.com> ]
+  * extensive license review; see copyright and copyright.problems;
+    also see debian/licensecheck.pl for details how the copyright files are
+    generated
+  * address archive-admin comments:
+    + add "Paul Hsieh's Public Domain Option" license snippet and mark
+      net/disk_cache/hash.cc to be govered by that; recreate copyright*
+      - add debian/licenses/LICENSE.Paul Hsieh's Public Domain Option
+      - update debian/licensecheck.pl
+      - update debian/copyright
+      - update debian/copyright.problems
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 26 Jan 2010 17:43:19 +0100
