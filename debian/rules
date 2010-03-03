@@ -12,13 +12,14 @@ SRC_DIR        := $(CURDIR)/build-tree/$(DEB_TAR_SRCDIR)
 LIB_DIR        := usr/lib/$(DEBIAN_NAME)
 DEB_BUILDDIR   := $(SRC_DIR)
 #BUILD_ARGS     := --keep-going
+BUILD_ARGS     := -j8
 
 WANT_LZMA_SRC    ?= 1
 WANT_LZMA_DEBS   ?= 1
 WANT_DEBUG       := 0
 WANT_SYSTEM_LIBS ?= 0
 WANT_SHARED_LIBS ?= 0
-WANT_TESTS       ?= 1
+WANT_TESTS       ?= 0
 WANT_SANDBOXING  ?= 1
 USE_SYSTEM_V8    ?= 0
 VERBOSE          ?= 0
