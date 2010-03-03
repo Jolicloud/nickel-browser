@@ -1,0 +1,104 @@
+Index: src/chrome/browser/gtk/browser_titlebar.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-02-12 20:32:52.000000000 +0100
++++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-03 21:38:05.000000000 +0100
+@@ -320,26 +320,7 @@
+ }
+ 
+ void BrowserTitlebar::UpdateTitleAndIcon() {
+-  if (!app_mode_title_)
+-    return;
+-
+-  // Get the page title and elide it to the available space.
+-  string16 title = browser_window_->browser()->GetWindowTitleForCurrentTab();
+-  gtk_label_set_text(GTK_LABEL(app_mode_title_), UTF16ToUTF8(title).c_str());
+-
+-  if (browser_window_->browser()->type() == Browser::TYPE_APP) {
+-    // Update the system app icon.  We don't need to update the icon in the top
+-    // left of the custom frame, that will get updated when the throbber is
+-    // updated.
+-    SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
+-    if (icon.empty()) {
+-      gtk_util::SetWindowIcon(window_);
+-    } else {
+-      GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
+-      gtk_window_set_icon(window_, icon_pixbuf);
+-      g_object_unref(icon_pixbuf);
+-    }
+-  }
++  return;
+ }
+ 
+ void BrowserTitlebar::UpdateThrobber(TabContents* tab_contents) {
+Index: src/chrome/common/chrome_switches.cc
+===================================================================
+--- src.orig/chrome/common/chrome_switches.cc	2010-02-12 20:33:09.000000000 +0100
++++ src/chrome/common/chrome_switches.cc	2010-03-03 21:41:54.000000000 +0100
+@@ -316,6 +316,9 @@
+ // that the UI tests don't depend on what comes up for http://google.com.
+ const char kHomePage[]                      = "homepage";
+ 
++// Specifies the icon_id in order to use the correct icon.
++const char kIconId[]                         = "icon-id";
++
+ // Perform importing from another browser. The value associated with this
+ // setting encodes the target browser and what items to import.
+ const char kImport[]                        = "import";
+Index: src/chrome/common/gtk_util.cc
+===================================================================
+--- src.orig/chrome/common/gtk_util.cc	2010-02-12 20:33:09.000000000 +0100
++++ src/chrome/common/gtk_util.cc	2010-03-03 21:42:41.000000000 +0100
+@@ -12,11 +12,13 @@
+ 
+ #include "app/l10n_util.h"
+ #include "app/resource_bundle.h"
++#include "base/command_line.h"
+ #include "base/linux_util.h"
+ #include "base/logging.h"
+ #include "chrome/browser/gtk/cairo_cached_surface.h"
+ #include "chrome/browser/gtk/gtk_theme_provider.h"
+ #include "chrome/common/renderer_preferences.h"
++#include "chrome/common/chrome_switches.h"
+ #include "grit/theme_resources.h"
+ #include "third_party/skia/include/core/SkBitmap.h"
+ #include "third_party/skia/include/core/SkColor.h"
+@@ -59,8 +61,25 @@
+ GList* GetIconList() {
+   ResourceBundle& rb = ResourceBundle::GetSharedInstance();
+   GList* icon_list = NULL;
+-  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
+-  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
++  GError* error = NULL;
++  GtkIconTheme* icon_theme = gtk_icon_theme_get_default();
++  const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
++  const std::string& app_id =
++      parsed_command_line.GetSwitchValueASCII(switches::kIconId);
++  if (!app_id.empty() && gtk_icon_theme_has_icon(icon_theme, app_id.c_str())) {
++    GdkPixbuf* icon_pixbuf = gtk_icon_theme_load_icon(icon_theme, app_id.c_str(), 64, GTK_ICON_LOOKUP_USE_BUILTIN, &error);
++    if (!icon_pixbuf) {
++      g_warning("Couldn't load icon: %s", error->message);
++      g_error_free(error);
++    }
++    else {
++      icon_list = g_list_append(icon_list, icon_pixbuf);
++    }
++  }
++  if (icon_list == NULL) {
++    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
++    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
++  }
+   return icon_list;
+ }
+ 
+Index: src/chrome/common/chrome_switches.h
+===================================================================
+--- src.orig/chrome/common/chrome_switches.h	2010-02-12 20:33:09.000000000 +0100
++++ src/chrome/common/chrome_switches.h	2010-03-03 21:42:15.000000000 +0100
+@@ -23,6 +23,7 @@
+ extern const char kAllowSandboxDebugging[];
+ extern const char kAlwaysEnableDevTools[];
+ extern const char kApp[];
++extern const char kIconId[];
+ extern const char kAutomationClientChannelID[];
+ extern const char kBookmarkMenu[];
+ extern const char kBrowserAssertTest[];
