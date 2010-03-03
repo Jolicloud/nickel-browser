@@ -1,3 +1,13 @@
+nickel-browser (5.0.307.11~r39572-0ubuntu1~ucd1~robby) robby; urgency=low
+
+  * force concurrency, don't build tests
+  * Provides jolicloud-webapps-engine
+  * Patch to use .desktop icon file provided by -app-id command line
+    switch
+  * Rename Chromium to Nickel
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 03 Mar 2010 23:21:59 +0100
+
 chromium-browser (5.0.307.11~r39572-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * Bump gyp Build-Depends to >= 0.1~svn785

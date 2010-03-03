@@ -4,9 +4,9 @@ set -e
 
 if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] ; then
     update-alternatives --install /usr/bin/x-www-browser \
-        x-www-browser /usr/bin/chromium-browser 40
+        x-www-browser /usr/bin/nickel-browser 40
     update-alternatives --install /usr/bin/jolicloud-webapps-engine \
-        jolicloud-webapps-engine /usr/bin/chromium-browser 60
+        jolicloud-webapps-engine /usr/bin/nickel-browser 60
 fi
 
-rm -f /etc/default/chromium-browser
+rm -f /etc/default/nickel-browser

@@ -1,0 +1,9 @@
+debian/tmp/etc
+debian/tmp/usr/bin
+debian/tmp/usr/lib/nickel-browser/chrome.pak
+debian/tmp/usr/lib/nickel-browser/nickel-browser*
+debian/tmp/usr/lib/nickel-browser/xdg-settings
+#debian/tmp/usr/lib/nickel-browser/icudt38l.dat
+debian/tmp/usr/lib/nickel-browser/locales/*
+debian/nickel-browser.desktop usr/share/applications
+debian/nickel-browser.xml usr/share/gnome-control-center/default-apps
