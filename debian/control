@@ -56,7 +56,7 @@ Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, libnss3-1d (>= 3.12.3)
 Recommends: chromium-browser-inspector, chromium-codecs-ffmpeg | chromium-codecs-ffmpeg-nonfree
 Suggests: chromium-browser-l10n
-Provides: www-browser, chromium-testsuite
+Provides: www-browser, chromium-testsuite, jolicloud-webapps-engine
 Replaces: chromium-testsuite
 Conflicts: chromium-testsuite
 Description: Chromium browser
