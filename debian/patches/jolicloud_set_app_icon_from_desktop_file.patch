@@ -1,39 +1,7 @@
-Index: src/chrome/browser/gtk/browser_titlebar.cc
-===================================================================
---- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-02-12 20:32:52.000000000 +0100
-+++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-03 21:38:05.000000000 +0100
-@@ -320,26 +320,7 @@
- }
- 
- void BrowserTitlebar::UpdateTitleAndIcon() {
--  if (!app_mode_title_)
--    return;
--
--  // Get the page title and elide it to the available space.
--  string16 title = browser_window_->browser()->GetWindowTitleForCurrentTab();
--  gtk_label_set_text(GTK_LABEL(app_mode_title_), UTF16ToUTF8(title).c_str());
--
--  if (browser_window_->browser()->type() == Browser::TYPE_APP) {
--    // Update the system app icon.  We don't need to update the icon in the top
--    // left of the custom frame, that will get updated when the throbber is
--    // updated.
--    SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
--    if (icon.empty()) {
--      gtk_util::SetWindowIcon(window_);
--    } else {
--      GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
--      gtk_window_set_icon(window_, icon_pixbuf);
--      g_object_unref(icon_pixbuf);
--    }
--  }
-+  return;
- }
- 
- void BrowserTitlebar::UpdateThrobber(TabContents* tab_contents) {
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
 --- src.orig/chrome/common/chrome_switches.cc	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/chrome_switches.cc	2010-03-03 21:41:54.000000000 +0100
++++ src/chrome/common/chrome_switches.cc	2010-03-04 09:12:15.000000000 +0100
 @@ -316,6 +316,9 @@
  // that the UI tests don't depend on what comes up for http://google.com.
  const char kHomePage[]                      = "homepage";
@@ -47,7 +15,7 @@ Index: src/chrome/common/chrome_switches.cc
 Index: src/chrome/common/gtk_util.cc
 ===================================================================
 --- src.orig/chrome/common/gtk_util.cc	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/gtk_util.cc	2010-03-03 21:42:41.000000000 +0100
++++ src/chrome/common/gtk_util.cc	2010-03-04 15:45:55.000000000 +0100
 @@ -12,11 +12,13 @@
  
  #include "app/l10n_util.h"
@@ -62,12 +30,30 @@ Index: src/chrome/common/gtk_util.cc
  #include "grit/theme_resources.h"
  #include "third_party/skia/include/core/SkBitmap.h"
  #include "third_party/skia/include/core/SkColor.h"
-@@ -59,8 +61,25 @@
- GList* GetIconList() {
-   ResourceBundle& rb = ResourceBundle::GetSharedInstance();
-   GList* icon_list = NULL;
+@@ -55,15 +57,6 @@
+   return TRUE;
+ }
+ 
+-// Ownership of |icon_list| is passed to the caller.
+-GList* GetIconList() {
+-  ResourceBundle& rb = ResourceBundle::GetSharedInstance();
+-  GList* icon_list = NULL;
 -  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
 -  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
+-  return icon_list;
+-}
+-
+ // A process wide singleton that manages our usage of gdk
+ // cursors. gdk_cursor_new() hits the disk in several places and GdkCursor
+ // instances can be reused throughout the process.
+@@ -139,6 +132,32 @@
+ 
+ namespace gtk_util {
+ 
++// Ownership of |icon_list| is passed to the caller.
++GList* GetIconList() {
++  ResourceBundle& rb = ResourceBundle::GetSharedInstance();
++  GList* icon_list = NULL;
 +  GError* error = NULL;
 +  GtkIconTheme* icon_theme = gtk_icon_theme_get_default();
 +  const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
@@ -87,13 +73,32 @@ Index: src/chrome/common/gtk_util.cc
 +    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
 +    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
 +  }
-   return icon_list;
++  return icon_list;
++}
++
+ GtkWidget* CreateLabeledControlsGroup(std::vector<GtkWidget*>* labels,
+                                       const char* text, ...) {
+   va_list ap;
+@@ -421,13 +440,13 @@
  }
  
+ void SetWindowIcon(GtkWindow* window) {
+-  GList* icon_list = GetIconList();
++  GList* icon_list = gtk_util::GetIconList();
+   gtk_window_set_icon_list(window, icon_list);
+   g_list_free(icon_list);
+ }
+ 
+ void SetDefaultWindowIcon() {
+-  GList* icon_list = GetIconList();
++  GList* icon_list = gtk_util::GetIconList();
+   gtk_window_set_default_icon_list(icon_list);
+   g_list_free(icon_list);
+ }
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
 --- src.orig/chrome/common/chrome_switches.h	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/chrome_switches.h	2010-03-03 21:42:15.000000000 +0100
++++ src/chrome/common/chrome_switches.h	2010-03-04 09:12:15.000000000 +0100
 @@ -23,6 +23,7 @@
  extern const char kAllowSandboxDebugging[];
  extern const char kAlwaysEnableDevTools[];
@@ -102,3 +107,99 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kAutomationClientChannelID[];
  extern const char kBookmarkMenu[];
  extern const char kBrowserAssertTest[];
+Index: src/chrome/browser/browser.cc
+===================================================================
+--- src.orig/chrome/browser/browser.cc	2010-02-12 20:33:03.000000000 +0100
++++ src/chrome/browser/browser.cc	2010-03-04 15:45:56.000000000 +0100
+@@ -476,6 +476,18 @@
+   return contents ? contents->GetFavIcon() : SkBitmap();
+ }
+ 
++GURL Browser::GetURLForCurrentTab() const {
++  TabContents* contents = tabstrip_model_.GetSelectedTabContents();
++  GURL url;
++
++  // |contents| can be NULL because GetWindowTitleForCurrentTab is called by the
++  // window during the window's creation (before tabs have been added).
++  if (contents)
++    url = contents->GetURL();
++
++  return url;
++}
++
+ string16 Browser::GetWindowTitleForCurrentTab() const {
+   TabContents* contents = tabstrip_model_.GetSelectedTabContents();
+   string16 title;
+Index: src/chrome/browser/gtk/browser_titlebar.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-02-12 20:32:52.000000000 +0100
++++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-04 15:49:14.000000000 +0100
+@@ -30,6 +30,7 @@
+ #include "chrome/browser/page_menu_model.h"
+ #include "chrome/browser/profile.h"
+ #include "chrome/browser/tab_contents/tab_contents.h"
++#include "chrome/common/chrome_switches.h"
+ #include "chrome/common/gtk_util.h"
+ #include "chrome/common/notification_service.h"
+ #include "chrome/common/pref_names.h"
+@@ -327,18 +328,23 @@
+   string16 title = browser_window_->browser()->GetWindowTitleForCurrentTab();
+   gtk_label_set_text(GTK_LABEL(app_mode_title_), UTF16ToUTF8(title).c_str());
+ 
++  // Update the system app icon.  We don't need to update the icon in the top
++  // left of the custom frame, that will get updated when the throbber is
++  // updated.
+   if (browser_window_->browser()->type() == Browser::TYPE_APP) {
+-    // Update the system app icon.  We don't need to update the icon in the top
+-    // left of the custom frame, that will get updated when the throbber is
+-    // updated.
+-    SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
+-    if (icon.empty()) {
+-      gtk_util::SetWindowIcon(window_);
+-    } else {
+-      GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
+-      gtk_window_set_icon(window_, icon_pixbuf);
+-      g_object_unref(icon_pixbuf);
++    // If we got an app-id parameter and the current URL is a subpath of
++    // the app parameter use the app-id icon
++    const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
++    std::string url_string(parsed_command_line.GetSwitchValueASCII(switches::kApp));
++    GURL cmd_url(url_string);
++    GURL current_url = browser_window_->browser()->GetURLForCurrentTab();
++    GList* icon_list = gtk_util::GetIconList();
++    // The current URL is foreign, use the default app icons
++    if (cmd_url.GetOrigin() != current_url.GetOrigin()) {
++      icon_list = g_list_nth_prev(icon_list,2);
+     }
++    gtk_window_set_icon_list(window_, icon_list);
++    g_list_free(icon_list);
+   }
+ }
+ 
+Index: src/chrome/browser/browser.h
+===================================================================
+--- src.orig/chrome/browser/browser.h	2010-02-12 20:33:03.000000000 +0100
++++ src/chrome/browser/browser.h	2010-03-04 15:45:56.000000000 +0100
+@@ -197,6 +197,9 @@
+   // Gets the FavIcon of the page in the selected tab.
+   SkBitmap GetCurrentPageIcon() const;
+ 
++  // Gets the URL of the current tab.
++  GURL GetURLForCurrentTab() const;
++
+   // Gets the title of the window based on the selected tab's title.
+   string16 GetWindowTitleForCurrentTab() const;
+ 
+Index: src/chrome/common/gtk_util.h
+===================================================================
+--- src.orig/chrome/common/gtk_util.h	2010-03-04 15:50:23.000000000 +0100
++++ src/chrome/common/gtk_util.h	2010-03-04 15:50:42.000000000 +0100
+@@ -51,6 +51,8 @@
+ // Horizontal Spacing between controls in a form.
+ const int kFormControlSpacing = 10;
+ 
++GList* GetIconList();
++
+ // Create a table of labeled controls, using proper spacing and alignment.
+ // Arguments should be pairs of const char*, GtkWidget*, concluding with a
+ // NULL.  The first argument is a vector in which to place all labels
