@@ -1,7 +1,7 @@
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
 --- src.orig/chrome/common/chrome_switches.cc	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/chrome_switches.cc	2010-03-04 09:12:15.000000000 +0100
++++ src/chrome/common/chrome_switches.cc	2010-03-09 11:27:56.000000000 +0100
 @@ -316,6 +316,9 @@
  // that the UI tests don't depend on what comes up for http://google.com.
  const char kHomePage[]                      = "homepage";
@@ -15,7 +15,7 @@ Index: src/chrome/common/chrome_switches.cc
 Index: src/chrome/common/gtk_util.cc
 ===================================================================
 --- src.orig/chrome/common/gtk_util.cc	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/gtk_util.cc	2010-03-04 15:45:55.000000000 +0100
++++ src/chrome/common/gtk_util.cc	2010-03-10 16:07:01.000000000 +0100
 @@ -12,11 +12,13 @@
  
  #include "app/l10n_util.h"
@@ -46,40 +46,56 @@ Index: src/chrome/common/gtk_util.cc
  // A process wide singleton that manages our usage of gdk
  // cursors. gdk_cursor_new() hits the disk in several places and GdkCursor
  // instances can be reused throughout the process.
-@@ -139,6 +132,32 @@
+@@ -139,6 +132,48 @@
  
  namespace gtk_util {
  
 +// Ownership of |icon_list| is passed to the caller.
-+GList* GetIconList() {
++GList* ProductIconList() {
 +  ResourceBundle& rb = ResourceBundle::GetSharedInstance();
 +  GList* icon_list = NULL;
++  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
++  icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
++  return icon_list;
++}
++
++GdkPixbuf* GetPixbufFromIconID(const std::string& icon_id) {
++  GdkPixbuf* icon_pixbuf = NULL;
 +  GError* error = NULL;
 +  GtkIconTheme* icon_theme = gtk_icon_theme_get_default();
-+  const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
-+  const std::string& app_id =
-+      parsed_command_line.GetSwitchValueASCII(switches::kIconId);
-+  if (!app_id.empty() && gtk_icon_theme_has_icon(icon_theme, app_id.c_str())) {
-+    GdkPixbuf* icon_pixbuf = gtk_icon_theme_load_icon(icon_theme, app_id.c_str(), 64, GTK_ICON_LOOKUP_USE_BUILTIN, &error);
++
++  if (!icon_id.empty() && gtk_icon_theme_has_icon(icon_theme, icon_id.c_str())) {
++    icon_pixbuf = gtk_icon_theme_load_icon(icon_theme, icon_id.c_str(), 64, GTK_ICON_LOOKUP_USE_BUILTIN, &error);
 +    if (!icon_pixbuf) {
 +      g_warning("Couldn't load icon: %s", error->message);
 +      g_error_free(error);
 +    }
-+    else {
-+      icon_list = g_list_append(icon_list, icon_pixbuf);
-+    }
 +  }
-+  if (icon_list == NULL) {
-+    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_ICON_32));
-+    icon_list = g_list_append(icon_list, rb.GetPixbufNamed(IDR_PRODUCT_LOGO_16));
++  return icon_pixbuf;
++}
++
++GList* GetIconList() {
++  GList* icon_list = NULL;
++
++  const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
++  const std::string& icon_id =
++      parsed_command_line.GetSwitchValueASCII(switches::kIconId);
++
++  GdkPixbuf* icon_pixbuf = GetPixbufFromIconID(icon_id);
++  if (icon_pixbuf) {
++    icon_list = g_list_append(icon_list, icon_pixbuf);
 +  }
++  else {
++    icon_list = ProductIconList();
++  }
++
 +  return icon_list;
 +}
 +
  GtkWidget* CreateLabeledControlsGroup(std::vector<GtkWidget*>* labels,
                                        const char* text, ...) {
    va_list ap;
-@@ -421,13 +440,13 @@
+@@ -421,13 +456,13 @@
  }
  
  void SetWindowIcon(GtkWindow* window) {
@@ -98,7 +114,7 @@ Index: src/chrome/common/gtk_util.cc
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
 --- src.orig/chrome/common/chrome_switches.h	2010-02-12 20:33:09.000000000 +0100
-+++ src/chrome/common/chrome_switches.h	2010-03-04 09:12:15.000000000 +0100
++++ src/chrome/common/chrome_switches.h	2010-03-09 11:27:56.000000000 +0100
 @@ -23,6 +23,7 @@
  extern const char kAllowSandboxDebugging[];
  extern const char kAlwaysEnableDevTools[];
@@ -110,8 +126,47 @@ Index: src/chrome/common/chrome_switches.h
 Index: src/chrome/browser/browser.cc
 ===================================================================
 --- src.orig/chrome/browser/browser.cc	2010-02-12 20:33:03.000000000 +0100
-+++ src/chrome/browser/browser.cc	2010-03-04 15:45:56.000000000 +0100
-@@ -476,6 +476,18 @@
++++ src/chrome/browser/browser.cc	2010-03-10 19:23:23.000000000 +0100
+@@ -347,11 +347,20 @@
+ }
+ 
+ // static
+-void Browser::OpenApplicationWindow(Profile* profile, const GURL& url) {
++void Browser::OpenApplicationWindow(Profile* profile, const GURL& url, const FilePath& icon_id) {
+   std::wstring app_name = web_app::GenerateApplicationNameFromURL(url);
+   RegisterAppPrefs(app_name);
+-
+   Browser* browser = Browser::CreateForApp(app_name, profile);
++
++  // save icon-id value for later use by UpdateWindowIcon
++  if (!icon_id.empty()) {
++      std::wstring icon_pref_key = browser->GetWindowIconKey();
++      PrefService* prefs = g_browser_process->local_state();
++      DCHECK(prefs);
++      prefs->SetFilePath(icon_pref_key.c_str(), icon_id);
++      LOG(INFO) << "icon_pref_key: " << icon_pref_key << ", icon_id: " << icon_id.value();
++  }
++
+   browser->AddTabWithURL(url, GURL(), PageTransition::START_PAGE, true, -1,
+                          false, NULL);
+ 
+@@ -404,6 +413,15 @@
+ ///////////////////////////////////////////////////////////////////////////////
+ // Browser, State Storage and Retrieval for UI:
+ 
++std::wstring Browser::GetWindowIconKey() const {
++  std::wstring name(prefs::kBrowserWindowIcon);
++  if (!app_name_.empty()) {
++    name.append(L"_");
++    name.append(app_name_);
++  }
++  return name;
++}
++
+ std::wstring Browser::GetWindowPlacementKey() const {
+   std::wstring name(prefs::kBrowserWindowPlacement);
+   if (!app_name_.empty()) {
+@@ -476,6 +494,18 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
@@ -130,11 +185,45 @@ Index: src/chrome/browser/browser.cc
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents = tabstrip_model_.GetSelectedTabContents();
    string16 title;
+@@ -1352,6 +1382,7 @@
+ // static
+ void Browser::RegisterPrefs(PrefService* prefs) {
+   prefs->RegisterDictionaryPref(prefs::kBrowserWindowPlacement);
++  prefs->RegisterFilePathPref(prefs::kBrowserWindowIcon, FilePath());
+   prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
+   prefs->RegisterIntegerPref(prefs::kDevToolsSplitLocation, -1);
+ }
+@@ -3194,10 +3225,14 @@
+   std::wstring window_pref(prefs::kBrowserWindowPlacement);
+   window_pref.append(L"_");
+   window_pref.append(app_name);
++  std::wstring icon_pref(prefs::kBrowserWindowIcon);
++  icon_pref.append(L"_");
++  icon_pref.append(app_name);
+   PrefService* prefs = g_browser_process->local_state();
+   DCHECK(prefs);
+ 
+   prefs->RegisterDictionaryPref(window_pref.c_str());
++  prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath());
+ }
+ 
+ // static
 Index: src/chrome/browser/gtk/browser_titlebar.cc
 ===================================================================
 --- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-02-12 20:32:52.000000000 +0100
-+++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-04 15:49:14.000000000 +0100
-@@ -30,6 +30,7 @@
++++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-11 11:49:30.000000000 +0100
+@@ -16,8 +16,10 @@
+ #include "app/resource_bundle.h"
+ #include "base/command_line.h"
+ #include "base/singleton.h"
++#include "base/logging.h"
+ #include "chrome/app/chrome_dll_resource.h"
+ #include "chrome/browser/browser.h"
++#include "chrome/browser/browser_process.h"
+ #include "chrome/browser/encoding_menu_controller.h"
+ #include "chrome/browser/gtk/accelerators_gtk.h"
+ #include "chrome/browser/gtk/browser_window_gtk.h"
+@@ -30,6 +32,7 @@
  #include "chrome/browser/page_menu_model.h"
  #include "chrome/browser/profile.h"
  #include "chrome/browser/tab_contents/tab_contents.h"
@@ -142,7 +231,7 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
  #include "chrome/common/gtk_util.h"
  #include "chrome/common/notification_service.h"
  #include "chrome/common/pref_names.h"
-@@ -327,18 +328,23 @@
+@@ -327,18 +330,37 @@
    string16 title = browser_window_->browser()->GetWindowTitleForCurrentTab();
    gtk_label_set_text(GTK_LABEL(app_mode_title_), UTF16ToUTF8(title).c_str());
  
@@ -160,16 +249,30 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
 -      GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
 -      gtk_window_set_icon(window_, icon_pixbuf);
 -      g_object_unref(icon_pixbuf);
-+    // If we got an app-id parameter and the current URL is a subpath of
-+    // the app parameter use the app-id icon
-+    const CommandLine& parsed_command_line = *CommandLine::ForCurrentProcess();
-+    std::string url_string(parsed_command_line.GetSwitchValueASCII(switches::kApp));
-+    GURL cmd_url(url_string);
-+    GURL current_url = browser_window_->browser()->GetURLForCurrentTab();
-+    GList* icon_list = gtk_util::GetIconList();
++    // If we got an icon-id parameter (saved into prefs) and the current URL is a subpath of
++    // the app parameter use the icon-id icon
++
++    std::wstring current_host = UTF8ToWide(browser_window_->browser()->GetURLForCurrentTab().host());
++
++    GList* icon_list = NULL;
++    GdkPixbuf* icon_pixbuf = NULL;
++    std::wstring icon_pref_key = browser_window_->browser()->GetWindowIconKey();
++    size_t found = icon_pref_key.find(current_host);
++    PrefService* prefs = g_browser_process->local_state();
++    FilePath prefs_icon_id = prefs->GetFilePath(icon_pref_key.c_str());
++    LOG(INFO) << "icon_pref_key: " << icon_pref_key << ", icon_id: " << prefs_icon_id.value();
++    if (!prefs_icon_id.empty())
++      icon_pixbuf = gtk_util::GetPixbufFromIconID(prefs_icon_id.value());
 +    // The current URL is foreign, use the default app icons
-+    if (cmd_url.GetOrigin() != current_url.GetOrigin()) {
-+      icon_list = g_list_nth_prev(icon_list,2);
++    if (found == std::string::npos) {
++      LOG(INFO) << icon_pref_key << " !C " << current_host;
++      icon_list = gtk_util::ProductIconList();
++    }
++    else if (icon_pixbuf) {
++      icon_list = g_list_append(icon_list, icon_pixbuf);
++    }
++    else {
++      gtk_util::GetIconList();
      }
 +    gtk_window_set_icon_list(window_, icon_list);
 +    g_list_free(icon_list);
@@ -179,8 +282,25 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
 Index: src/chrome/browser/browser.h
 ===================================================================
 --- src.orig/chrome/browser/browser.h	2010-02-12 20:33:03.000000000 +0100
-+++ src/chrome/browser/browser.h	2010-03-04 15:45:56.000000000 +0100
-@@ -197,6 +197,9 @@
++++ src/chrome/browser/browser.h	2010-03-10 16:57:36.000000000 +0100
+@@ -174,7 +174,7 @@
+   static void OpenURLOffTheRecord(Profile* profile, const GURL& url);
+ 
+   // Opens a new application ("thin frame") window for the specified url.
+-  static void OpenApplicationWindow(Profile* profile, const GURL& url);
++  static void OpenApplicationWindow(Profile* profile, const GURL& url, const FilePath& icon_id);
+ 
+ #if defined(OS_MACOSX)
+   // Open a new window with history/downloads/help (needed on Mac when there are
+@@ -188,6 +188,7 @@
+   // State Storage and Retrieval for UI ///////////////////////////////////////
+ 
+   // Save and restore the window position.
++  std::wstring GetWindowIconKey() const;
+   std::wstring GetWindowPlacementKey() const;
+   bool ShouldSaveWindowPlacement() const;
+   void SaveWindowPlacement(const gfx::Rect& bounds, bool maximized);
+@@ -197,6 +198,9 @@
    // Gets the FavIcon of the page in the selected tab.
    SkBitmap GetCurrentPageIcon() const;
  
@@ -192,14 +312,85 @@ Index: src/chrome/browser/browser.h
  
 Index: src/chrome/common/gtk_util.h
 ===================================================================
---- src.orig/chrome/common/gtk_util.h	2010-03-04 15:50:23.000000000 +0100
-+++ src/chrome/common/gtk_util.h	2010-03-04 15:50:42.000000000 +0100
-@@ -51,6 +51,8 @@
+--- src.orig/chrome/common/gtk_util.h	2010-02-12 20:33:09.000000000 +0100
++++ src/chrome/common/gtk_util.h	2010-03-10 15:52:31.000000000 +0100
+@@ -51,6 +51,10 @@
  // Horizontal Spacing between controls in a form.
  const int kFormControlSpacing = 10;
  
++GdkPixbuf* GetPixbufFromIconID(const std::string& icon_id);
 +GList* GetIconList();
++GList* ProductIconList();
 +
  // Create a table of labeled controls, using proper spacing and alignment.
  // Arguments should be pairs of const char*, GtkWidget*, concluding with a
  // NULL.  The first argument is a vector in which to place all labels
+Index: src/chrome/browser/browser_init.cc
+===================================================================
+--- src.orig/chrome/browser/browser_init.cc	2010-03-09 12:43:21.000000000 +0100
++++ src/chrome/browser/browser_init.cc	2010-03-10 17:14:03.000000000 +0100
+@@ -9,6 +9,7 @@
+ #include "base/event_recorder.h"
+ #include "base/path_service.h"
+ #include "base/sys_info.h"
++#include "base/logging.h"
+ #include "chrome/browser/automation/automation_provider.h"
+ #include "chrome/browser/automation/chrome_frame_automation_provider.h"
+ #include "chrome/browser/browser_list.h"
+@@ -513,13 +514,15 @@
+ #endif
+   GURL url(url_string);
+ 
++  std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
++
+   // Restrict allowed URLs for --app switch.
+   if (!url.is_empty() && url.is_valid()) {
+     ChildProcessSecurityPolicy *policy =
+         ChildProcessSecurityPolicy::GetInstance();
+     if (policy->IsWebSafeScheme(url.scheme()) ||
+         url.SchemeIs(chrome::kFileScheme)) {
+-      Browser::OpenApplicationWindow(profile, url);
++        Browser::OpenApplicationWindow(profile, url, FilePath(icon_id));
+       return true;
+     }
+   }
+Index: src/chrome/browser/tab_contents/tab_contents.cc
+===================================================================
+--- src.orig/chrome/browser/tab_contents/tab_contents.cc	2010-03-09 14:59:10.000000000 +0100
++++ src/chrome/browser/tab_contents/tab_contents.cc	2010-03-09 14:59:21.000000000 +0100
+@@ -289,6 +289,9 @@
+       prefs->AddPrefObserver(kPrefsToObserve[i], this);
+   }
+ 
++  const std::string& icon_id = CommandLine::ForCurrentProcess()->GetSwitchValueASCII(switches::kIconId);
++  LOG(INFO) << "icon-id: " << icon_id;
++
+   // Register for notifications about URL starredness changing on any profile.
+   registrar_.Add(this, NotificationType::URLS_STARRED,
+                  NotificationService::AllSources());
+Index: src/chrome/common/pref_names.cc
+===================================================================
+--- src.orig/chrome/common/pref_names.cc	2010-03-09 15:08:26.000000000 +0100
++++ src/chrome/common/pref_names.cc	2010-03-09 15:08:33.000000000 +0100
+@@ -459,6 +459,9 @@
+ // window to restore on startup.
+ const wchar_t kBrowserWindowPlacement[] = L"browser.window_placement";
+ 
++// Desktop Icon name
++const wchar_t kBrowserWindowIcon[] = L"browser.window_icon";
++
+ // A collection of position, size, and other data relating to the task
+ // manager window to restore on startup.
+ const wchar_t kTaskManagerWindowPlacement[] = L"task_manager.window_placement";
+Index: src/chrome/common/pref_names.h
+===================================================================
+--- src.orig/chrome/common/pref_names.h	2010-03-09 15:54:26.000000000 +0100
++++ src/chrome/common/pref_names.h	2010-03-09 15:54:38.000000000 +0100
+@@ -170,6 +170,7 @@
+ extern const wchar_t kUninstallLastObservedRunTimeSec[];
+ 
+ extern const wchar_t kBrowserWindowPlacement[];
++extern const wchar_t kBrowserWindowIcon[];
+ extern const wchar_t kTaskManagerWindowPlacement[];
+ extern const wchar_t kPageInfoWindowPlacement[];
+ extern const wchar_t kKeywordEditorWindowPlacement[];
