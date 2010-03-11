@@ -1,3 +1,9 @@
+nickel-browser (5.0.307.11~r39572-1jolicloud1) robby; urgency=low
+
+  * Use correct webapp icon for new webapp instances
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Thu, 11 Mar 2010 12:26:59 +0100
+
 nickel-browser (5.0.307.11~r39572-0ubuntu1~ucd1~robby) robby; urgency=low
 
   * force concurrency, don't build tests
