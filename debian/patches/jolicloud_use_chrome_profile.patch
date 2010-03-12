@@ -1,0 +1,28 @@
+Index: src/chrome/common/chrome_paths_linux.cc
+===================================================================
+--- src.orig/chrome/common/chrome_paths_linux.cc	2010-03-12 09:22:17.000000000 +0100
++++ src/chrome/common/chrome_paths_linux.cc	2010-03-12 09:23:00.000000000 +0100
+@@ -19,11 +19,7 @@
+       base::EnvironmentVariableGetter::Create());
+   FilePath config_dir(
+       base::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
+-#if defined(GOOGLE_CHROME_BUILD)
+   *result = config_dir.Append("google-chrome");
+-#else
+-  *result = config_dir.Append("chromium");
+-#endif
+   return true;
+ }
+ 
+@@ -32,11 +28,7 @@
+       base::EnvironmentVariableGetter::Create());
+   FilePath config_dir(
+       base::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
+-#if defined(GOOGLE_CHROME_BUILD)
+   *result = config_dir.Append("google-chrome-frame");
+-#else
+-  *result = config_dir.Append("chrome-frame");
+-#endif
+   return true;
+ }
+ 
