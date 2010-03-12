@@ -1,3 +1,9 @@
+nickel-browser (5.0.307.11~r39572-1jolicloud2) robby; urgency=low
+
+  * Share profile with Google Chrome
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Fri, 12 Mar 2010 10:27:51 +0100
+
 nickel-browser (5.0.307.11~r39572-1jolicloud1) robby; urgency=low
 
   * Use correct webapp icon for new webapp instances
