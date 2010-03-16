@@ -1,4 +1,5 @@
 jolicloud_set_app_icon_from_desktop_file.patch
+jolicloud_set_default_window_size.patch
 jolicloud_use_chrome_profile.patch
 drop_sse2.patch
 # system_v8.patch
