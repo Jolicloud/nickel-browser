@@ -1,0 +1,18 @@
+Index: src/chrome/browser/browser_main.cc
+===================================================================
+--- src.orig/chrome/browser/browser_main.cc	2010-03-17 14:59:22.000000000 +0100
++++ src/chrome/browser/browser_main.cc	2010-03-17 14:59:35.000000000 +0100
+@@ -622,11 +622,10 @@
+       AddFirstRunNewTabs(&browser_init, first_run_tabs);
+ #endif  // OS_WIN
+ 
+-    // If we are running in App mode, we do not want to show the importer
++    // Even if we are running in App mode, we do want to show the importer
+     // (first run) UI.
+     if (!first_run_ui_bypass &&
+-        (parsed_command_line.HasSwitch(switches::kApp) ||
+-         parsed_command_line.HasSwitch(switches::kNoFirstRun))) {
++         parsed_command_line.HasSwitch(switches::kNoFirstRun)) {
+       first_run_ui_bypass = true;
+     }
+   }
