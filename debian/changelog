@@ -1,3 +1,10 @@
+nickel-browser (5.0.307.11~r39572-1jolicloud4) robby; urgency=low
+
+  * set max default size to 1024x576
+  * Enable first run importer in Apps
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 17 Mar 2010 16:27:17 +0100
+
 nickel-browser (5.0.307.11~r39572-1jolicloud3) robby; urgency=low
 
   * Fix icon for external links
