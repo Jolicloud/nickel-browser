@@ -1,3 +1,9 @@
+nickel-browser (5.0.307.11~r39572-1jolicloud6) robby; urgency=low
+
+  * Fix netbook-launcher icon
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 22 Mar 2010 19:02:11 +0100
+
 nickel-browser (5.0.307.11~r39572-1jolicloud5) robby; urgency=low
 
   * Enable "Set as default browser" setting to stick
