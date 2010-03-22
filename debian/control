@@ -4,6 +4,7 @@ Priority: optional
 Maintainer: Jolicloud Developers <developers@jolicloud.org>
 Homepage: http://code.google.com/chromium/
 Build-Depends: cdbs,
+	coreutils,
 	debhelper (>= 5),
 	pkg-config,
 	lsb-release,

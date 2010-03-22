@@ -1,3 +1,4 @@
+jolicloud_nickel_desktop_name.patch
 jolicloud_set_app_icon_from_desktop_file.patch
 jolicloud_set_default_window_size.patch
 jolicloud_enable_first_run_importer_in_apps.patch

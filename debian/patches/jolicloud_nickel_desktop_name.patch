@@ -1,0 +1,13 @@
+Index: src/chrome/browser/shell_integration_linux.cc
+===================================================================
+--- src.orig/chrome/browser/shell_integration_linux.cc	2010-03-22 12:17:35.000000000 +0100
++++ src/chrome/browser/shell_integration_linux.cc	2010-03-22 12:17:48.000000000 +0100
+@@ -47,7 +47,7 @@
+     // non-official, packaged versions using the built-in value.
+     name = getenv("CHROME_DESKTOP");
+     if (!name)
+-      name = "chromium-browser.desktop";
++      name = "nickel-browser.desktop";
+   }
+   return name;
+ #endif
