@@ -117,7 +117,7 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/makefile.mk
 
 NICKEL_ICONS_DIR := debian/nickel_icons/
-NICKEL_ICONS := chromium_icon_32.png product_logo_16.png product_logo.png product_logo_white.png product_logo.png
+NICKEL_ICONS := chromium_icon_32.png product_logo_256.png product_logo_48.png product_logo_32.png product_logo_16.png product_logo.png product_logo_white.png product_logo.png
 NICKEL_ICONS_B64 := $(addsuffix .b64,$(NICKEL_ICONS))
 NICKEL_ICONS_DEBIAN := $(addprefix $(NICKEL_ICONS_DIR), $(NICKEL_ICONS))
 NICKEL_ICONS_CHROMIUM := $(addprefix $(SRC_DIR)/chrome/app/theme/chromium/, $(NICKEL_ICONS))
