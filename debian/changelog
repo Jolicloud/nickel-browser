@@ -1,3 +1,10 @@
+nickel-browser (5.0.307.11~r39572-1jolicloud5) robby; urgency=low
+
+  * Enable "Set as default browser" setting to stick
+  * New nickel icon
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 22 Mar 2010 15:28:08 +0100
+
 nickel-browser (5.0.307.11~r39572-1jolicloud4) robby; urgency=low
 
   * set max default size to 1024x576
