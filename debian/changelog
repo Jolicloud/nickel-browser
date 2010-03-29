@@ -1,3 +1,45 @@
+chromium-browser (5.0.342.7~r42476-0ubuntu2~ucd3~jaunty) jaunty; urgency=low
+
+  * New upstream snapshot
+
+ -- Fabien Tassin <fta@ubuntu.com>  Mon, 29 Mar 2010 08:43:55 +0200
+
+chromium-browser (5.0.342.7~r42476-0ubuntu1) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+    - fix an issue with Google SSL sites failing with 'error 107
+      (net::ERR_SSL_PROTOCOL_ERROR)' (issue 37722)
+    - Automatic translations and greater control over content for privacy
+    - Really, really reload. A normal reload causes the browser to check with
+      the server before reusing its cached content.  The server can decide
+      whether or not the browser should use its cached content.  A force reload
+      causes the browser to ignore its cached content and ask the server for a
+      fresh copy of the page. Use Shift+Reload to force a reload.
+  * Add libdbus-glib-1-dev to Build-Depends
+    - update debian/control
+  * Move third_party/gles2_book from STRIPPED_DIRS to ALMOST_STRIPPED_DIRS
+    as we now need its gyp file (but nothing else)
+    - update debian/rules
+  * Bump gyp requirement to >= 0.1~svn795, it's needed for the new syntax
+    - update debian/control
+  * Add 'timestats' to INSTALL_EXCLUDE_FILES
+    - update debian/rules
+  * Import translations and mime-types from the upstream desktop file
+    Thanks to Julien Lavergne <gilir@ubuntu.com> (LP: #538664)
+    - update debian/chromium-browser.desktop
+  * Import the free SVG logo from the Chromium website and install it
+    in /usr/share/icons/hicolor/scalable/apps (LP: #528640)
+    - add debian/chromium-browser.svg
+    - update debian/rules
+  * Move chromium-browser-inspector to Depends, it breaks some features
+    when it's not installed
+    - update debian/control
+  * Rename chromium-codecs-ffmpeg-nonfree into chromium-codecs-ffmpeg-extra
+    and move the two codecs back to Depends (LP: #537617, #513776)
+    - update debian/control
+ 
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 25 Mar 2010 08:22:40 +0100
+
 nickel-browser (5.0.307.11~r39572-1jolicloud6) robby; urgency=low
 
   * Fix netbook-launcher icon
@@ -46,14 +88,31 @@ nickel-browser (5.0.307.11~r39572-0ubuntu1~ucd1~robby) robby; urgency=low
 
  -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 03 Mar 2010 23:21:59 +0100
 
-chromium-browser (5.0.307.11~r39572-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
+chromium-browser (5.0.307.11~r39572-0ubuntu1) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+    - Fixed an issue where an error resolving a proxy server would not try a
+      direct connection. (Issue 32316)
+    - Fixed an extensions bug that could crash the entire browser. (Issue 34778)
+    - Fixed an issue in the cross-site scripting auditor that could prevent
+      Google translate from working on sites. (Issue 33115)
+
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 27 Feb 2010 17:07:23 +0100
+
+chromium-browser (5.0.307.9~r39052-0ubuntu1) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+    - Fixed a tab crash that could be triggered by visiting wordpress.com,
+      http://acid3.acidtests.org/, and many other sites. (Issue 35498)
+    - Fixed a tab crash in image loading. (Issue 32230)
+    - Improved font bolding for fonts without native bold. (Issue 22360)
   * Bump gyp Build-Depends to >= 0.1~svn785
     - update debian/control
   * Add --no-circular-check to gyp_chromium to prevent gyp from failing
     - update debian/rules
 
- -- Fabien Tassin <fta@ubuntu.com>  Sat, 27 Feb 2010 17:07:23 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 18 Feb 2010 00:20:07 +0100
 
 chromium-browser (5.0.307.7~r38400+0-0ubuntu1) lucid; urgency=low
 

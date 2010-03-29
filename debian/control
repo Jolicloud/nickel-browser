@@ -1,7 +1,8 @@
 Source: nickel-browser
 Section: web
 Priority: optional
-Maintainer: Jolicloud Developers <developers@jolicloud.org>
+Maintainer: Fabien Tassin <fta@ubuntu.com>
+Vcs-Bzr: https://code.launchpad.net/~chromium-team/chromium-browser/chromium-browser.head
 Homepage: http://code.google.com/chromium/
 Build-Depends: cdbs,
 	coreutils,
@@ -9,7 +10,7 @@ Build-Depends: cdbs,
 	pkg-config,
 	lsb-release,
 	lzma,
-	gyp (>= 0.1~svn785),
+	gyp (>= 0.1~svn795),
 	quilt,
 	patchutils (>= 0.2.25),
 	g++-4.3 | g++-4.2,
@@ -47,6 +48,7 @@ Build-Depends: cdbs,
 	libpango1.0-dev,
 	libglib2.0-dev,
 	libgtk2.0-dev,
+	libdbus-glib-1-dev,
 	libgconf2-dev
 Standards-Version: 3.8.3
 
@@ -54,7 +56,7 @@ Package: nickel-browser
 Architecture: any
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, libnss3-1d (>= 3.12.3)
-Recommends: nickel-browser-inspector, chromium-codecs-ffmpeg | chromium-codecs-ffmpeg-nonfree
+Recommends: nickel-browser-inspector, nickel-codecs-ffmpeg | nickel-codecs-ffmpeg-nonfree
 Suggests: nickel-browser-l10n
 Provides: www-browser, chromium-testsuite, jolicloud-webapps-engine
 Replaces: chromium-testsuite
@@ -81,6 +83,8 @@ Package: nickel-browser-l10n
 Architecture: all
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
+Breaks: chromium-browser (<< 3.0.197.0~svn20090804r22432)
+Replaces: chromium-browser (<< 3.0.197.0~svn20090804r22432)
 Description: nickel-browser language packages
  Nickel is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
