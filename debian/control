@@ -9,7 +9,7 @@ Build-Depends: cdbs,
 	pkg-config,
 	lsb-release,
 	lzma,
-	gyp (>= 0.1~svn785),
+	gyp (>= 0.1~svn795),
 	quilt,
 	patchutils (>= 0.2.25),
 	g++-4.3 | g++-4.2,
@@ -47,14 +47,14 @@ Build-Depends: cdbs,
 	libpango1.0-dev,
 	libglib2.0-dev,
 	libgtk2.0-dev,
+	libdbus-glib-1-dev,
 	libgconf2-dev
 Standards-Version: 3.8.3
 
 Package: chromium-browser
 Architecture: any
 Pre-Depends: lzma
-Depends: ${shlibs:Depends}, ${misc:Depends}, libnss3-1d (>= 3.12.3)
-Recommends: chromium-browser-inspector, chromium-codecs-ffmpeg | chromium-codecs-ffmpeg-nonfree
+Depends: ${shlibs:Depends}, ${misc:Depends}, libnss3-1d (>= 3.12.3), chromium-browser-inspector, chromium-codecs-ffmpeg | chromium-codecs-ffmpeg-extra
 Suggests: chromium-browser-l10n
 Provides: www-browser, chromium-testsuite
 Replaces: chromium-testsuite

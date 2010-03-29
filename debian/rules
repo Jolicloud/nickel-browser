@@ -143,6 +143,7 @@ INSTALL_EXCLUDE_FILES = \
 	ncdecode_table \
 	ncdecode_tablegen \
 	springboard_gen \
+	timestats \
 	tramp_gen \
 	protoc \
 	*.d \
@@ -350,6 +351,8 @@ binary-install/$(DEBIAN_NAME)::
 	  cp -a build-tree/src/chrome/app/theme/chromium/product_logo_$$size.png  \
 	    $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/icons/hicolor/$${size}x$${size}/apps/$(DEBIAN_NAME).png ; \
 	done
+	mkdir -p $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/icons/hicolor/scalable/apps
+	cp -a $(CURDIR)/debian/$(DEBIAN_NAME).svg $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/icons/hicolor/scalable/apps
 ifeq (1,$(WANT_SANDBOXING))
 	chmod 4755 $(CURDIR)/debian/$(DEBIAN_NAME)/$(LIB_DIR)/$(DEBIAN_NAME)-sandbox
 else
@@ -477,7 +480,6 @@ STRIPPED_DIRS := \
 	third_party/bspatch \
 	third_party/ffmpeg/binaries \
 	third_party/fuzzymatch \
-	third_party/gles2_book \
 	third_party/gles_book_examples \
 	third_party/hunspell/dictionaries \
 	third_party/icu/mac \
@@ -504,6 +506,7 @@ STRIPPED_DIRS := \
 # So we drop everything but the gyp/gypi files and README.chromium (to see what that dir contained)
 ALMOST_STRIPPED_DIRS := \
 	courgette \
+	third_party/gles2_book \
 	$(NULL)
 
 ifeq (1,$(WANT_SYSTEM_LIBS))
