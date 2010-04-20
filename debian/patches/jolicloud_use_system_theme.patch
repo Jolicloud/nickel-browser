@@ -1,0 +1,13 @@
+Index: src/chrome/browser/profile.cc
+===================================================================
+--- src.orig/chrome/browser/profile.cc	2010-04-20 12:42:55.622170336 +0200
++++ src/chrome/browser/profile.cc	2010-04-20 12:44:27.552170342 +0200
+@@ -150,7 +150,7 @@
+   prefs->RegisterBooleanPref(prefs::kEnableSpellCheck, true);
+   prefs->RegisterBooleanPref(prefs::kEnableAutoSpellCorrect, true);
+ #if defined(OS_LINUX)
+-  prefs->RegisterBooleanPref(prefs::kUsesSystemTheme, false);
++  prefs->RegisterBooleanPref(prefs::kUsesSystemTheme, true);
+ #endif
+   prefs->RegisterFilePathPref(prefs::kCurrentThemePackFilename, FilePath());
+   prefs->RegisterStringPref(prefs::kCurrentThemeID,
