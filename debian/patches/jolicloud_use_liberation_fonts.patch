@@ -1,0 +1,34 @@
+Index: src/chrome/app/resources/locale_settings_linux.grd
+===================================================================
+--- src.orig/chrome/app/resources/locale_settings_linux.grd	2010-04-20 16:37:49.663420246 +0200
++++ src/chrome/app/resources/locale_settings_linux.grd	2010-04-20 16:40:02.392800890 +0200
+@@ -116,7 +116,7 @@
+     <messages fallback_to_english="true">
+       <!-- The font used in web-style native pages (e.g. History). -->
+       <message name="IDS_WEB_FONT_FAMILY" use_name_for_id="true">
+-        Arial
++        Liberation Sans
+       </message>
+ 
+       <!-- The relative font size in % used in web-style native pages
+@@ -133,17 +133,17 @@
+ 
+       <!-- The default value for |WebPreference::fixed_font_family| -->
+       <message name="IDS_FIXED_FONT_FAMILY" use_name_for_id="true">
+-        Courier New
++        Liberation Mono
+       </message>
+ 
+       <!-- The default value for |WebPreference::serif_font_family| -->
+       <message name="IDS_SERIF_FONT_FAMILY" use_name_for_id="true">
+-        Times New Roman
++        Liberation Serif
+       </message>
+ 
+       <!-- The default value for |WebPreference::sans_serif_font_family| -->
+       <message name="IDS_SANS_SERIF_FONT_FAMILY" use_name_for_id="true">
+-        Arial
++        Liberation Sans
+       </message>
+ 
+       <!-- The default value for |WebPreference::cursive_font_family| -->

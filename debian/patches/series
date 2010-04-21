@@ -11,3 +11,4 @@ html5_video_mimetypes.patch
 no_tree_sink_v8.patch
 jolicloud_default_homepage.patch
 jolicloud_use_system_theme.patch
+jolicloud_use_liberation_fonts.patch
