@@ -44,7 +44,7 @@ export PATH="$LIBDIR:$PATH"
 export CHROME_WRAPPER=true
 
 # Set CHROME_VERSION_EXTRA visible in the About dialog and in about:version
-export CHROME_VERSION_EXTRA=Ubuntu
+export CHROME_VERSION_EXTRA=Jolicloud
 
 want_debug=0
 while [ $# -gt 0 ]; do
