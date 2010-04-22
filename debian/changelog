@@ -1,3 +1,11 @@
+nickel-browser (5.0.342.9~r43360-1jolicloud2) robby; urgency=low
+
+  * Change default homepage to http://www.jolicloud.com/start
+  * Use GTK theme by default
+  * use Liberation font family
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 21 Apr 2010 13:50:04 +0200
+
 nickel-browser (5.0.342.9~r43360-1jolicloud1) robby; urgency=low
 
   * Imported Upstream version 5.0.342.9~r43360
