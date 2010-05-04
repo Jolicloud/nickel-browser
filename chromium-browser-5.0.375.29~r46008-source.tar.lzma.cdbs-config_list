@@ -9,6 +9,8 @@ src/sdch/open-vcdiff/vsprojects/config.h
 src/sdch/open-vcdiff/src/config.h.in
 src/sdch/open-vcdiff/config.guess
 src/sdch/open-vcdiff/config.sub
+src/third_party/WebKit/WebKitTools/DumpRenderTree/config.h
+src/third_party/WebKit/WebKitTools/DumpRenderTree/chromium/config.h
 src/third_party/WebKit/WebKitTools/Scripts/webkitpy/thirdparty/pywebsocket/test/config.py
 src/third_party/WebKit/WebCore/config.h
 src/third_party/WebKit/JavaScriptCore/config.h

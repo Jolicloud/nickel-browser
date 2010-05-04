@@ -27,6 +27,9 @@ ifeq (0,$(PROCESSORS))
 PROCESSORS := 1
 endif
 
+# Disable SSE2
+GYP_DEFINES = enable_sse2=0
+
 # Only keep -Werror when building for the Debian or Ubuntu development branches
 #ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
 GYP_DEFINES += werror=$(NULL)
@@ -129,6 +132,10 @@ INSTALL_EXCLUDE_DIRS = \
 	dbg \
 	plugins \
 	'*.d' \
+	.deps \
+	calendar_app \
+	docs_app \
+	gmail_app \
 	$(NULL)
 
 INSTALL_EXCLUDE_FILES = \
@@ -212,16 +219,20 @@ TESTS ?= \
 endif
 
 # FFmpeg-mt
-GYP_DEFINES += use_system_ffmpeg=1
+GYP_DEFINES += build_ffmpegsumo=0
 
 USE_SYSTEM_SQLITE := $(shell pkg-config 'sqlite3 >= 3.6.1' && echo 1 || echo 0)
 USE_SYSTEM_SQLITE := 0
+
+ifneq (,$(filter 8.10 9.04,$(DEBIAN_DIST)))
+# Don't build with system zlib on Intrepid/Jaunty. See http://crbug.com/38073
+GYP_DEFINES += use_system_zlib=0
+endif
 
 # System libs
 ifeq (1,$(WANT_SYSTEM_LIBS))
 GYP_DEFINES += \
 	use_system_bzip2=1 \
-	use_system_zlib=0 \
 	use_system_libjpeg=1 \
 	use_system_libpng=1 \
 	use_system_sqlite=$(USE_SYSTEM_SQLITE) \
@@ -265,6 +276,10 @@ INSTALL_EXCLUDE_FILES += \
 	test_shell.pak \
 	xdisplaycheck \
 	$(NULL)
+
+INSTALL_EXCLUDE_DIRS += \
+	app_unittests_strings \
+	$(NULL)
 endif
 
 ifeq (1,$(WANT_SANDBOXING))
@@ -286,6 +301,12 @@ endif
 
 ######
 DO = (touch r1; echo '$(1)'; $(1); touch r2 ; T1=`date -r r1 +%s` ; T2=`date -r r2 +%s`; echo "PERF: '$(2)' built in "`expr $$T2 - $$T1`" sec"; rm -f r1 r2;)
+
+pre-build::
+ifneq (,$(findstring Ubuntu,$(DEBIAN_DIST)))
+	sed -ri '/const PrepopulatedEngine google = \{/,/\}\;/ { s/sourceid=chrome\&/&client=ubuntu\&channel=cs\&/g; }' \
+		build-tree/src/chrome/browser/search_engines/template_url_prepopulate_data.cc
+endif
 
 DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS)
 
@@ -605,8 +626,10 @@ ifneq (,$(STRIPPED_DIRS_FROM_CO))
 	grep -Ev '^($$|[[:blank:]]*#)' $(TMP_DIR)/.gclient
 endif
 endif
-	# Checkout
-	cd $(TMP_DIR) && ./tools/depot_tools/gclient update --nohooks $(REVISION)
+	# Checkout (drop the previous content and retry if gclient failed, see http://crbug.com/39954)
+	cd $(TMP_DIR) && ./tools/depot_tools/gclient update --nohooks $(REVISION) || \
+	  ( rm -rf $(TMP_DIR)/{src,[0-9]*} ; ./tools/depot_tools/gclient update --nohooks $(REVISION) )
+
 ifneq (,$(LOCAL_BRANCH))
 	rm -rf $(TMP_DDIR)
 	cp -la $(TMP_DIR) $(TMP_DDIR)
