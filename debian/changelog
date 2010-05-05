@@ -1,3 +1,9 @@
+nickel-browser (5.0.342.9~r43360-1jolicloud3) robby; urgency=low
+
+  * Change CHROME_VERSION_EXTRA to refer to Jolicloud
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Thu, 22 Apr 2010 18:21:31 +0200
+
 nickel-browser (5.0.342.9~r43360-1jolicloud2) robby; urgency=low
 
   * Change default homepage to http://www.jolicloud.com/start
