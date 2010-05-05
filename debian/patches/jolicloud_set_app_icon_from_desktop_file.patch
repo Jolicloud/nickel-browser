@@ -1,8 +1,8 @@
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/chrome_switches.cc	2010-03-30 01:11:17.711550564 +0200
-@@ -390,6 +390,9 @@
+--- src.orig/chrome/common/chrome_switches.cc	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/common/chrome_switches.cc	2010-05-05 15:34:33.274272946 +0200
+@@ -429,6 +429,9 @@
  //                                            except for "www.google.com".
  const char kHostResolverRules[]             = "host-resolver-rules";
  
@@ -12,26 +12,27 @@ Index: src/chrome/common/chrome_switches.cc
  // Perform importing from another browser. The value associated with this
  // setting encodes the target browser and what items to import.
  const char kImport[]                        = "import";
-Index: src/chrome/common/gtk_util.cc
+Index: src/chrome/browser/gtk/gtk_util.cc
 ===================================================================
---- src.orig/chrome/common/gtk_util.cc	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/gtk_util.cc	2010-03-30 01:12:07.021545367 +0200
-@@ -12,12 +12,14 @@
- 
+--- src.orig/chrome/browser/gtk/gtk_util.cc	2010-04-14 21:00:09.000000000 +0200
++++ src/chrome/browser/gtk/gtk_util.cc	2010-05-05 15:34:33.274272946 +0200
+@@ -14,6 +14,7 @@
  #include "app/l10n_util.h"
  #include "app/resource_bundle.h"
+ #include "app/x11_util.h"
 +#include "base/command_line.h"
+ #include "base/i18n/rtl.h"
  #include "base/linux_util.h"
  #include "base/logging.h"
- #include "chrome/browser/browser_list.h"
+@@ -21,6 +22,7 @@
  #include "chrome/browser/browser_window.h"
  #include "chrome/browser/gtk/cairo_cached_surface.h"
  #include "chrome/browser/gtk/gtk_theme_provider.h"
 +#include "chrome/common/chrome_switches.h"
  #include "chrome/common/renderer_preferences.h"
- #include "chrome/common/x11_util.h"
  #include "grit/theme_resources.h"
-@@ -60,15 +62,6 @@
+ #include "third_party/skia/include/core/SkBitmap.h"
+@@ -62,15 +64,6 @@
    return TRUE;
  }
  
@@ -47,7 +48,7 @@ Index: src/chrome/common/gtk_util.cc
  // A process wide singleton that manages our usage of gdk
  // cursors. gdk_cursor_new() hits the disk in several places and GdkCursor
  // instances can be reused throughout the process.
-@@ -144,6 +137,48 @@
+@@ -141,6 +134,48 @@
  
  namespace gtk_util {
  
@@ -96,7 +97,7 @@ Index: src/chrome/common/gtk_util.cc
  GtkWidget* CreateLabeledControlsGroup(std::vector<GtkWidget*>* labels,
                                        const char* text, ...) {
    va_list ap;
-@@ -573,13 +608,13 @@
+@@ -519,13 +554,13 @@
  }
  
  void SetWindowIcon(GtkWindow* window) {
@@ -114,21 +115,29 @@ Index: src/chrome/common/gtk_util.cc
  }
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
---- src.orig/chrome/common/chrome_switches.h	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/chrome_switches.h	2010-03-30 01:12:29.201545180 +0200
+--- src.orig/chrome/common/chrome_switches.h	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/common/chrome_switches.h	2010-05-05 15:34:33.374272147 +0200
 @@ -25,6 +25,7 @@
  extern const char kAlwaysEnableDevTools[];
  extern const char kApp[];
  extern const char kAppId[];
 +extern const char kIconId[];
  extern const char kAppLaunchAsPanel[];
+ extern const char kAppLauncherForNewTab[];
  extern const char kAuthServerWhitelist[];
- extern const char kAutomationClientChannelID[];
 Index: src/chrome/browser/browser.cc
 ===================================================================
---- src.orig/chrome/browser/browser.cc	2010-03-25 08:27:38.000000000 +0100
-+++ src/chrome/browser/browser.cc	2010-03-30 01:14:16.641544902 +0200
-@@ -365,12 +365,21 @@
+--- src.orig/chrome/browser/browser.cc	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/browser/browser.cc	2010-05-05 18:07:28.564266109 +0200
+@@ -11,6 +11,7 @@
+ #include "app/l10n_util.h"
+ #include "base/base_paths.h"
+ #include "base/command_line.h"
++#include "base/file_path.h"
+ #include "base/keyboard_codes.h"
+ #include "base/logging.h"
+ #include "base/path_service.h"
+@@ -410,12 +411,21 @@
  }
  
  // static
@@ -151,7 +160,20 @@ Index: src/chrome/browser/browser.cc
    browser->AddTabWithURL(url, GURL(), PageTransition::START_PAGE, true, -1,
                           false, NULL);
  
-@@ -423,6 +432,15 @@
+@@ -439,9 +449,11 @@
+ }
+ 
+ // static
++const FilePath::CharType kEmptyIcon[] = FILE_PATH_LITERAL("");
+ void Browser::OpenApplicationWindow(Profile* profile, Extension* extension) {
++  FilePath empty_icon(kEmptyIcon);
+   OpenApplicationWindow(profile,
+-      extension->GetFullLaunchURL(),
++      extension->GetFullLaunchURL(), empty_icon,
+       (extension->launch_container() == Extension::LAUNCH_PANEL));
+ }
+ 
+@@ -505,6 +517,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -167,7 +189,7 @@ Index: src/chrome/browser/browser.cc
  std::wstring Browser::GetWindowPlacementKey() const {
    std::wstring name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -495,6 +513,18 @@
+@@ -577,6 +598,18 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
@@ -186,7 +208,7 @@ Index: src/chrome/browser/browser.cc
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents = tabstrip_model_.GetSelectedTabContents();
    string16 title;
-@@ -1391,6 +1421,7 @@
+@@ -1593,6 +1626,7 @@
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
    prefs->RegisterDictionaryPref(prefs::kBrowserWindowPlacement);
@@ -194,7 +216,7 @@ Index: src/chrome/browser/browser.cc
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterIntegerPref(prefs::kDevToolsSplitLocation, -1);
  }
-@@ -3280,10 +3311,14 @@
+@@ -3478,10 +3512,14 @@
    std::wstring window_pref(prefs::kBrowserWindowPlacement);
    window_pref.append(L"_");
    window_pref.append(app_name);
@@ -211,9 +233,9 @@ Index: src/chrome/browser/browser.cc
  // static
 Index: src/chrome/browser/gtk/browser_titlebar.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-03-25 08:27:28.000000000 +0100
-+++ src/chrome/browser/gtk/browser_titlebar.cc	2010-03-30 01:17:13.791545764 +0200
-@@ -16,8 +16,10 @@
+--- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-04-14 21:00:09.000000000 +0200
++++ src/chrome/browser/gtk/browser_titlebar.cc	2010-05-05 15:34:33.544266326 +0200
+@@ -14,8 +14,10 @@
  #include "app/resource_bundle.h"
  #include "base/command_line.h"
  #include "base/singleton.h"
@@ -224,14 +246,14 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
  #include "chrome/browser/encoding_menu_controller.h"
  #include "chrome/browser/gtk/accelerators_gtk.h"
  #include "chrome/browser/gtk/browser_window_gtk.h"
-@@ -31,6 +33,7 @@
+@@ -30,6 +32,7 @@
  #include "chrome/browser/pref_service.h"
  #include "chrome/browser/profile.h"
  #include "chrome/browser/tab_contents/tab_contents.h"
 +#include "chrome/common/chrome_switches.h"
- #include "chrome/common/gtk_util.h"
  #include "chrome/common/notification_service.h"
  #include "chrome/common/pref_names.h"
+ #include "gfx/gtk_util.h"
 @@ -327,14 +330,31 @@
      // Update the system app icon.  We don't need to update the icon in the top
      // left of the custom frame, that will get updated when the throbber is
@@ -273,9 +295,9 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
  
 Index: src/chrome/browser/browser.h
 ===================================================================
---- src.orig/chrome/browser/browser.h	2010-03-25 08:27:38.000000000 +0100
-+++ src/chrome/browser/browser.h	2010-03-30 01:17:58.781545816 +0200
-@@ -184,7 +184,7 @@
+--- src.orig/chrome/browser/browser.h	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/browser/browser.h	2010-05-05 15:34:33.614265878 +0200
+@@ -202,7 +202,7 @@
    // is true, the application will be opened as a Browser::Type::APP_PANEL in
    // app panel window, otherwise it will be opened as a Browser::Type::APP,
    // a.k.a. "thin frame".
@@ -283,8 +305,8 @@ Index: src/chrome/browser/browser.h
 +  static void OpenApplicationWindow(Profile* profile, const GURL& url, const FilePath& icon_id,
                                      bool as_panel);
  
- #if defined(OS_MACOSX)
-@@ -199,6 +199,7 @@
+   // Open an application for |extension| in a new application window or panel.
+@@ -230,6 +230,7 @@
    // State Storage and Retrieval for UI ///////////////////////////////////////
  
    // Save and restore the window position.
@@ -292,7 +314,7 @@ Index: src/chrome/browser/browser.h
    std::wstring GetWindowPlacementKey() const;
    bool ShouldSaveWindowPlacement() const;
    void SaveWindowPlacement(const gfx::Rect& bounds, bool maximized);
-@@ -208,6 +209,9 @@
+@@ -239,6 +240,9 @@
    // Gets the FavIcon of the page in the selected tab.
    SkBitmap GetCurrentPageIcon() const;
  
@@ -302,10 +324,10 @@ Index: src/chrome/browser/browser.h
    // Gets the title of the window based on the selected tab's title.
    string16 GetWindowTitleForCurrentTab() const;
  
-Index: src/chrome/common/gtk_util.h
+Index: src/chrome/browser/gtk/gtk_util.h
 ===================================================================
---- src.orig/chrome/common/gtk_util.h	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/gtk_util.h	2010-03-30 01:11:17.721551252 +0200
+--- src.orig/chrome/browser/gtk/gtk_util.h	2010-04-14 21:00:09.000000000 +0200
++++ src/chrome/browser/gtk/gtk_util.h	2010-05-05 15:34:33.712501317 +0200
 @@ -51,6 +51,10 @@
  // Horizontal Spacing between controls in a form.
  const int kFormControlSpacing = 10;
@@ -319,8 +341,8 @@ Index: src/chrome/common/gtk_util.h
  // NULL.  The first argument is a vector in which to place all labels
 Index: src/chrome/browser/browser_init.cc
 ===================================================================
---- src.orig/chrome/browser/browser_init.cc	2010-03-25 08:27:38.000000000 +0100
-+++ src/chrome/browser/browser_init.cc	2010-03-30 01:22:29.941545386 +0200
+--- src.orig/chrome/browser/browser_init.cc	2010-04-14 21:00:11.000000000 +0200
++++ src/chrome/browser/browser_init.cc	2010-05-05 15:34:33.814266305 +0200
 @@ -9,6 +9,7 @@
  #include "base/event_recorder.h"
  #include "base/path_service.h"
@@ -329,28 +351,21 @@ Index: src/chrome/browser/browser_init.cc
  #include "chrome/browser/automation/automation_provider.h"
  #include "chrome/browser/automation/chrome_frame_automation_provider.h"
  #include "chrome/browser/browser_list.h"
-@@ -552,13 +553,15 @@
- #endif
-   GURL url(url_string);
- 
-+  std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
-+
-   // Restrict allowed URLs for --app switch.
-   if (!url.is_empty() && url.is_valid()) {
-     ChildProcessSecurityPolicy *policy =
+@@ -594,7 +595,8 @@
          ChildProcessSecurityPolicy::GetInstance();
      if (policy->IsWebSafeScheme(url.scheme()) ||
          url.SchemeIs(chrome::kFileScheme)) {
--      Browser::OpenApplicationWindow(profile, url, launch_as_panel);
-+      Browser::OpenApplicationWindow(profile, url, FilePath(icon_id), launch_as_panel);
+-      Browser::OpenApplicationWindow(profile, url, false);
++        std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
++        Browser::OpenApplicationWindow(profile, url, FilePath(icon_id), false);
        return true;
      }
    }
 Index: src/chrome/common/pref_names.cc
 ===================================================================
---- src.orig/chrome/common/pref_names.cc	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/pref_names.cc	2010-03-30 01:11:17.721551252 +0200
-@@ -496,6 +496,9 @@
+--- src.orig/chrome/common/pref_names.cc	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/common/pref_names.cc	2010-05-05 15:34:33.894265851 +0200
+@@ -550,6 +550,9 @@
  // window to restore on startup.
  const wchar_t kBrowserWindowPlacement[] = L"browser.window_placement";
  
@@ -362,9 +377,9 @@ Index: src/chrome/common/pref_names.cc
  const wchar_t kTaskManagerWindowPlacement[] = L"task_manager.window_placement";
 Index: src/chrome/common/pref_names.h
 ===================================================================
---- src.orig/chrome/common/pref_names.h	2010-03-25 08:27:43.000000000 +0100
-+++ src/chrome/common/pref_names.h	2010-03-30 01:11:17.721551252 +0200
-@@ -179,6 +179,7 @@
+--- src.orig/chrome/common/pref_names.h	2010-04-24 17:02:14.000000000 +0200
++++ src/chrome/common/pref_names.h	2010-05-05 15:34:34.063325427 +0200
+@@ -194,6 +194,7 @@
  extern const wchar_t kUninstallLastObservedRunTimeSec[];
  
  extern const wchar_t kBrowserWindowPlacement[];

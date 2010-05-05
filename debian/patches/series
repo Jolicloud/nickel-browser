@@ -10,6 +10,5 @@ ubuntu_dont_overwrite_default_download_directory.patch
 html5_video_mimetypes.patch
 no_tree_sink_v8.patch
 jolicloud_default_homepage.patch
-jolicloud_use_system_theme.patch
 jolicloud_use_liberation_fonts.patch
 disable_dlog_and_dcheck_in_release_builds.patch
