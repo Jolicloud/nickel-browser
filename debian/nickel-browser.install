@@ -3,6 +3,8 @@ debian/tmp/usr/bin
 debian/tmp/usr/lib/nickel-browser/chrome.pak
 debian/tmp/usr/lib/nickel-browser/nickel-browser*
 debian/tmp/usr/lib/nickel-browser/xdg-settings
+debian/tmp/usr/lib/nickel-browser/resources/bookmark_manager
+debian/tmp/usr/lib/nickel-browser/resources/net_internals
 #debian/tmp/usr/lib/nickel-browser/icudt38l.dat
 debian/tmp/usr/lib/nickel-browser/locales/*
 debian/nickel-browser.desktop usr/share/applications

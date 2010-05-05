@@ -5,7 +5,6 @@ Maintainer: Fabien Tassin <fta@ubuntu.com>
 Vcs-Bzr: https://code.launchpad.net/~chromium-team/chromium-browser/chromium-browser.head
 Homepage: http://code.google.com/chromium/
 Build-Depends: cdbs,
-	coreutils,
 	debhelper (>= 5),
 	pkg-config,
 	lsb-release,
@@ -55,8 +54,11 @@ Standards-Version: 3.8.3
 Package: nickel-browser
 Architecture: any
 Pre-Depends: lzma
-Depends: ${shlibs:Depends}, ${misc:Depends}, libnss3-1d (>= 3.12.3)
-Recommends: nickel-browser-inspector, nickel-codecs-ffmpeg | nickel-codecs-ffmpeg-nonfree
+Depends: ${shlibs:Depends}, ${misc:Depends},
+	libnss3-1d (>= 3.12.3),
+	xdg-utils,
+	nickel-browser-inspector,
+	nickel-codecs-ffmpeg | nickel-codecs-ffmpeg-nonfree
 Suggests: nickel-browser-l10n
 Provides: www-browser, chromium-testsuite, jolicloud-webapps-engine
 Replaces: chromium-testsuite

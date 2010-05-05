@@ -3,7 +3,7 @@ jolicloud_set_app_icon_from_desktop_file.patch
 jolicloud_set_default_window_size.patch
 jolicloud_enable_first_run_importer_in_apps.patch
 jolicloud_use_chrome_profile.patch
-drop_sse2.patch
+add_enable_sse2_flag.patch
 # system_v8.patch
 ubuntu_dont_overwrite_default_download_directory.patch
 # chromium_useragent.patch
@@ -12,3 +12,4 @@ no_tree_sink_v8.patch
 jolicloud_default_homepage.patch
 jolicloud_use_system_theme.patch
 jolicloud_use_liberation_fonts.patch
+disable_dlog_and_dcheck_in_release_builds.patch
