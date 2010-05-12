@@ -57,7 +57,7 @@ Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
-	nickel-browser-inspector,
+	nickel-browser-inspector (= ${binary:Version}),
 	nickel-codecs-ffmpeg | nickel-codecs-ffmpeg-nonfree
 Suggests: nickel-browser-l10n
 Provides: www-browser, chromium-testsuite, jolicloud-webapps-engine
@@ -99,7 +99,7 @@ Description: nickel-browser language packages
 Package: nickel-browser-inspector
 Architecture: all
 Pre-Depends: lzma
-Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser
+Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
 Description: page inspector for the nickel-browser
  Nickel is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
