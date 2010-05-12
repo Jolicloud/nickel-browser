@@ -1,3 +1,10 @@
+nickel-browser (5.0.375.29~r46008-1jolicloud2) robby; urgency=low
+
+  * Allow localhost websocket connection
+  * Fix inspector dependency
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 12 May 2010 17:51:09 +0200
+
 nickel-browser (5.0.375.29~r46008-1jolicloud1) robby; urgency=low
 
   * Imported Upstream version 5.0.375.29~r46008
