@@ -1,8 +1,8 @@
-chromium-browser (5.0.375.55~r47796-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+chromium-browser (5.0.375.70~r48679-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * New upstream snapshot
 
- -- Fabien Tassin <fta@ubuntu.com>  Sat, 22 May 2010 17:09:00 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 05 Jun 2010 12:30:46 +0200
 
 chromium-browser (5.0.375.29~r46008-0ubuntu1) maverick; urgency=low
 
