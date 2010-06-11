@@ -1,3 +1,10 @@
+nickel-browser (5.0.375.70~r48679-1jolicloud2) robby; urgency=low
+
+  * Removed references to chromium-testsuite in debian/control
+  * Added --desktop switch to use a Chromium URL as the X desktop
+
+ -- Adam McDaniel <adam@jolicloud.org>  Fri, 11 Jun 2010 14:40:49 +0200
+
 nickel-browser (5.0.375.70~r48679-1jolicloud1) robby; urgency=low
 
   * Imported Upstream version 5.0.375.70~r48679
