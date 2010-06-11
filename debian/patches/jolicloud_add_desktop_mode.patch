@@ -1,0 +1,459 @@
+--- a/chrome/browser/browser.cc
++++ b/chrome/browser/browser.cc
+@@ -248,6 +248,13 @@
+ }
+ 
+ // static
++Browser* Browser::CreateForDesktop(Profile* profile) {
++  Browser* browser = new Browser(TYPE_NORMAL_DESKTOP, profile);
++  browser->CreateBrowserWindow();
++  return browser;
++}
++
++// static
+ Browser* Browser::CreateForPopup(Profile* profile) {
+   Browser* browser = new Browser(TYPE_POPUP, profile);
+   browser->CreateBrowserWindow();
+@@ -265,6 +272,15 @@
+ }
+ 
+ // static
++Browser* Browser::CreateForAppDesktop(const std::wstring& app_name,
++                                      Profile* profile) {
++  Browser* browser = new Browser(TYPE_APP_DESKTOP, profile);
++  browser->app_name_ = app_name;
++  browser->CreateBrowserWindow();
++  return browser;
++}
++
++// static
+ Browser* Browser::CreateForDevTools(Profile* profile) {
+   Browser* browser = new Browser(TYPE_DEVTOOLS, profile);
+   browser->app_name_ = DevToolsWindow::kDevToolsApp;
+@@ -412,11 +428,15 @@
+ 
+ // static
+ void Browser::OpenApplicationWindow(Profile* profile, const GURL& url, const FilePath& icon_id,
+-                                    bool as_panel) {
++                                    bool as_panel, bool as_desktop) {
+   std::wstring app_name = web_app::GenerateApplicationNameFromURL(url);
+   RegisterAppPrefs(app_name);
+ 
+-  Browser* browser = Browser::CreateForApp(app_name, profile, as_panel);
++  Browser* browser;
++  if (as_desktop)
++    browser = Browser::CreateForAppDesktop(app_name, profile);
++  else
++    browser = Browser::CreateForApp(app_name, profile, as_panel);
+ 
+   // save icon-id value for later use by UpdateWindowIcon
+   if (!icon_id.empty()) {
+@@ -429,6 +449,11 @@
+   browser->AddTabWithURL(url, GURL(), PageTransition::START_PAGE, true, -1,
+                          false, NULL);
+ 
++  if (browser->type_ & TYPE_DESKTOP) {
++    LOG(INFO) << "Running SetDesktop()";
++    browser->window()->SetDesktop();
++  }
++
+   TabContents* tab_contents = browser->GetSelectedTabContents();
+   tab_contents->GetMutableRendererPrefs()->can_accept_load_drops = false;
+   tab_contents->render_view_host()->SyncRendererPrefs();
+@@ -454,7 +479,7 @@
+   FilePath empty_icon(kEmptyIcon);
+   OpenApplicationWindow(profile,
+       extension->GetFullLaunchURL(), empty_icon,
+-      (extension->launch_container() == Extension::LAUNCH_PANEL));
++      (extension->launch_container() == Extension::LAUNCH_PANEL), false);
+ }
+ 
+ // static
+@@ -651,11 +676,22 @@
+ // Browser, OnBeforeUnload handling:
+ 
+ bool Browser::ShouldCloseWindow() {
+-  if (!CanCloseWithInProgressDownloads())
++  LOG(INFO) << ">> Browser::ShouldCloseWindow()";
++
++  if (this->type() & TYPE_DESKTOP) {
++    LOG(INFO) << "<< Browser::ShouldCloseWindow() INHIBITED STOP!!";
++    return false;
++  }
++
++  if (!CanCloseWithInProgressDownloads()) {
++    LOG(INFO) << "<< Browser::ShouldCloseWindow() false";
+     return false;
++  }
+ 
+-  if (HasCompletedUnloadProcessing())
++  if (HasCompletedUnloadProcessing()) {
++    LOG(INFO) << "<< Browser::ShouldCloseWindow() true";
+     return true;
++  }
+ 
+   is_attempting_to_close_browser_ = true;
+ 
+@@ -1273,7 +1309,7 @@
+   features |= FEATURE_DOWNLOADSHELF;
+ #endif  // !defined(OS_CHROMEOS)
+ 
+-  if (type() == TYPE_NORMAL) {
++  if (type() & TYPE_NORMAL) {
+     features |= FEATURE_BOOKMARKBAR;
+     features |= FEATURE_EXTENSIONSHELF;
+   }
+@@ -1285,7 +1321,7 @@
+   hide_ui_for_fullscreen = window_ && window_->IsFullscreen();
+ #endif
+   if (!hide_ui_for_fullscreen) {
+-    if (type() == TYPE_NORMAL)
++    if (type() & TYPE_NORMAL)
+       features |= FEATURE_TABSTRIP | FEATURE_TOOLBAR;
+     else
+       features |= FEATURE_TITLEBAR;
+@@ -2075,7 +2111,7 @@
+   // in-progress downloads.
+   // Note that the next call when it returns false will ask the user for
+   // confirmation before closing the browser if the user decides so.
+-  return CanCloseWithInProgressDownloads();
++  return !(this->type() & TYPE_DESKTOP) && CanCloseWithInProgressDownloads();
+ }
+ 
+ bool Browser::CanBookmarkAllTabs() const {
+@@ -2468,14 +2504,24 @@
+ void Browser::BeforeUnloadFired(TabContents* tab,
+                                 bool proceed,
+                                 bool* proceed_to_fire_unload) {
++  LOG(INFO) << ">> Browser::BeforeUnloadFired()";
++
+   if (!is_attempting_to_close_browser_) {
+     *proceed_to_fire_unload = proceed;
++    LOG(INFO) << "<< Browser::BeforeUnloadFired() proceed";
+     return;
+   }
+ 
++  if (this->type_ & TYPE_DESKTOP) {
++    proceed = false;
++    LOG(INFO) << "== Browser::BeforeUnloadFired() found desktop!";
++  }
++
+   if (!proceed) {
++    LOG(INFO) << "== Browser::BeforeUnloadFired() CancelWindowClose()";
+     CancelWindowClose();
+     *proceed_to_fire_unload = false;
++    LOG(INFO) << "<< Browser::BeforeUnloadFired() cancel";
+     return;
+   }
+ 
+--- a/chrome/browser/browser.h
++++ b/chrome/browser/browser.h
+@@ -59,11 +59,15 @@
+     TYPE_APP_POPUP = TYPE_APP | TYPE_POPUP,
+     TYPE_DEVTOOLS = TYPE_APP | 8,
+     TYPE_APP_PANEL = TYPE_APP | 16,
++    TYPE_DESKTOP = 32,
++    TYPE_NORMAL_DESKTOP = TYPE_NORMAL | TYPE_DESKTOP,
++    TYPE_APP_DESKTOP = TYPE_APP | TYPE_DESKTOP,
+     TYPE_ANY = TYPE_NORMAL |
+                TYPE_POPUP |
+                TYPE_APP |
+                TYPE_DEVTOOLS |
+-               TYPE_APP_PANEL
++               TYPE_APP_PANEL |
++               TYPE_DESKTOP
+   };
+ 
+   // Possible elements of the Browser window.
+@@ -115,6 +119,11 @@
+   // window is created by this function call.
+   static Browser* Create(Profile* profile);
+ 
++  // Creates a normal tabbed browser with the specified profile, but set as
++  // the user's desktop. The Browser's window is created by this function
++  // call.
++  static Browser* CreateForDesktop(Profile* profile);
++
+   // Like Create, but creates a tabstrip-less popup window.
+   static Browser* CreateForPopup(Profile* profile);
+ 
+@@ -124,6 +133,10 @@
+   static Browser* CreateForApp(const std::wstring& app_name, Profile* profile,
+                                bool is_panel);
+ 
++  // Like Create, but creates a tabstrip-less and toolbar-less "app" window for
++  // the specified app, as the user's desktop.
++  static Browser* CreateForAppDesktop(const std::wstring& app_name, Profile* profile);
++
+   // Like Create, but creates a tabstrip-less and toolbar-less
+   // DevTools "app" window.
+   static Browser* CreateForDevTools(Profile* profile);
+@@ -203,7 +216,7 @@
+   // app panel window, otherwise it will be opened as a Browser::Type::APP,
+   // a.k.a. "thin frame".
+   static void OpenApplicationWindow(Profile* profile, const GURL& url, const FilePath& icon_id,
+-                                    bool as_panel);
++                                    bool as_panel, bool as_desktop);
+ 
+   // Open an application for |extension| in a new application window or panel.
+   static void OpenApplicationWindow(Profile* profile, Extension* extension);
+--- a/chrome/browser/browser_init.cc
++++ b/chrome/browser/browser_init.cc
+@@ -564,6 +564,13 @@
+   return false;
+ }
+ 
++bool BrowserInit::LaunchWithProfile::IsDesktopLaunch() {
++  if (command_line_.HasSwitch(switches::kDesktop)) {
++    return true;
++  }
++  return false;
++}
++
+ bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
+   std::string url_string, app_id;
+   if (!IsAppLaunch(&url_string, &app_id))
+@@ -596,7 +603,7 @@
+     if (policy->IsWebSafeScheme(url.scheme()) ||
+         url.SchemeIs(chrome::kFileScheme)) {
+         std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
+-        Browser::OpenApplicationWindow(profile, url, FilePath(icon_id), false);
++        Browser::OpenApplicationWindow(profile, url, FilePath(icon_id), false, IsDesktopLaunch());
+       return true;
+     }
+   }
+@@ -696,8 +703,13 @@
+   if (!profile_ && browser)
+     profile_ = browser->profile();
+ 
+-  if (!browser || browser->type() != Browser::TYPE_NORMAL)
++  if (!browser && IsDesktopLaunch()) {
++    browser = Browser::CreateForDesktop(profile_);
++    browser->window()->SetDesktop();
++  } else
++  if (!browser || browser->type() != Browser::TYPE_NORMAL) {
+     browser = Browser::Create(profile_);
++  }
+ 
+ #if !defined(OS_MACOSX)
+   // In kiosk mode, we want to always be fullscreen, so switch to that now.
+--- a/chrome/browser/browser_init.h
++++ b/chrome/browser/browser_init.h
+@@ -137,6 +137,9 @@
+     // In this case |app_url| or |app_id| are populated if they're non-null.
+     bool IsAppLaunch(std::string* app_url, std::string* app_id);
+ 
++    // If the process was launched with the desktop flag, return true.
++    bool IsDesktopLaunch();
++
+     // If IsAppLaunch is true, tries to open an application window.
+     // If the app is specified to start in a tab, or IsAppLaunch is false,
+     // returns false to specify default processing.
+--- a/chrome/browser/gtk/browser_titlebar.cc
++++ b/chrome/browser/gtk/browser_titlebar.cc
+@@ -180,7 +180,7 @@
+                    G_CALLBACK(OnWindowStateChanged), this);
+ 
+   if (browser_window_->browser()->profile()->IsOffTheRecord() &&
+-      browser_window_->browser()->type() == Browser::TYPE_NORMAL) {
++      browser_window_->browser()->type() & Browser::TYPE_NORMAL) {
+     GtkWidget* spy_guy = gtk_image_new_from_pixbuf(GetOTRAvatar());
+     gtk_misc_set_alignment(GTK_MISC(spy_guy), 0.0, 1.0);
+     GtkWidget* spy_frame = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+@@ -195,7 +195,7 @@
+ 
+   // We use an alignment to control the titlebar height.
+   titlebar_alignment_ = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
+-  if (browser_window_->browser()->type() == Browser::TYPE_NORMAL) {
++  if (browser_window_->browser()->type() & Browser::TYPE_NORMAL) {
+     gtk_box_pack_start(GTK_BOX(container_hbox), titlebar_alignment_, TRUE,
+                        TRUE, 0);
+ 
+@@ -325,8 +325,8 @@
+ 
+   // Note: this isn't browser_window_->browser()->type() & Browser::TYPE_APP
+   // because we want to exclude Browser::TYPE_APP_POPUP.
+-  if (browser_window_->browser()->type() == Browser::TYPE_APP ||
+-      browser_window_->browser()->type() == Browser::TYPE_APP_PANEL) {
++  if (browser_window_->browser()->type() & Browser::TYPE_APP &&
++      browser_window_->browser()->type() != Browser::TYPE_APP_PANEL) {
+     // Update the system app icon.  We don't need to update the icon in the top
+     // left of the custom frame, that will get updated when the throbber is
+     // updated.
+@@ -370,8 +370,8 @@
+ 
+     // Note: this isn't browser_window_->browser()->type() & Browser::TYPE_APP
+     // because we want to exclude Browser::TYPE_APP_POPUP.
+-    if (browser_window_->browser()->type() == Browser::TYPE_APP ||
+-        browser_window_->browser()->type() == Browser::TYPE_APP_PANEL) {
++    if (browser_window_->browser()->type() & Browser::TYPE_APP &&
++        browser_window_->browser()->type() != Browser::TYPE_APP_PANEL) {
+       SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
+       if (icon.empty()) {
+         // Fallback to the Chromium icon if the page has no icon.
+@@ -391,7 +391,7 @@
+ }
+ 
+ void BrowserTitlebar::UpdateTitlebarAlignment() {
+-  if (browser_window_->browser()->type() == Browser::TYPE_NORMAL) {
++  if (browser_window_->browser()->type() & Browser::TYPE_NORMAL) {
+     if (using_custom_frame_ && !browser_window_->IsMaximized()) {
+       gtk_alignment_set_padding(GTK_ALIGNMENT(titlebar_alignment_),
+           kTitlebarHeight, 0, kTabStripLeftPadding, 0);
+--- a/chrome/browser/gtk/browser_toolbar_gtk.cc
++++ b/chrome/browser/gtk/browser_toolbar_gtk.cc
+@@ -711,7 +711,7 @@
+ 
+ bool BrowserToolbarGtk::ShouldOnlyShowLocation() const {
+   // If we're a popup window, only show the location bar (omnibox).
+-  return browser_->type() != Browser::TYPE_NORMAL;
++  return !(browser_->type() & Browser::TYPE_NORMAL);
+ }
+ 
+ void BrowserToolbarGtk::PopupForButton(GtkWidget* button) {
+--- a/chrome/browser/gtk/browser_window_gtk.cc
++++ b/chrome/browser/gtk/browser_window_gtk.cc
+@@ -715,7 +715,7 @@
+ }
+ 
+ void BrowserWindowGtk::LoadingAnimationCallback() {
+-  if (browser_->type() == Browser::TYPE_NORMAL) {
++  if (browser_->type() & Browser::TYPE_NORMAL) {
+     // Loading animations are shown in the tab for tabbed windows.  We check the
+     // browser type instead of calling IsTabStripVisible() because the latter
+     // will return false for fullscreen windows, but we still need to update
+@@ -762,6 +762,19 @@
+   return fullscreen_exit_bubble_.get() ? true : false;
+ }
+ 
++void BrowserWindowGtk::SetDesktop() {
++  GdkWindow* gdkWindow;
++  XID window;
++
++  gtk_window_stick(window_);
++  gtk_window_maximize(window_);
++
++  gdkWindow = GTK_WIDGET( window_ )->window;
++  window = x11_util::GetX11WindowFromGdkWindow( gdkWindow );
++  x11_util::ChangeProperty( window,
++      "_NET_WM_WINDOW_TYPE", "_NET_WM_WINDOW_TYPE_DESKTOP" );
++}
++
+ LocationBar* BrowserWindowGtk::GetLocationBar() const {
+   return toolbar_->GetLocationBar();
+ }
+@@ -2024,8 +2037,7 @@
+ bool BrowserWindowGtk::UseCustomFrame() {
+   // We don't use the custom frame for app mode windows or app window popups.
+   return use_custom_frame_pref_.GetValue() &&
+-      browser_->type() != Browser::TYPE_APP &&
+-      browser_->type() != Browser::TYPE_APP_POPUP;
++      !(browser_->type() & Browser::TYPE_APP);
+ }
+ 
+ void BrowserWindowGtk::PlaceBookmarkBar(bool is_floating) {
+--- a/chrome/browser/views/toolbar_view.cc
++++ b/chrome/browser/views/toolbar_view.cc
+@@ -103,7 +103,7 @@
+   browser_->command_updater()->AddCommandObserver(IDC_RELOAD, this);
+   browser_->command_updater()->AddCommandObserver(IDC_HOME, this);
+   browser_->command_updater()->AddCommandObserver(IDC_BOOKMARK_PAGE, this);
+-  if (browser->type() == Browser::TYPE_NORMAL)
++  if (browser->type() & Browser::TYPE_NORMAL)
+     display_mode_ = DISPLAYMODE_NORMAL;
+   else
+     display_mode_ = DISPLAYMODE_LOCATION;
+--- a/app/x11_util.cc
++++ b/app/x11_util.cc
+@@ -264,6 +264,36 @@
+   return true;
+ }
+ 
++bool ChangeProperty(
++    XID window, const std::string& property_name, const std::string& set_name) {
++  Atom property_atom = gdk_x11_get_xatom_by_name_for_display(
++      gdk_display_get_default(), property_name.c_str());
++  Atom set_atom = gdk_x11_get_xatom_by_name_for_display(
++      gdk_display_get_default(), set_name.c_str());
++  Atom type = XA_ATOM;
++  int format = 32;
++  int mode = PropModeReplace;
++  long unsigned int num_items = 1;
++
++  LOG(INFO) << "Setting X desktop mode hint";
++
++  int result = XChangeProperty( GDK_DISPLAY_XDISPLAY( gdk_display_get_default() ),
++                                window,
++                                property_atom,
++                                type,
++                                format,
++                                mode,
++                                (guchar*) &set_atom,
++                                num_items);
++
++  LOG(INFO) << "XChangeProperty returned: " << result;
++
++  if (result != Success)
++    return false;
++
++  return true;
++}
++
+ XID GetParentWindow(XID window) {
+   XID root = None;
+   XID parent = None;
+--- a/app/x11_util.h
++++ b/app/x11_util.h
+@@ -83,6 +83,8 @@
+ bool GetIntProperty(XID window, const std::string& property_name, int* value);
+ bool GetStringProperty(
+     XID window, const std::string& property_name, std::string* value);
++bool ChangeProperty(
++    XID window, const std::string& property_name, const std::string& set_name);
+ 
+ // Get |window|'s parent window, or None if |window| is the root window.
+ XID GetParentWindow(XID window);
+--- a/chrome/browser/browser_window.h
++++ b/chrome/browser/browser_window.h
+@@ -124,6 +124,9 @@
+   // Returns true if the fullscreen bubble is visible.
+   virtual bool IsFullscreenBubbleVisible() const = 0;
+ 
++  // Sets the desktop-mode state
++  virtual void SetDesktop() = 0;
++
+   // Returns the location bar.
+   virtual LocationBar* GetLocationBar() const = 0;
+ 
+--- a/chrome/browser/gtk/browser_window_gtk.h
++++ b/chrome/browser/gtk/browser_window_gtk.h
+@@ -69,6 +69,7 @@
+   virtual void SetFullscreen(bool fullscreen);
+   virtual bool IsFullscreen() const;
+   virtual bool IsFullscreenBubbleVisible() const;
++  virtual void SetDesktop();
+   virtual LocationBar* GetLocationBar() const;
+   virtual void SetFocusToLocationBar(bool select_all);
+   virtual void UpdateStopGoState(bool is_loading, bool force);
+--- a/chrome/common/chrome_switches.cc
++++ b/chrome/common/chrome_switches.cc
+@@ -74,6 +74,9 @@
+ // Enables support to debug printing subsystem.
+ const char kDebugPrint[]                    = "debug-print";
+ 
++// Specifies that the browser should be launched in "X Desktop" mode.
++const char kDesktop[]                       = "desktop";
++
+ // Triggers a pletora of diagnostic modes.
+ const char kDiagnostics[]                   = "diagnostics";
+ 
+--- a/chrome/common/chrome_switches.h
++++ b/chrome/common/chrome_switches.h
+@@ -37,6 +37,7 @@
+ extern const char kChromeFrame[];
+ extern const char kCountry[];
+ extern const char kDebugPrint[];
++extern const char kDesktop[];
+ extern const char kDiagnostics[];
+ extern const char kDisableAltWinstation[];
+ extern const char kDisableApplicationCache[];
