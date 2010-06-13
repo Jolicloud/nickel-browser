@@ -1,3 +1,11 @@
+nickel-browser (5.0.375.70~r48679-1jolicloud3) robby; urgency=low
+
+  * Disable features FEATURE_TITLEBAR and FEATURE_DOWNLOADSHELF if
+    desktop mode enabled
+  * Set the package source format to "3.0 (native)"
+
+ -- Adam McDaniel <adam@jolicloud.org>  Sun, 13 Jun 2010 19:29:38 +0200
+
 nickel-browser (5.0.375.70~r48679-1jolicloud2) robby; urgency=low
 
   * Removed references to chromium-testsuite in debian/control
