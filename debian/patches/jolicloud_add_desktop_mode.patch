@@ -78,15 +78,15 @@
 +
 +  if (this->type() & TYPE_DESKTOP) {
 +    LOG(INFO) << "<< Browser::ShouldCloseWindow() INHIBITED STOP!!";
-+    return false;
-+  }
-+
-+  if (!CanCloseWithInProgressDownloads()) {
-+    LOG(INFO) << "<< Browser::ShouldCloseWindow() false";
      return false;
 +  }
  
 -  if (HasCompletedUnloadProcessing())
++  if (!CanCloseWithInProgressDownloads()) {
++    LOG(INFO) << "<< Browser::ShouldCloseWindow() false";
++    return false;
++  }
++
 +  if (HasCompletedUnloadProcessing()) {
 +    LOG(INFO) << "<< Browser::ShouldCloseWindow() true";
      return true;
@@ -103,7 +103,7 @@
      features |= FEATURE_BOOKMARKBAR;
      features |= FEATURE_EXTENSIONSHELF;
    }
-@@ -1285,7 +1321,7 @@
+@@ -1285,13 +1321,19 @@
    hide_ui_for_fullscreen = window_ && window_->IsFullscreen();
  #endif
    if (!hide_ui_for_fullscreen) {
@@ -112,7 +112,19 @@
        features |= FEATURE_TABSTRIP | FEATURE_TOOLBAR;
      else
        features |= FEATURE_TITLEBAR;
-@@ -2075,7 +2111,7 @@
+     if ((type() & Browser::TYPE_APP) == 0)
+       features |= FEATURE_LOCATIONBAR;
+   }
++
++  if (type() & TYPE_DESKTOP) {
++    features &= ~FEATURE_TITLEBAR;
++    features &= ~FEATURE_DOWNLOADSHELF;
++  }
++
+   return !!(features & feature);
+ }
+ 
+@@ -2075,7 +2117,7 @@
    // in-progress downloads.
    // Note that the next call when it returns false will ask the user for
    // confirmation before closing the browser if the user decides so.
@@ -121,7 +133,7 @@
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -2468,14 +2504,24 @@
+@@ -2468,14 +2510,24 @@
  void Browser::BeforeUnloadFired(TabContents* tab,
                                  bool proceed,
                                  bool* proceed_to_fire_unload) {
