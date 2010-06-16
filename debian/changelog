@@ -1,3 +1,11 @@
+nickel-browser (5.0.375.70~r48679-1jolicloud4) robby; urgency=low
+
+  * Do not run default browser check when running in desktop-mode
+  * Allow the desktop browser to close gracefully if a process signal
+    was sent.
+
+ -- Adam McDaniel <adam@jolicloud.org>  Tue, 15 Jun 2010 13:13:42 +0200
+
 nickel-browser (5.0.375.70~r48679-1jolicloud3) robby; urgency=low
 
   * Disable features FEATURE_TITLEBAR and FEATURE_DOWNLOADSHELF if
