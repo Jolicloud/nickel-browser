@@ -1,8 +1,78 @@
-chromium-browser (5.0.375.70~r48679-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+chromium-browser (5.0.375.70~r48679-0ubuntu2~ucd5~jaunty) jaunty; urgency=low
 
-  * New upstream snapshot
+  * Refresh list of languages in the -l10n package
+    - update debian/control
+  * Stop building and running the testsuite. The builders restricted env
+    makes the results mostly unusable in an automated way and resources to
+    manually exploit them are not available
+    - update debian/control
+    - update debian/rules
+  * Remove duplicates of the main copyright file in order to save space on the CD
+    - update debian/rules
+  * Add support for the Ambiance/Radiance and Dust themes button ordering by
+    reading the gconf pref (LP: #568307)
+    (thanks to Giuseppe Iuculano for importing the patch from trunk)
+    - add debian/patches/gtk-ambiance.patch
+    - update debian/patches/series
 
- -- Fabien Tassin <fta@ubuntu.com>  Sat, 05 Jun 2010 12:30:46 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 17 Jun 2010 01:56:15 +0200
+
+chromium-browser (5.0.375.70~r48679-0ubuntu1) maverick; urgency=low
+
+  * New upstream release from the Stable Channel (LP: #591474)
+    Fixes the following security issues:
+    - [15766] Medium Cross-origin keystroke redirection. Credit to Michal
+      Zalewski of Google Security Team.
+    - [39985] High Cross-origin bypass in DOM methods. Credit to Sergey
+      Glazunov.
+    - [42723] High Memory error in table layout. Credit to wushi of team509.
+    - [43304] High Linux sandbox escape. Credit to Mark Dowd under contract to
+      Google Chrome Security Team.
+    - [43307] High Bitmap stale pointer. Credit to Mark Dowd under contract to
+      Google Chrome Security Team.
+    - [43315] High Memory corruption in DOM node normalization. Credit to Mark
+      Dowd under contract to Google Chrome Security Team.
+    - [43487] High Memory corruption in text transforms. Credit to wushi of
+      team509.
+    - [43902] Medium XSS in innerHTML property of textarea. Credit to
+      sirdarckcat of Google Security Team.
+    - [44740] High Memory corruption in font handling. Credit: Apple.
+    - [44868] High Geolocation events fire after document deletion. Credit to
+      Google Chrome Security Team (Justin Schuh).
+    - [44955] High Memory corruption in rendering of list markers. Credit:
+      Apple.
+  * Add a --temp-profile knob to the launcher script starting Chromium with
+    a new profile which will last only for the duration of the session
+    - update debian/chromium-browser.sh
+  * Change StartupWMClass to Chromium-browser in the desktop launcher so
+    cairo-dock does the right thing (LP: #587664)
+    - update debian/chromium-browser.desktop
+  * Set XLIB_SKIP_ARGB_VISUALS=1 in the wrapper to prevent flash from dying
+    with a Gdk-ERROR when gtk2 is built with RGBA support (like in Maverick).
+    (LP: #584959)
+    - update debian/chromium-browser.sh
+  * Unbreak get-orig-source when it needs to drop its cache after a channel jump
+    (replace brace expansion - which is a bashism - with proper $(wildcard))
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 09 Jun 2010 07:30:50 +0200
+
+chromium-browser (5.0.375.55~r47796-0ubuntu1) maverick; urgency=low
+
+  * New upstream release from the Stable Channel (at last!)
+    - Some minor crash and stability fixes
+    - Fixed a regression so that incognito zoom changes are no longer
+      remembered (Issue: 43107)
+
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 22 May 2010 17:09:00 +0200
+
+chromium-browser (5.0.375.38~r46659-0ubuntu1) maverick; urgency=low
+
+  * New upstream release from the Beta Channel
+    - Some crash and stability fixes
+    - Localization refresh of the strings
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 11 May 2010 10:23:45 +0200
 
 chromium-browser (5.0.375.29~r46008-0ubuntu1) maverick; urgency=low
 

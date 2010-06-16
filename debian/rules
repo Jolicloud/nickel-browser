@@ -18,7 +18,6 @@ WANT_LZMA_DEBS   ?= 1
 WANT_DEBUG       := 0
 WANT_SYSTEM_LIBS ?= 0
 WANT_SHARED_LIBS ?= 0
-WANT_TESTS       ?= 1
 WANT_SANDBOXING  ?= 1
 USE_SYSTEM_V8    ?= 0
 VERBOSE          ?= 0
@@ -44,7 +43,6 @@ GYP_DEFINES += \
 	linux_use_tcmalloc=0 \
 	$(NULL)
 WANT_LZMA_DEBS := 0
-WANT_TESTS     := 0
 ifneq (,$(filter unstable development,$(DEBIAN_DIST)))
 # on $(DEB_BUILD_ARCH) and $(DEBIAN_DIST), enforce an armv7 with thumb build (or not)
 GYP_DEFINES += \
@@ -156,68 +154,6 @@ INSTALL_EXCLUDE_FILES = \
 	*.d \
 	$(NULL)
 
-# List of tests
-# - prefix the name with a "-" to disable the test suite completely and
-#   append a reason after a ":"
-# - prefix the name with a "@" to run the test suite in xvfb-run (fake
-#   X server for machines with no display hardware and no physical input
-#   devices).
-# - to disable one or more tests within a given testsuite,
-#   append the names of the tests (using the Google Test filter syntax)
-#   or call the gtfilter macro
-ifeq (1,$(WANT_TESTS))
-gtfilter = -$(shell echo $(SKIP_$(1)) | tr ' ' :)
-
-# tests we can't pass because we don't have enough permissions
-SKIP_base_unittests := \
-	StatsTableTest.* \
-	SysInfoTest.GetPrimaryDisplayDimensions \
-	$(NULL)
-
-SKIP_page_cycler_tests := \
-	PageCyclerTest.* \
-	PageCyclerReferenceTest.* \
-	$(NULL)
-
-SKIP_ui_tests := \
-	WorkerTest.MultipleWorkers \
-	WorkerTest.IncognitoSharedWorkers \
-	$(NULL)
-
-# tests we can't pass because we need to access internet (~61 out of 987 tests)
-SKIP_net_unittests := \
-	HttpNetworkLayerTest.GoogleGET \
-	TelnetServerTest.* \
-	PageCyclerTest.* \
-	URLRequestTestHTTP.* \
-	URLRequestTest.QuitTest \
-	URLRequestTest.DoNotSendCookies \
-	URLRequestTest.DoNotSaveCookies \
-	HTTPSRequestTest.* \
-	URLRequestTestFTP.* \
-	SSLClientSocketTest.* \
-	ProxyScriptFetcherTest.* \
-	ListenSocketTest.* \
-	$(NULL)
-
-TESTS ?= \
-	@app_unittests:-FontTest.LoadArial \
-	base_unittests:$(call gtfilter,base_unittests) \
-	googleurl_unittests \
-	ipc_tests \
-	media_unittests \
-	net_perftests \
-	net_unittests:$(call gtfilter,net_unittests) \
-	@page_cycler_tests:$(call gtfilter,page_cycler_tests) \
-	perf_tests \
-	printing_unittests \
-	@startup_tests \
-	@test_shell_tests \
-	@ui_tests:$(call gtfilter,ui_tests) \
-	unit_tests \
-	$(NULL)
-endif
-
 # FFmpeg-mt
 GYP_DEFINES += build_ffmpegsumo=0
 
@@ -247,40 +183,6 @@ BUILD_TARGETS := \
 	chrome \
 	chrome_sandbox \
 	$(NULL)
-
-TESTS_TARGETS := \
-	app_unittests \
-	base_unittests \
-	browser_tests \
-	googleurl_unittests \
-	ipc_tests \
-	media_unittests \
-	memory_test \
-	net_perftests \
-	net_unittests \
-	page_cycler_tests \
-	perf_tests \
-	printing_unittests \
-	startup_tests \
-	tab_switching_test \
-	test_shell_tests \
-	ui_tests \
-	unit_tests \
-	url_fetch_test \
-	wav_ola_test \
-	$(NULL)
-
-ifeq (1,$(WANT_TESTS))
-INSTALL_EXCLUDE_FILES += \
-	$(TESTS_TARGETS) \
-	test_shell.pak \
-	xdisplaycheck \
-	$(NULL)
-
-INSTALL_EXCLUDE_DIRS += \
-	app_unittests_strings \
-	$(NULL)
-endif
 
 ifeq (1,$(WANT_SANDBOXING))
 GYP_DEFINES += \
@@ -328,15 +230,6 @@ common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
 debian/stamp-makefile-build-perf: debian/stamp-makefile-build
 	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
 	touch $@
-
-# we don't want all the test binaries linked at the same time when using -jX (X > 2)
-# Each ld takes ~1.5GB of memory. So run make for each target separatly to workaround that
-ifeq (1,$(WANT_TESTS))
-common-build-arch common-build-indep:: debian/stamp-makefile-build-tests
-debian/stamp-makefile-build-tests: debian/stamp-makefile-build
-	@$(foreach target,$(TESTS_TARGETS),$(call DO,$(DEB_MAKE_INVOKE) $(BUILD_ARGS) $(target),$(target));)
-	touch $@
-endif
 
 clean::
 	rm -f debian/configure-stamp debian/stamp-makefile-build-*
@@ -397,39 +290,22 @@ endif
 binary-install/$(DEBIAN_NAME)-l10n::
 	rm $(CURDIR)/debian/$(DEBIAN_NAME)-l10n/$(LIB_DIR)/locales/en-US.pak
 
-# Tests
-ifeq (1,$(WANT_TESTS))
-binary-post-install/$(DEBIAN_NAME)::
-	######################### TESTS ######################################
-	# Run all possible tests from the chromium testsuite
-	# Buildd doesn't allow network accesses so the corresponding
-	# tests have to be skipped
-	@chmod u+x $(CURDIR)/debian/run-test.sh
-	@mkdir -p debian/test-results
-	@T1=`date +%s`; cd $(SRC_DIR)/out/$(BUILD_TYPE) && \
-	for test in $(TESTS) ; do \
-		tname=`echo "$$test" | sed -e 's/^[-@]\?\([^:]*\).*/\1/'` ; \
-		filter=`echo "$$test" | sed -e 's/^[^-][^:]*://' | grep -v -- "$$test"` ; \
-		echo "==========================================================================" ; \
-		if [ Z"`echo $$test | sed -e 's/^-.*//'`" = Z ] ; then \
-			echo "Skipped '$$tname', reason: "`echo $$test | sed -e 's/^[^:]*://'` ; \
-			continue ; \
-		fi ; \
-		OPT="" ; \
-		if [ Z"`echo $$test | sed -e 's/^@.*//'`" = Z ] ; then \
-			OPT=-x ; \
-		fi ; \
-		$(CURDIR)/debian/run-test.sh $$OPT ./$$tname $(CURDIR)/debian/test-results/ $$filter || true ; \
-		echo "==========================================================================" ; \
-		echo ; \
-	done; \
-	T2=`date +%s`; echo "PERF: all tests run in "`expr $$T2 - $$T1`" sec"
-endif
-
 # Compare
 PKG_DIRS = $(addprefix debian/,$(shell grep ^Package debian/control | cut -d' ' -f2))
 
 binary-predeb/$(DEBIAN_NAME):: compare
+ifneq (,$(findstring Ubuntu,$(DEBIAN_DIST)))
+	# we need space on the CD, so remove duplicates of the copyright file
+	CF=debian/$(DEBIAN_NAME)/usr/share/doc/$(DEBIAN_NAME)/copyright ; \
+	for file in `find $(addsuffix /usr/share/doc,$(filter-out debian/$(DEBIAN_NAME),$(PKG_DIRS))) -type f -name copyright -print`; do \
+	 cmp -s $$file $$CF ; \
+	 if [ $$? -eq 0 ] ; then \
+	   rm -f $$file ; \
+	   ( cd `dirname $$file` ; ln -s ../$(DEBIAN_NAME)/copyright ) ; \
+	 fi ; \
+	done
+	find $(PKG_DIRS) -name copyright\* -ls
+endif
 
 compare:
 	# Look for duplicates, fail if we find any
@@ -441,7 +317,7 @@ compare:
 	  echo " => No duplicate found" ; \
 	fi
 	# Find missing
-	@find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | grep -vE '(/usr/lib/debug|/test-results/|/locales/|/inspector/)' | \
+	@find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | grep -vE '(/usr/lib/debug|/locales/|/inspector/)' | \
 	  grep $(LIB_DIR) | cut -d/ -f5- | sort > /tmp/pkg-$$$$.indebs ; \
 	find debian/tmp/$(LIB_DIR) -type f -print | cut -d/ -f5- | grep -vE '(\.log$$|/locales/|/inspector/)' | sort > /tmp/pkg-$$$$.inhammer ; \
 	diff -u /tmp/pkg-$$$$.inhammer /tmp/pkg-$$$$.indebs ; \
@@ -567,9 +443,9 @@ else
 ifneq (,$(DEBIAN_REV))
 get-orig-source: REVISION = --revision src@$(DEBIAN_REV)
 else
-# Doing either the dev or beta channel
+# Doing either the dev or beta or stable channel
 ifneq (,$(CHANNEL))
-ifneq (,$(filter-out beta dev Beta Dev,$(CHANNEL)))
+ifneq (,$(filter-out stable beta dev Stable Beta Dev,$(CHANNEL)))
 # Assume it's a version
 get-orig-source: VERS          = $(CHANNEL)
 else
@@ -628,7 +504,7 @@ endif
 endif
 	# Checkout (drop the previous content and retry if gclient failed, see http://crbug.com/39954)
 	cd $(TMP_DIR) && ./tools/depot_tools/gclient update --nohooks $(REVISION) || \
-	  ( rm -rf $(TMP_DIR)/{src,[0-9]*} ; ./tools/depot_tools/gclient update --nohooks $(REVISION) )
+	  ( rm -rf $(foreach dir,src [0-9]*,$(wildcard $(TMP_DIR)/$(dir))) ; ./tools/depot_tools/gclient update --nohooks $(REVISION) )
 
 ifneq (,$(LOCAL_BRANCH))
 	rm -rf $(TMP_DDIR)
