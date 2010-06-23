@@ -19,14 +19,6 @@ Build-Depends: cdbs,
 	bison,
 	flex,
 	gperf,
-	gdb,
-	wdiff,
-	timeout,
-	xvfb,
-	xbase-clients,
-	xfonts-base,
-	ttf-kochi-gothic,
-	ttf-kochi-mincho,
 	libjpeg62-dev,
 	libpng12-dev,
 	libbz2-dev,
@@ -87,9 +79,9 @@ Description: nickel-browser language packages
  and more stable way for all Internet users to experience the web.
  .
  This package contains language packages for 50 languages:
- ar, bg, bn, ca, cs, da, de, el, en-GB, es-419, es, et, fi, fil, fr, gu, he,
- hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr, nb, nl, or, pl, pt-BR, pt-PT,
- ro, ru, sk, sl, sr, sv, ta, te, th, tr, uk, vi, zh-CN, zh-TW
+ am, ar, bg, bn, ca, cs, da, de, el, en-GB, es-419, es, et, fi, fil, fr, gu, he,
+ hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr, nb, nl, pl, pt-BR, pt-PT,
+ ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, uk, vi, zh-CN, zh-TW
 
 Package: nickel-browser-inspector
 Architecture: all

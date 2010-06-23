@@ -1,7 +1,7 @@
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/common/chrome_switches.cc	2010-05-05 15:34:33.274272946 +0200
+--- src.orig/chrome/common/chrome_switches.cc	2010-06-05 12:32:02.000000000 +0200
++++ src/chrome/common/chrome_switches.cc	2010-06-23 15:35:19.062396607 +0200
 @@ -429,6 +429,9 @@
  //                                            except for "www.google.com".
  const char kHostResolverRules[]             = "host-resolver-rules";
@@ -14,8 +14,8 @@ Index: src/chrome/common/chrome_switches.cc
  const char kImport[]                        = "import";
 Index: src/chrome/browser/gtk/gtk_util.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/gtk_util.cc	2010-04-14 21:00:09.000000000 +0200
-+++ src/chrome/browser/gtk/gtk_util.cc	2010-05-05 15:34:33.274272946 +0200
+--- src.orig/chrome/browser/gtk/gtk_util.cc	2010-06-05 12:31:58.000000000 +0200
++++ src/chrome/browser/gtk/gtk_util.cc	2010-06-23 15:35:19.062396607 +0200
 @@ -14,6 +14,7 @@
  #include "app/l10n_util.h"
  #include "app/resource_bundle.h"
@@ -115,8 +115,8 @@ Index: src/chrome/browser/gtk/gtk_util.cc
  }
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
---- src.orig/chrome/common/chrome_switches.h	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/common/chrome_switches.h	2010-05-05 15:34:33.374272147 +0200
+--- src.orig/chrome/common/chrome_switches.h	2010-06-05 12:32:02.000000000 +0200
++++ src/chrome/common/chrome_switches.h	2010-06-23 15:35:19.062396607 +0200
 @@ -25,6 +25,7 @@
  extern const char kAlwaysEnableDevTools[];
  extern const char kApp[];
@@ -127,8 +127,8 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kAuthServerWhitelist[];
 Index: src/chrome/browser/browser.cc
 ===================================================================
---- src.orig/chrome/browser/browser.cc	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/browser/browser.cc	2010-05-05 18:07:28.564266109 +0200
+--- src.orig/chrome/browser/browser.cc	2010-06-23 15:34:51.042391376 +0200
++++ src/chrome/browser/browser.cc	2010-06-23 15:35:19.072391170 +0200
 @@ -11,6 +11,7 @@
  #include "app/l10n_util.h"
  #include "base/base_paths.h"
@@ -233,20 +233,23 @@ Index: src/chrome/browser/browser.cc
  // static
 Index: src/chrome/browser/gtk/browser_titlebar.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-04-14 21:00:09.000000000 +0200
-+++ src/chrome/browser/gtk/browser_titlebar.cc	2010-05-05 15:34:33.544266326 +0200
-@@ -14,8 +14,10 @@
+--- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-06-23 15:34:51.432391021 +0200
++++ src/chrome/browser/gtk/browser_titlebar.cc	2010-06-23 15:36:10.604266885 +0200
+@@ -13,11 +13,13 @@
+ #include "app/l10n_util.h"
  #include "app/resource_bundle.h"
  #include "base/command_line.h"
- #include "base/singleton.h"
 +#include "base/logging.h"
+ #include "base/singleton.h"
+ #include "base/string_piece.h"
+ #include "base/string_tokenizer.h"
  #include "chrome/app/chrome_dll_resource.h"
  #include "chrome/browser/browser.h"
 +#include "chrome/browser/browser_process.h"
  #include "chrome/browser/encoding_menu_controller.h"
  #include "chrome/browser/gtk/accelerators_gtk.h"
  #include "chrome/browser/gtk/browser_window_gtk.h"
-@@ -30,6 +32,7 @@
+@@ -33,6 +35,7 @@
  #include "chrome/browser/pref_service.h"
  #include "chrome/browser/profile.h"
  #include "chrome/browser/tab_contents/tab_contents.h"
@@ -254,7 +257,7 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
  #include "chrome/common/notification_service.h"
  #include "chrome/common/pref_names.h"
  #include "gfx/gtk_util.h"
-@@ -327,14 +330,31 @@
+@@ -437,14 +440,31 @@
      // Update the system app icon.  We don't need to update the icon in the top
      // left of the custom frame, that will get updated when the throbber is
      // updated.
@@ -295,8 +298,8 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
  
 Index: src/chrome/browser/browser.h
 ===================================================================
---- src.orig/chrome/browser/browser.h	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/browser/browser.h	2010-05-05 15:34:33.614265878 +0200
+--- src.orig/chrome/browser/browser.h	2010-06-05 12:32:00.000000000 +0200
++++ src/chrome/browser/browser.h	2010-06-23 15:35:19.072391170 +0200
 @@ -202,7 +202,7 @@
    // is true, the application will be opened as a Browser::Type::APP_PANEL in
    // app panel window, otherwise it will be opened as a Browser::Type::APP,
@@ -326,8 +329,8 @@ Index: src/chrome/browser/browser.h
  
 Index: src/chrome/browser/gtk/gtk_util.h
 ===================================================================
---- src.orig/chrome/browser/gtk/gtk_util.h	2010-04-14 21:00:09.000000000 +0200
-+++ src/chrome/browser/gtk/gtk_util.h	2010-05-05 15:34:33.712501317 +0200
+--- src.orig/chrome/browser/gtk/gtk_util.h	2010-06-05 12:31:58.000000000 +0200
++++ src/chrome/browser/gtk/gtk_util.h	2010-06-23 15:35:19.072391170 +0200
 @@ -51,6 +51,10 @@
  // Horizontal Spacing between controls in a form.
  const int kFormControlSpacing = 10;
@@ -341,8 +344,8 @@ Index: src/chrome/browser/gtk/gtk_util.h
  // NULL.  The first argument is a vector in which to place all labels
 Index: src/chrome/browser/browser_init.cc
 ===================================================================
---- src.orig/chrome/browser/browser_init.cc	2010-04-14 21:00:11.000000000 +0200
-+++ src/chrome/browser/browser_init.cc	2010-05-05 15:34:33.814266305 +0200
+--- src.orig/chrome/browser/browser_init.cc	2010-06-05 12:32:00.000000000 +0200
++++ src/chrome/browser/browser_init.cc	2010-06-23 15:35:19.072391170 +0200
 @@ -9,6 +9,7 @@
  #include "base/event_recorder.h"
  #include "base/path_service.h"
@@ -363,9 +366,9 @@ Index: src/chrome/browser/browser_init.cc
    }
 Index: src/chrome/common/pref_names.cc
 ===================================================================
---- src.orig/chrome/common/pref_names.cc	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/common/pref_names.cc	2010-05-05 15:34:33.894265851 +0200
-@@ -550,6 +550,9 @@
+--- src.orig/chrome/common/pref_names.cc	2010-06-05 12:32:02.000000000 +0200
++++ src/chrome/common/pref_names.cc	2010-06-23 15:35:19.072391170 +0200
+@@ -555,6 +555,9 @@
  // window to restore on startup.
  const wchar_t kBrowserWindowPlacement[] = L"browser.window_placement";
  
@@ -377,9 +380,9 @@ Index: src/chrome/common/pref_names.cc
  const wchar_t kTaskManagerWindowPlacement[] = L"task_manager.window_placement";
 Index: src/chrome/common/pref_names.h
 ===================================================================
---- src.orig/chrome/common/pref_names.h	2010-04-24 17:02:14.000000000 +0200
-+++ src/chrome/common/pref_names.h	2010-05-05 15:34:34.063325427 +0200
-@@ -194,6 +194,7 @@
+--- src.orig/chrome/common/pref_names.h	2010-06-05 12:32:02.000000000 +0200
++++ src/chrome/common/pref_names.h	2010-06-23 15:35:19.072391170 +0200
+@@ -195,6 +195,7 @@
  extern const wchar_t kUninstallLastObservedRunTimeSec[];
  
  extern const wchar_t kBrowserWindowPlacement[];
