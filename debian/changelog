@@ -1,3 +1,9 @@
+nickel-browser (5.0.375.70~r48679-1jolicloud5-j2.5) robby; urgency=low
+
+  * Imported Debian patch 5.0.375.70~r48679-0ubuntu2~ucd5~jaunty
+
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 23 Jun 2010 12:18:56 +0200
+
 chromium-browser (5.0.375.70~r48679-0ubuntu2~ucd5~jaunty) jaunty; urgency=low
 
   * Refresh list of languages in the -l10n package
