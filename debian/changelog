@@ -1,3 +1,13 @@
+nickel-browser (5.0.375.86~r49890-1jolicloud1) robby; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 5.0.375.86~r49890
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 5.0.375.86~r49890-0ubuntu1~ucd2~jaunty
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Fri, 25 Jun 2010 16:27:23 +0200
+
 chromium-browser (5.0.375.86~r49890-0ubuntu1~ucd2~jaunty) jaunty; urgency=low
 
   * Remove the XLIB_SKIP_ARGB_VISUALS workaround as RGBA has been backed out
