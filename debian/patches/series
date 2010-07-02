@@ -15,3 +15,4 @@ disable_dlog_and_dcheck_in_release_builds.patch
 gtk-ambiance.patch
 jolicloud_set_app_icon_from_desktop_file.patch
 jolicloud_add_desktop_mode.patch
+jolicloud_user_agent_extension.patch
