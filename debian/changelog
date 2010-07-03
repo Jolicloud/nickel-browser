@@ -1,3 +1,9 @@
+chromium-browser (5.0.375.99~r51029-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+
+  * New upstream snapshot
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 02 Jul 2010 17:11:57 +0200
+
 nickel-browser (5.0.375.86~r49890-1jolicloud2) robby; urgency=low
 
   * extend User Agent string to allow detection of Jolicloud by the
@@ -15,16 +21,30 @@ nickel-browser (5.0.375.86~r49890-1jolicloud1) robby; urgency=low
 
  -- Benjamin Ryzman <benjamin@jolicloud.org>  Fri, 25 Jun 2010 16:27:23 +0200
 
-chromium-browser (5.0.375.86~r49890-0ubuntu1~ucd2~jaunty) jaunty; urgency=low
+chromium-browser (5.0.375.86~r49890-0ubuntu1) maverick; urgency=low
 
-  * Remove the XLIB_SKIP_ARGB_VISUALS workaround as RGBA has been backed out
-    from Ubuntu/Maverick
+  * New upstream release from the Stable Channel (LP: #598913)
+    Fixes the following security issues:
+    - [38105] Medium XSS via application/json response (regression). Credit to
+      Ben Davis for original discovery and Emanuele Gentili for regression
+      discovery.
+    - [43322] Medium Memory error in video handling. Credit to Mark Dowd under
+      contract to Google Chrome Security Team.
+    - [43967] High Subresource displayed in omnibox loading. Credit to Michal
+      Zalewski of Google Security Team.
+    - [45267] High Memory error in video handling. Credit to Google Chrome
+      Security Team (Cris Neckar).
+    - [46126] High Stale pointer in x509-user-cert response. Credit to Rodrigo
+      Marcos of SECFORCE.
+  * Drop the XLIB_SKIP_ARGB_VISUALS workaround now that the rgba patch has
+    been backed off from gtk2 (LP: #584959)
     - update debian/chromium-browser.sh
-  * Show in about:version when chromium is running on a different
+  * Show in about:version and in the About UI when chromium is running on a different
     distribution that it has been built on
     - udpate debian/rules
+    - rename and update debian/chromium-browser.sh => debian/chromium-browser.sh.in
 
- -- Fabien Tassin <fta@ubuntu.com>  Thu, 24 Jun 2010 22:13:09 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 25 Jun 2010 02:05:06 +0200
 
 nickel-browser (5.0.375.70~r48679-1jolicloud5-j2.5) robby; urgency=low
 
