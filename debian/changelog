@@ -1,3 +1,13 @@
+nickel-browser (5.0.375.99~r51029-1jolicloud1) robby; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 5.0.375.99~r51029
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 5.0.375.99~r51029-0ubuntu1~ucd1~jaunty
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Sat, 03 Jul 2010 10:59:02 +0200
+
 chromium-browser (5.0.375.99~r51029-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * New upstream snapshot
