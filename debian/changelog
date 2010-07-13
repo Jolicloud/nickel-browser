@@ -1,3 +1,9 @@
+nickel-browser (5.0.375.99~r51029-1jolicloud3) robby; urgency=low
+
+  * mark nickel-browser as an essential package
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Tue, 13 Jul 2010 13:01:39 +0200
+
 nickel-browser (5.0.375.99~r51029-1jolicloud2) robby; urgency=low
 
   * Customize neterror page
