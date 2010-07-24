@@ -1,7 +1,5 @@
-Index: src/chrome/browser/browser.cc
-===================================================================
---- src.orig/chrome/browser/browser.cc	2010-06-23 15:35:19.072391170 +0200
-+++ src/chrome/browser/browser.cc	2010-06-23 15:36:31.383641181 +0200
+--- a/chrome/browser/browser.cc
++++ b/chrome/browser/browser.cc
 @@ -166,6 +166,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
@@ -179,10 +177,8 @@ Index: src/chrome/browser/browser.cc
      return;
    }
  
-Index: src/chrome/browser/browser.h
-===================================================================
---- src.orig/chrome/browser/browser.h	2010-06-23 15:35:19.072391170 +0200
-+++ src/chrome/browser/browser.h	2010-06-23 15:36:31.383641181 +0200
+--- a/chrome/browser/browser.h
++++ b/chrome/browser/browser.h
 @@ -59,11 +59,15 @@
      TYPE_APP_POPUP = TYPE_APP | TYPE_POPUP,
      TYPE_DEVTOOLS = TYPE_APP | 8,
@@ -250,10 +246,8 @@ Index: src/chrome/browser/browser.h
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
-Index: src/chrome/browser/browser_init.cc
-===================================================================
---- src.orig/chrome/browser/browser_init.cc	2010-06-23 15:35:19.072391170 +0200
-+++ src/chrome/browser/browser_init.cc	2010-06-23 15:36:31.383641181 +0200
+--- a/chrome/browser/browser_init.cc
++++ b/chrome/browser/browser_init.cc
 @@ -502,7 +502,8 @@
  
      if (process_startup) {
@@ -302,10 +296,8 @@ Index: src/chrome/browser/browser_init.cc
  
  #if !defined(OS_MACOSX)
    // In kiosk mode, we want to always be fullscreen, so switch to that now.
-Index: src/chrome/browser/browser_init.h
-===================================================================
---- src.orig/chrome/browser/browser_init.h	2010-06-05 12:32:00.000000000 +0200
-+++ src/chrome/browser/browser_init.h	2010-06-23 15:36:31.383641181 +0200
+--- a/chrome/browser/browser_init.h
++++ b/chrome/browser/browser_init.h
 @@ -137,6 +137,9 @@
      // In this case |app_url| or |app_id| are populated if they're non-null.
      bool IsAppLaunch(std::string* app_url, std::string* app_id);
@@ -316,10 +308,8 @@ Index: src/chrome/browser/browser_init.h
      // If IsAppLaunch is true, tries to open an application window.
      // If the app is specified to start in a tab, or IsAppLaunch is false,
      // returns false to specify default processing.
-Index: src/chrome/browser/gtk/browser_titlebar.cc
-===================================================================
---- src.orig/chrome/browser/gtk/browser_titlebar.cc	2010-06-23 15:36:10.604266885 +0200
-+++ src/chrome/browser/gtk/browser_titlebar.cc	2010-06-23 15:37:37.052390650 +0200
+--- a/chrome/browser/gtk/browser_titlebar.cc
++++ b/chrome/browser/gtk/browser_titlebar.cc
 @@ -222,7 +222,7 @@
    Singleton<GConfTitlebarListener>()->SetTitlebarButtons(this);
  
@@ -369,10 +359,8 @@ Index: src/chrome/browser/gtk/browser_titlebar.cc
      if (using_custom_frame_ && !browser_window_->IsMaximized()) {
        gtk_alignment_set_padding(GTK_ALIGNMENT(titlebar_alignment_),
            kTitlebarHeight, 0, kTabStripLeftPadding, 0);
-Index: src/chrome/browser/gtk/browser_toolbar_gtk.cc
-===================================================================
---- src.orig/chrome/browser/gtk/browser_toolbar_gtk.cc	2010-06-05 12:31:58.000000000 +0200
-+++ src/chrome/browser/gtk/browser_toolbar_gtk.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/gtk/browser_toolbar_gtk.cc
++++ b/chrome/browser/gtk/browser_toolbar_gtk.cc
 @@ -711,7 +711,7 @@
  
  bool BrowserToolbarGtk::ShouldOnlyShowLocation() const {
@@ -382,10 +370,8 @@ Index: src/chrome/browser/gtk/browser_toolbar_gtk.cc
  }
  
  void BrowserToolbarGtk::PopupForButton(GtkWidget* button) {
-Index: src/chrome/browser/gtk/browser_window_gtk.cc
-===================================================================
---- src.orig/chrome/browser/gtk/browser_window_gtk.cc	2010-06-05 12:31:58.000000000 +0200
-+++ src/chrome/browser/gtk/browser_window_gtk.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/gtk/browser_window_gtk.cc
++++ b/chrome/browser/gtk/browser_window_gtk.cc
 @@ -715,7 +715,7 @@
  }
  
@@ -395,7 +381,7 @@ Index: src/chrome/browser/gtk/browser_window_gtk.cc
      // Loading animations are shown in the tab for tabbed windows.  We check the
      // browser type instead of calling IsTabStripVisible() because the latter
      // will return false for fullscreen windows, but we still need to update
-@@ -762,6 +762,19 @@
+@@ -762,6 +762,21 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -403,19 +389,21 @@ Index: src/chrome/browser/gtk/browser_window_gtk.cc
 +  GdkWindow* gdkWindow;
 +  XID window;
 +
-+  gtk_window_stick(window_);
-+  gtk_window_maximize(window_);
-+
 +  gdkWindow = GTK_WIDGET( window_ )->window;
 +  window = x11_util::GetX11WindowFromGdkWindow( gdkWindow );
 +  x11_util::ChangeProperty( window,
 +      "_NET_WM_WINDOW_TYPE", "_NET_WM_WINDOW_TYPE_DESKTOP" );
++
++  gtk_window_stick( window_ );
++  gtk_window_maximize( window_ );
++  gtk_window_set_wmclass( window_, "desktop_window", "chromium" );
++  gtk_window_set_resizable( window_, FALSE );
 +}
 +
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -2024,8 +2037,7 @@
+@@ -2024,8 +2039,7 @@
  bool BrowserWindowGtk::UseCustomFrame() {
    // We don't use the custom frame for app mode windows or app window popups.
    return use_custom_frame_pref_.GetValue() &&
@@ -425,10 +413,8 @@ Index: src/chrome/browser/gtk/browser_window_gtk.cc
  }
  
  void BrowserWindowGtk::PlaceBookmarkBar(bool is_floating) {
-Index: src/chrome/browser/views/toolbar_view.cc
-===================================================================
---- src.orig/chrome/browser/views/toolbar_view.cc	2010-06-05 12:31:56.000000000 +0200
-+++ src/chrome/browser/views/toolbar_view.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/views/toolbar_view.cc
++++ b/chrome/browser/views/toolbar_view.cc
 @@ -103,7 +103,7 @@
    browser_->command_updater()->AddCommandObserver(IDC_RELOAD, this);
    browser_->command_updater()->AddCommandObserver(IDC_HOME, this);
@@ -438,10 +424,8 @@ Index: src/chrome/browser/views/toolbar_view.cc
      display_mode_ = DISPLAYMODE_NORMAL;
    else
      display_mode_ = DISPLAYMODE_LOCATION;
-Index: src/app/x11_util.cc
-===================================================================
---- src.orig/app/x11_util.cc	2010-06-05 12:31:05.000000000 +0200
-+++ src/app/x11_util.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/app/x11_util.cc
++++ b/app/x11_util.cc
 @@ -264,6 +264,36 @@
    return true;
  }
@@ -479,10 +463,8 @@ Index: src/app/x11_util.cc
  XID GetParentWindow(XID window) {
    XID root = None;
    XID parent = None;
-Index: src/app/x11_util.h
-===================================================================
---- src.orig/app/x11_util.h	2010-06-05 12:31:05.000000000 +0200
-+++ src/app/x11_util.h	2010-06-23 15:36:31.393646458 +0200
+--- a/app/x11_util.h
++++ b/app/x11_util.h
 @@ -83,6 +83,8 @@
  bool GetIntProperty(XID window, const std::string& property_name, int* value);
  bool GetStringProperty(
@@ -492,10 +474,8 @@ Index: src/app/x11_util.h
  
  // Get |window|'s parent window, or None if |window| is the root window.
  XID GetParentWindow(XID window);
-Index: src/chrome/browser/browser_window.h
-===================================================================
---- src.orig/chrome/browser/browser_window.h	2010-06-05 12:32:00.000000000 +0200
-+++ src/chrome/browser/browser_window.h	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/browser_window.h
++++ b/chrome/browser/browser_window.h
 @@ -124,6 +124,9 @@
    // Returns true if the fullscreen bubble is visible.
    virtual bool IsFullscreenBubbleVisible() const = 0;
@@ -506,10 +486,8 @@ Index: src/chrome/browser/browser_window.h
    // Returns the location bar.
    virtual LocationBar* GetLocationBar() const = 0;
  
-Index: src/chrome/browser/gtk/browser_window_gtk.h
-===================================================================
---- src.orig/chrome/browser/gtk/browser_window_gtk.h	2010-06-05 12:31:58.000000000 +0200
-+++ src/chrome/browser/gtk/browser_window_gtk.h	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/gtk/browser_window_gtk.h
++++ b/chrome/browser/gtk/browser_window_gtk.h
 @@ -69,6 +69,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
@@ -518,10 +496,8 @@ Index: src/chrome/browser/gtk/browser_window_gtk.h
    virtual LocationBar* GetLocationBar() const;
    virtual void SetFocusToLocationBar(bool select_all);
    virtual void UpdateStopGoState(bool is_loading, bool force);
-Index: src/chrome/common/chrome_switches.cc
-===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2010-06-23 15:35:19.062396607 +0200
-+++ src/chrome/common/chrome_switches.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/common/chrome_switches.cc
++++ b/chrome/common/chrome_switches.cc
 @@ -74,6 +74,9 @@
  // Enables support to debug printing subsystem.
  const char kDebugPrint[]                    = "debug-print";
@@ -532,10 +508,8 @@ Index: src/chrome/common/chrome_switches.cc
  // Triggers a pletora of diagnostic modes.
  const char kDiagnostics[]                   = "diagnostics";
  
-Index: src/chrome/common/chrome_switches.h
-===================================================================
---- src.orig/chrome/common/chrome_switches.h	2010-06-23 15:35:19.062396607 +0200
-+++ src/chrome/common/chrome_switches.h	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/common/chrome_switches.h
++++ b/chrome/common/chrome_switches.h
 @@ -37,6 +37,7 @@
  extern const char kChromeFrame[];
  extern const char kCountry[];
@@ -544,10 +518,8 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kDiagnostics[];
  extern const char kDisableAltWinstation[];
  extern const char kDisableApplicationCache[];
-Index: src/chrome/browser/browser_main.cc
-===================================================================
---- src.orig/chrome/browser/browser_main.cc	2010-06-23 15:34:50.852392769 +0200
-+++ src/chrome/browser/browser_main.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/browser_main.cc
++++ b/chrome/browser/browser_main.cc
 @@ -276,7 +276,7 @@
  
    if (!ChromeThread::PostTask(
@@ -557,10 +529,8 @@ Index: src/chrome/browser/browser_main.cc
      // Without a UI thread to post the exit task to, there aren't many
      // options.  Raise the signal again.  The default handler will pick it up
      // and cause an ungraceful exit.
-Index: src/chrome/browser/browser_list.h
-===================================================================
---- src.orig/chrome/browser/browser_list.h	2010-06-05 12:32:00.000000000 +0200
-+++ src/chrome/browser/browser_list.h	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/browser_list.h
++++ b/chrome/browser/browser_list.h
 @@ -90,13 +90,13 @@
    // posting a WM_CLOSE message, otherwise the windows are closed directly. In
    // almost all cases you'll want to use true, the one exception is ending
@@ -577,10 +547,8 @@ Index: src/chrome/browser/browser_list.h
  
    // Begins shutdown of the application when the Windows session is ending.
    static void WindowsSessionEnding();
-Index: src/chrome/browser/browser_list.cc
-===================================================================
---- src.orig/chrome/browser/browser_list.cc	2010-06-05 12:32:00.000000000 +0200
-+++ src/chrome/browser/browser_list.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/browser_list.cc
++++ b/chrome/browser/browser_list.cc
 @@ -209,20 +209,23 @@
  }
  
@@ -633,10 +601,8 @@ Index: src/chrome/browser/browser_list.cc
  
    // Send out notification. This is used during testing so that the test harness
    // can properly shutdown before we exit.
-Index: src/chrome/browser/automation/automation_provider.cc
-===================================================================
---- src.orig/chrome/browser/automation/automation_provider.cc	2010-06-05 12:31:57.000000000 +0200
-+++ src/chrome/browser/automation/automation_provider.cc	2010-06-23 15:36:31.393646458 +0200
+--- a/chrome/browser/automation/automation_provider.cc
++++ b/chrome/browser/automation/automation_provider.cc
 @@ -2234,7 +2234,7 @@
  }
  
