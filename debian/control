@@ -44,6 +44,7 @@ Build-Depends: cdbs,
 Standards-Version: 3.8.3
 
 Package: nickel-browser
+Essential: yes
 Architecture: any
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
