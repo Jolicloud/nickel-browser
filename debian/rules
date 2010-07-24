@@ -141,7 +141,7 @@ clean::
 	rm -f debian/stamp-reverse-icons
 
 ifneq (1,$(PROCESSORS))
-DEB_MAKE_EXTRA_ARGS += -j$(PROCESSORS)
+BUILD_ARGS += -j$(PROCESSORS)
 endif
 
 INSTALL_EXCLUDE_DIRS = \
