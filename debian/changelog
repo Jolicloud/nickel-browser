@@ -1,3 +1,10 @@
+nickel-browser (5.0.375.99~r51029-1jolicloud5) robby; urgency=low
+
+  * Restored multi-processor build argument so it gets passed to make.
+  * Patch to inhibit the resize problem in desktop-mode Nickel
+
+ -- Adam McDaniel <adam@jolicloud.org>  Tue, 27 Jul 2010 18:50:58 -0600
+
 nickel-browser (5.0.375.99~r51029-1jolicloud3) robby; urgency=low
 
   * mark nickel-browser as an essential package
