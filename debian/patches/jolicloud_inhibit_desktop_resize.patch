@@ -1,0 +1,40 @@
+--- a/chrome/browser/gtk/browser_window_gtk.cc
++++ b/chrome/browser/gtk/browser_window_gtk.cc
+@@ -763,18 +763,26 @@
+ }
+ 
+ void BrowserWindowGtk::SetDesktop() {
+-  GdkWindow* gdkWindow;
+-  XID window;
++  GdkScreen* gdkScreen;
++  GdkRectangle rect;
+ 
+-  gdkWindow = GTK_WIDGET( window_ )->window;
+-  window = x11_util::GetX11WindowFromGdkWindow( gdkWindow );
+-  x11_util::ChangeProperty( window,
+-      "_NET_WM_WINDOW_TYPE", "_NET_WM_WINDOW_TYPE_DESKTOP" );
+-
+-  gtk_window_stick( window_ );
+-  gtk_window_maximize( window_ );
+-  gtk_window_set_wmclass( window_, "desktop_window", "chromium" );
+-  gtk_window_set_resizable( window_, FALSE );
++  gdkScreen = gtk_window_get_screen( window_ );
++  gdk_screen_get_monitor_geometry( gdkScreen, 0, &rect );
++  LOG(INFO) << "Got monitor geometry: " << rect.x << "x" << rect.y << "+" << rect.width << "+" << rect.height;
++
++  // Decrease the desktop size by the size of the gnome-panel.
++  // FIXME: Figure this out properly!
++  rect.y = 25;
++  rect.height -= rect.y;
++
++  LOG(INFO) << "Setting browser size: " << rect.x << "x" << rect.y << "+" << rect.width << "+" << rect.height;
++  gtk_window_move( window_, rect.x, rect.y );
++  gtk_window_resize( window_, rect.width, rect.height );
++
++  gtk_window_activate_focus( window_ );
++  gtk_window_set_type_hint( window_, GDK_WINDOW_TYPE_HINT_DESKTOP );
++  gtk_window_set_skip_taskbar_hint( window_, FALSE );
++  gtk_window_set_skip_pager_hint( window_, FALSE );
+ }
+ 
+ LocationBar* BrowserWindowGtk::GetLocationBar() const {
