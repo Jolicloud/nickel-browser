@@ -5,6 +5,13 @@ nickel-browser (5.0.375.99~r51029-1jolicloud5) robby; urgency=low
 
  -- Adam McDaniel <adam@jolicloud.org>  Tue, 27 Jul 2010 18:50:58 -0600
 
+nickel-browser (5.0.375.99~r51029-1jolicloud4) robby; urgency=low
+
+  * recommends localization package instead of merely suggesting it
+  * revert "mark nickel-browser as an essential package"
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 19 Jul 2010 17:04:43 +0200
+
 nickel-browser (5.0.375.99~r51029-1jolicloud3) robby; urgency=low
 
   * mark nickel-browser as an essential package
