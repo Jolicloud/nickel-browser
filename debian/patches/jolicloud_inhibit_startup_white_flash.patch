@@ -1,0 +1,15 @@
+--- a/chrome/browser/gtk/browser_window_gtk.cc
++++ b/chrome/browser/gtk/browser_window_gtk.cc
+@@ -1541,10 +1541,10 @@
+   gtk_widget_show_all(render_area_floating_container_);
+   gtk_widget_hide(devtools_container_->widget());
+   render_area_event_box_ = gtk_event_box_new();
+-  // Set a white background so during startup the user sees white in the
++  // Set a black background so during startup the user sees black in the
+   // content area before we get a TabContents in place.
+   gtk_widget_modify_bg(render_area_event_box_, GTK_STATE_NORMAL,
+-                       &gfx::kGdkWhite);
++                       &gfx::kGdkBlack);
+   gtk_container_add(GTK_CONTAINER(render_area_event_box_),
+                     render_area_floating_container_);
+   gtk_widget_show(render_area_event_box_);
