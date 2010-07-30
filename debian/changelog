@@ -1,3 +1,12 @@
+nickel-browser (5.0.375.99~r51029-1jolicloud6) robby; urgency=low
+
+  * Applied patch to maximize normal/app browser windows, but leave
+    desktop/popup browser windows alone (Fixes: JC-279)
+  * Started preliminary patch to inhibit Nickel startup white_flash (For:
+    JC-278)
+
+ -- Adam McDaniel <adam@jolicloud.org>  Fri, 30 Jul 2010 14:23:46 -0600
+
 nickel-browser (5.0.375.99~r51029-1jolicloud5) robby; urgency=low
 
   * Restored multi-processor build argument so it gets passed to make.
