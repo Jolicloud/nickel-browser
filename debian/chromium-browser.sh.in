@@ -45,8 +45,13 @@ export LD_LIBRARY_PATH
 export PATH="$LIBDIR:$PATH"
 export CHROME_WRAPPER=true
 
-DIST=`lsb_release -si`
-RELEASE=`lsb_release -sr`
+# lsb_release is slow so try to source the static file /etc/lsb-release
+# instead, and fallback to lsb_release if we didn't get the information we need
+if [ -e /etc/lsb-release ] ; then
+  . /etc/lsb-release
+fi
+DIST=${DISTRIB_ID:-"`lsb_release -si`"}
+RELEASE=${DISTRIB_RELEASE:-"`lsb_release -sr`"}
 
 # Set CHROME_VERSION_EXTRA visible in the About dialog and in about:version
 if [ "$DIST $RELEASE" = "$BUILD_DIST" ] ; then

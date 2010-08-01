@@ -1,8 +1,51 @@
-chromium-browser (5.0.375.99~r51029-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+chromium-browser (5.0.375.125~r53311-0ubuntu2~ucd2~jaunty) jaunty; urgency=low
 
   * New upstream snapshot
 
- -- Fabien Tassin <fta@ubuntu.com>  Fri, 02 Jul 2010 17:11:57 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Sun, 01 Aug 2010 17:18:52 +0200
+
+chromium-browser (5.0.375.125~r53311-0ubuntu1) maverick; urgency=low
+
+  * New upstream release from the Stable Channel (LP: #612109)
+    This release fixes the following security issues:
+    - [42736] Medium Memory contents disclosure in layout code. Credit to
+      Michail Nikolaev.
+    - [43813] High Issue with large canvases. Credit to sp3x of
+      SecurityReason.com.
+    - [47866] High Memory corruption in rendering code. Credit to Jose A.
+      Vazquez.
+    - [48284] High Memory corruption in SVG handling. Credit to Aki Helin of
+      OUSPG.
+    - [48597] Low Avoid hostname truncation and incorrect eliding. Credit to
+      Google Chrome Security Team (Inferno).
+  * lsb_release is slow so try to source the static file /etc/lsb-release
+    instead, and fallback to lsb_release if we didn't get the information we need
+    for about:version (LP: #608253). Thanks to pitti for the idea.
+    - update debian/chromium-browser.sh.in
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 27 Jul 2010 12:03:40 +0200
+
+chromium-browser (5.0.375.99~r51029-0ubuntu1) maverick; urgency=low
+
+  * New upstream release from the Stable Channel (LP: #602142)
+    This release fixes the following security issues:
+    - [42396] Low OOB read with WebGL. Credit to Sergey Glazunov; Google Chrome
+      Security Team (SkyLined). 
+    - [42575] [42980] Medium Isolate sandboxed iframes more strongly. Credit to
+      sirdarckcat of Google Security Team.
+    - [43488] High Memory corruption with invalid SVGs. Credit to Aki Hekin of
+      OUSPG; wushi of team509.
+    - [44424] High Memory corruption in bidi algorithm. Credit to wushi of
+      team509.
+    - [45164] Low Crash with invalid image. Credit to Jose A. Vazquez.
+    - [45983] High Memory corruption with invalid PNG (libpng bug). Credit to
+      Aki Helin of OUSPG.
+    - [46360] High Memory corruption in CSS style rendering. Credit to wushi of
+      team509.
+    - [46575] Low Annoyance with print dialogs. Credit to Mats Ahlgren.
+    - [47056] Low Crash with modal dialogs. Credit to Aki Helin of OUSPG.
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 02 Jul 2010 01:05:06 +0200
 
 chromium-browser (5.0.375.86~r49890-0ubuntu1) maverick; urgency=low
 
