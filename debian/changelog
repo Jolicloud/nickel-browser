@@ -1,3 +1,12 @@
+nickel-browser (5.0.375.99~r51029-1jolicloud5) robby; urgency=low
+
+  [ Adam McDaniel ]
+  * Set desktop window-manager class and disable resizing in desktop
+    mode
+  * Patch to inhibit the resize problem in desktop-mode Nickel
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 02 Aug 2010 13:34:29 +0200
+
 nickel-browser (5.0.375.99~r51029-1jolicloud4) robby; urgency=low
 
   * recommends localization package instead of merely suggesting it
