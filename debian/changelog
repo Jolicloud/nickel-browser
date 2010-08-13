@@ -1,8 +1,42 @@
-chromium-browser (5.0.375.125~r53311-0ubuntu2~ucd2~jaunty) jaunty; urgency=low
+chromium-browser (6.0.472.33~r55501-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
-  * New upstream snapshot
+  * Enable all codecs for HTML5 in Chromium, depending on which ffmpeg sumo lib
+    is installed, the set of usable codecs (at runtime) will still vary.
+    This is now done by setting proprietary_codecs=1 so we can drop our patch
+    - update debian/rules
+    - drop debian/patches/html5_video_mimetypes.patch
+    - update debian/patches/series
+  * Add "libcups2-dev | libcupsys2-dev" (the latter for Hardy) to Build-Depends.
+    This is needed for Cloud Printing
+    - update debian/control
+  * Add libppapi_tests.so and linker.lock to INSTALL_EXCLUDE_FILES and
+    DumpRenderTree_resources/ to INSTALL_EXCLUDE_DIRS
+    - update debian/rules
+  * Install resources.pak in the main deb, and remove all resources/ accordingly
+    - update debian/chromium-browser.install
+  * Add libgnome-keyring-dev to Build-Depends. This is needed for the GNOME
+    Keyring and KWallet integration. See http://crbug.com/12351
+    - update debian/control
+  * Ship empty policy dirs (for now) in /etc/chromium-browser/policies
+    - update debian/rules
+    - update debian/chromium-browser.dirs
+  * Add the xul libdir to LD_LIBRARY_PATH in the wrapper to help icedtea6-plugin
+    (LP: #529242). This is needed at least for openjdk-6 6b18.
+    - update debian/chromium-browser.sh
+  * No longer use tar --lzma in get-orig-source now that it silently uses xz
+    (since tar 1.23-2) which is not available in the backports. Use "tar | lzma"
+    instead so the embedded tarball is always a lzma file
+    - update debian/rules
+  * Tweak the user agent to include Chromium and the Distro's name and version.
+    - add debian/patches/chromium_useragent.patch.in
+    - update debian/patches/series
+    - update debian/rules
+  * Fix a typo in the subst_files rule
+    - update debian/rules
+  * Bump build-deps for gyp to >= 0.1~svn837
+    - update debian/control
 
- -- Fabien Tassin <fta@ubuntu.com>  Sun, 01 Aug 2010 17:18:52 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 14 Aug 2010 00:37:12 +0200
 
 chromium-browser (5.0.375.125~r53311-0ubuntu1) maverick; urgency=low
 

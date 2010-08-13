@@ -1,2 +1,4 @@
 usr/lib/chromium-browser/plugins
 usr/lib/chromium-browser/resources
+etc/chromium-browser/policies/managed
+etc/chromium-browser/policies/recommended
