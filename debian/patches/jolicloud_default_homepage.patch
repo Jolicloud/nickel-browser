@@ -1,13 +1,14 @@
 Index: src/chrome/browser/browser.cc
 ===================================================================
---- src.orig/chrome/browser/browser.cc	2010-04-20 12:33:17.863420041 +0200
-+++ src/chrome/browser/browser.cc	2010-04-20 12:34:35.111943754 +0200
-@@ -1411,7 +1411,7 @@
- void Browser::SetNewHomePagePrefs(PrefService* prefs) {
-   if (!prefs->HasPrefPath(prefs::kHomePage))
-     prefs->SetString(prefs::kHomePage,
--        ASCIIToWide(GoogleURLTracker::kDefaultGoogleHomepage));
-+        ASCIIToWide("http://www.jolicloud.com/start"));
-   if (!prefs->HasPrefPath(prefs::kHomePageIsNewTabPage))
-     prefs->SetBoolean(prefs::kHomePageIsNewTabPage, false);
-   if (!prefs->HasPrefPath(prefs::kShowHomeButton))
+--- src.orig/chrome/browser/browser.cc	2010-08-13 23:11:59.000000000 +0200
++++ src/chrome/browser/browser.cc	2010-08-16 15:15:39.643641141 +0200
+@@ -1866,8 +1866,7 @@
+   if (home_page_pref &&
+       !home_page_pref->IsManaged() &&
+       !prefs->HasPrefPath(prefs::kHomePage)) {
+-    prefs->SetString(prefs::kHomePage,
+-        GoogleURLTracker::kDefaultGoogleHomepage);
++    prefs->SetString(prefs::kHomePage, "http://www.jolicloud.com/start");
+   }
+   const PrefService::Preference* home_page_is_new_tab_page_pref =
+       prefs->FindPreference(prefs::kHomePageIsNewTabPage);

@@ -1,7 +1,7 @@
 Index: src/chrome/renderer/resources/neterror.html
 ===================================================================
---- src.orig/chrome/renderer/resources/neterror.html	2010-06-05 12:32:03.000000000 +0200
-+++ src/chrome/renderer/resources/neterror.html	2010-07-13 01:17:06.584266292 +0200
+--- src.orig/chrome/renderer/resources/neterror.html	2010-08-13 23:12:02.000000000 +0200
++++ src/chrome/renderer/resources/neterror.html	2010-08-16 13:46:13.723641232 +0200
 @@ -73,6 +73,45 @@
    height: 0 !important;
  }
@@ -48,7 +48,7 @@ Index: src/chrome/renderer/resources/neterror.html
  <script>
  function toggleDiv() {
    var elt = document.getElementById('errorDetails');
-@@ -86,41 +125,71 @@
+@@ -86,41 +125,72 @@
    }
  }
  </script>
@@ -90,8 +90,6 @@ Index: src/chrome/renderer/resources/neterror.html
 + <h1>Please connect your device to the Internet.</h1>
 + <p><button onclick="reload();">Reload</button></p>
  </div>
-+<div id="classic" class="hidden">
-+ <h1 i18n-content="heading"></h1>
  
 -<div id="suggestions">
 - <h2 i18n-content="suggestionsHeading"></h2>
@@ -108,10 +106,22 @@ Index: src/chrome/renderer/resources/neterror.html
 -  </li>
 - </ul>
 -</div>
++<div id="classic" class="hidden">
++ <h1 i18n-content="heading"></h1>
++  
 + <div id="errorSummary" jsselect="summary">
 +  <p jsvalues=".innerHTML:msg"></p>
 + </div>
-+
+ 
+-<div id="errorDetails" class="hide-details">
+- <a href="javascript:void(0);" style="text-decoration:none" onclick="toggleDiv()">
+-  <img id="plus" src="../../browser/resources/shared/images/plus.png">
+-  <img id="minus" src="../../browser/resources/shared/images/minus.png">
+-  <span id="errorExpander" i18n-content="detailsLink" style="text-decoration:underline"></span>
+- </a>
+- <div id="zipInfo">
+-  <p i18n-content="detailsHeading"></p>
+-  <div id="details" i18n-content="details"></div>
 + <div id="suggestions">
 +  <h2 i18n-content="suggestionsHeading"></h2>
 +  <ul>
@@ -127,20 +137,11 @@ Index: src/chrome/renderer/resources/neterror.html
 +   </li>
 +  </ul>
 + </div>
- 
--<div id="errorDetails" class="hide-details">
-- <a href="javascript:void(0);" style="text-decoration:none" onclick="toggleDiv()">
--  <img id="plus" src="../../browser/resources/plus.png">
--  <img id="minus" src="../../browser/resources/minus.png">
--  <span id="errorExpander" i18n-content="detailsLink" style="text-decoration:underline"></span>
-- </a>
-- <div id="zipInfo">
--  <p i18n-content="detailsHeading"></p>
--  <div id="details" i18n-content="details"></div>
++  
 + <div id="errorDetails" class="hide-details">
 +  <a href="javascript:void(0);" style="text-decoration:none" onclick="toggleDiv()">
-+   <img id="plus" src="../../browser/resources/plus.png">
-+   <img id="minus" src="../../browser/resources/minus.png">
++   <img id="plus" src="../../browser/resources/shared/images/plus.png">
++   <img id="minus" src="../../browser/resources/shared/images/minus.png">
 +   <span id="errorExpander" i18n-content="detailsLink" style="text-decoration:underline"></span>
 +  </a>
 +  <div id="zipInfo">

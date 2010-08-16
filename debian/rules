@@ -32,12 +32,16 @@ PROCESSORS := 1
 endif
 
 # Disable SSE2
-GYP_DEFINES = enable_sse2=0
+GYP_DEFINES = disable_sse2=1
+
+# Enable all codecs for HTML5 in chromium, depending on which ffmpeg sumo lib
+# is installed, the set of usable codecs (at runtime) will still vary
+GYP_DEFINES += proprietary_codecs=1
 
 # Only keep -Werror when building for the Debian or Ubuntu development branches
-#ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
+ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
 GYP_DEFINES += werror=$(NULL)
-#endif
+endif
 
 ifeq (armel,$(DEB_BUILD_ARCH))
 AVOID_GCC_44 := 0
@@ -110,10 +114,12 @@ endif
 ifeq (1,$(WANT_LZMA_SRC))
 TAR_EXT   := lzma
 TAR_FLAGS := --lzma
+COMPRESS  := lzma
 DEB_TARBALL = $(wildcard *.tar.bz2 *.tar.$(TAR_EXT))
 else
 TAR_EXT   := bz2
 TAR_FLAGS := -j
+COMPRESS  := bzip2
 endif
 
 include $(CURDIR)/debian/cdbs/tarball.mk
@@ -152,6 +158,7 @@ INSTALL_EXCLUDE_DIRS = \
 	calendar_app \
 	docs_app \
 	gmail_app \
+	pyproto \
 	$(NULL)
 
 INSTALL_EXCLUDE_FILES = \
@@ -163,6 +170,8 @@ INSTALL_EXCLUDE_FILES = \
 	ncdecode_table \
 	ncdecode_tablegen \
 	protoc \
+	gfx_unittests \
+	linker.lock \
 	$(NULL)
 
 # FFmpeg-mt
@@ -217,12 +226,13 @@ DO = (touch r1; echo '$(1)'; $(1); touch r2 ; T1=`date -r r1 +%s` ; T2=`date -r 
 
 subst_files = \
 	debian/$(DEBIAN_NAME).sh \
+	debian/patches/chromium_useragent.patch \
 	$(NULL)
 
 %:: %.in
 	sed -e 's/@BUILD_DIST@/$(DEBIAN_DIST_NAME) $(DEBIAN_DIST_VERSION)/g' \
 	    -e 's/@BUILD_DIST_NAME@/$(DEBIAN_DIST_NAME)/g' \
-	    -e 's/@BUILD_DIST_VERSION)@/$(DEBIAN_DIST_VERSION)/g' \
+	    -e 's/@BUILD_DIST_VERSION@/$(DEBIAN_DIST_VERSION)/g' \
 	    < $< > $@
 
 pre-build:: $(subst_files)
@@ -230,6 +240,8 @@ ifneq (,$(findstring Ubuntu,$(DEBIAN_DIST)))
 	sed -ri '/const PrepopulatedEngine google = \{/,/\}\;/ { s/sourceid=chrome\&/&client=ubuntu\&channel=cs\&/g; }' \
 		build-tree/src/chrome/browser/search_engines/template_url_prepopulate_data.cc
 endif
+	sed -i 's,/etc/chromium/policies,/etc/$(DEBIAN_NAME)/policies,' \
+		build-tree/src/chrome/common/chrome_paths.cc
 
 DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS)
 
@@ -564,7 +576,8 @@ gos-pack:
 	# Pack
 	if [ src != $(DEB_TAR_SRCDIR) ] ; then mv $(TMP_DIR)/src $(TMP_DIR)/$(DEB_TAR_SRCDIR) ; fi
 	mv $(TMP_DIR)/tools/depot_tools $(TMP_DIR)/$(DEB_TAR_SRCDIR)/depot_tools
-	cd $(TMP_DIR) && tar -c $(TAR_FLAGS) -f $(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT) --exclude=.svn $(DEB_TAR_SRCDIR)
+	## tar >= 1.23-2 now invokes xz when lzma is called, so we can no longer use --lzma because of the backports
+	cd $(TMP_DIR) && tar -cf - --exclude=.svn $(DEB_TAR_SRCDIR) | $(COMPRESS) > $(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT)
 	mkdir $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)
 	mv $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT) $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)
 	cd $(TMP_DIR) && tar zcf ../$(DEBIAN_NAME)_$(VERSION).orig.tar.gz $(DEBIAN_NAME)-$(VERSION)

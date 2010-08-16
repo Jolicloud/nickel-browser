@@ -1,2 +1,4 @@
 usr/lib/nickel-browser/plugins
 usr/lib/nickel-browser/resources
+etc/nickel-browser/policies/managed
+etc/nickel-browser/policies/recommended
