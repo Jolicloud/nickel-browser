@@ -1,3 +1,13 @@
+nickel-browser (6.0.472.33~r55501-1jolicloud0) robby; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 6.0.472.33~r55501
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 6.0.472.33~r55501-0ubuntu1~ucd1~jaunty
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 16 Aug 2010 11:08:05 +0200
+
 chromium-browser (6.0.472.33~r55501-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * Enable all codecs for HTML5 in Chromium, depending on which ffmpeg sumo lib
