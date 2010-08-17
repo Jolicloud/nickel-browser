@@ -1,4 +1,4 @@
-chromium-browser (6.0.472.33~r55501-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+chromium-browser (6.0.472.36~r55963-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * Enable all codecs for HTML5 in Chromium, depending on which ffmpeg sumo lib
     is installed, the set of usable codecs (at runtime) will still vary.
@@ -36,7 +36,7 @@ chromium-browser (6.0.472.33~r55501-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
   * Bump build-deps for gyp to >= 0.1~svn837
     - update debian/control
 
- -- Fabien Tassin <fta@ubuntu.com>  Sat, 14 Aug 2010 00:37:12 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 17 Aug 2010 08:44:32 +0200
 
 chromium-browser (5.0.375.125~r53311-0ubuntu1) maverick; urgency=low
 
