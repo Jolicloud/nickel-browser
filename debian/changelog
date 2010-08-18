@@ -1,3 +1,9 @@
+chromium-browser (6.0.472.36~r55963-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
+
+  * New upstream release from the Stable Channel
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 17 Aug 2010 08:44:32 +0200
+
 nickel-browser (6.0.472.33~r55501-1jolicloud0) robby; urgency=low
 
   [ Benjamin Ryzman ]
