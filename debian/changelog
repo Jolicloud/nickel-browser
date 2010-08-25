@@ -1,3 +1,13 @@
+nickel-browser (6.0.472.36~r55963-1jolicloud0) robby; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 6.0.472.36~r55963
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 6.0.472.36~r55963-0ubuntu1~ucd1~jaunty
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 18 Aug 2010 09:37:13 +0200
+
 chromium-browser (6.0.472.36~r55963-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
   * New upstream release from the Stable Channel
