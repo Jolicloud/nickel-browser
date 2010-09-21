@@ -1,0 +1,32 @@
+--- src.orig/chrome/browser/gtk/gtk_theme_provider.cc	2010-08-13 23:11:54.000000000 +0200
++++ src/chrome/browser/gtk/gtk_theme_provider.cc	2010-09-20 15:55:55.103009002 +0200
+ 
+ GtkWidget* GtkThemeProvider::BuildChromeButton() {
+   GtkWidget* button = HoverControllerGtk::CreateChromeButton();
+-  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(button), use_gtk_);
++  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(button), use_gtk_buttons_);
+   chrome_buttons_.push_back(button);
+ 
+   signals_->Connect(button, "destroy", G_CALLBACK(OnDestroyChromeButtonThunk),
+@@ -599,7 +600,7 @@
+   for (std::vector<GtkWidget*>::iterator it = chrome_buttons_.begin();
+        it != chrome_buttons_.end(); ++it) {
+     gtk_chrome_button_set_use_gtk_rendering(
+-        GTK_CHROME_BUTTON(*it), use_gtk_);
++        GTK_CHROME_BUTTON(*it), use_gtk_buttons_);
+   }
+ }
+ 
+--- src.orig/chrome/browser/gtk/gtk_theme_provider.h	2010-09-20 16:12:21.058771761 +0200
++++ src/chrome/browser/gtk/gtk_theme_provider.h	2010-09-20 16:13:06.554771082 +0200
+@@ -211,8 +211,9 @@
+   CHROMEGTK_CALLBACK_1(GtkThemeProvider, gboolean, OnSeparatorExpose,
+                        GdkEventExpose*);
+ 
+-  // Whether we should be using gtk rendering.
++  // Whether we should be using gtk rendering and buttons
+   bool use_gtk_;
++  bool use_gtk_buttons_ = false;
+ 
+   // GtkWidgets that exist only so we can look at their properties (and take
+   // their colors).

@@ -14,3 +14,4 @@ jolicloud_add_desktop_mode.patch
 jolicloud_user_agent_extension.patch
 jolicloud_custom_neterror_page.patch
 jolicloud_inhibit_desktop_resize.patch
+jolicloud_use_default_buttons.patch
