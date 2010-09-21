@@ -93,17 +93,6 @@ Index: src/chrome/browser/browser.cc
  }
  
  // static
-@@ -815,7 +838,9 @@
- // Browser, OnBeforeUnload handling:
- 
- bool Browser::ShouldCloseWindow() {
--  if (!CanCloseWithInProgressDownloads())
-+  if (!CanCloseWithInProgressDownloads()
-+    || (this->type() & TYPE_DESKTOP && !kill_signal_)
-+  )
-     return false;
- 
-   if (HasCompletedUnloadProcessing())
 @@ -1173,26 +1198,31 @@
    features |= FEATURE_DOWNLOADSHELF;
  #endif  // !defined(OS_CHROMEOS)
