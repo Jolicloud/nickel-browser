@@ -1,15 +1,4 @@
-nickel-browser (6.0.472.36~r55963-1jolicloud0) robby; urgency=low
-
-  [ Benjamin Ryzman ]
-  * Imported Upstream version 6.0.472.36~r55963
-
-  [ Fabien Tassin ]
-  * Imported Debian patch 6.0.472.36~r55963-0ubuntu1~ucd1~jaunty
-
-  [ Andrew Stormont ]
-  * Modify jolicloud_add_desktop_mode.patch to fix aw-snap on shutdown
-  * Force chrome to use the default icons
-  * Revert to e818aa3ffee1f8666b832ed82ca788461a38bf21
+nickel-browser (6.0.472.36~r55963-1jolicloud1) robby; urgency=low
 
   [ Jeremy Selier ]
   * Update the custom net error page.
@@ -19,6 +8,16 @@ nickel-browser (6.0.472.36~r55963-1jolicloud0) robby; urgency=low
   * Patch: Use default nickel buttons with gtk theme
 
  -- Andrew Stormont <andy@jolicloud.org>  Mon, 27 Sep 2010 14:30:53 +0200
+
+nickel-browser (6.0.472.36~r55963-1jolicloud0) robby; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 6.0.472.36~r55963
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 6.0.472.36~r55963-0ubuntu1~ucd1~jaunty
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 18 Aug 2010 09:37:13 +0200
 
 chromium-browser (6.0.472.36~r55963-0ubuntu1~ucd1~jaunty) jaunty; urgency=low
 
