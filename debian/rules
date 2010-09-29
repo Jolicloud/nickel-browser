@@ -9,7 +9,7 @@ DEBIAN_REVISION		:= $(shell echo $(DEBIAN_VERSION) | sed 's/^.*r\([^-]*\)-.*/\1/
 #DEBIAN_DIST_VERSION	:= $(shell lsb_release -sr)
 DEBIAN_DIST			:= Jolicloud
 DEBIAN_DIST_NAME	:= Jolicloud
-DEBIAN_DIST_VERSION	:= 1.0
+DEBIAN_DIST_VERSION	:= 1.1
 
 # DEB_TAR_SRCDIR has to be 'src' as this is what gyp expects :(
 DEB_TAR_SRCDIR := src
