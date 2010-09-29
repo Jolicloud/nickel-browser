@@ -1,3 +1,10 @@
+nickel-browser (6.0.472.36~r55963-1jolicloud2) robby; urgency=low
+
+  [ Jeremy Selier ]
+  * Adapt layout for smaller screens.
+
+ -- Andrew Stormont <andy@jolicloud.org>  Wed, 29 Sep 2010 14:04:29 +0200
+
 nickel-browser (6.0.472.36~r55963-1jolicloud1) robby; urgency=low
 
   [ Jeremy Selier ]
