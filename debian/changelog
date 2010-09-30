@@ -1,3 +1,10 @@
+nickel-browser (6.0.472.36~r55963-1jolicloud3) robby; urgency=low
+
+  [ Jeremy Selier ]
+  * Update to reflect the fact that we are now building on 1.1
+
+ -- Andrew Stormont <andy@jolicloud.org>  Thu, 30 Sep 2010 09:28:26 +0200
+
 nickel-browser (6.0.472.36~r55963-1jolicloud2) robby; urgency=low
 
   [ Jeremy Selier ]
