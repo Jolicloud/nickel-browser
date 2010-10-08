@@ -15,6 +15,7 @@ Build-Depends: cdbs,
 	g++-4.3 | g++-4.2,
 	libc6-dev-i386 [amd64],
 	g++-multilib [amd64],
+	hardening-wrapper,
 	python,
 	bison,
 	flex,
@@ -52,7 +53,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
 	chromium-browser-inspector,
-	chromium-codecs-ffmpeg | chromium-codecs-ffmpeg-extra
+	chromium-codecs-ffmpeg (>= 0.6) | chromium-codecs-ffmpeg-extra (>= 0.6)
 Suggests: chromium-browser-l10n
 Provides: www-browser, chromium-testsuite
 Replaces: chromium-testsuite

@@ -1,12 +1,12 @@
 ---
- webkit/glue/webkit_glue.cc |    9 ++++++++-
+ webkit/glue/user_agent.cc |    9 ++++++++-
  1 file changed, 8 insertions(+), 1 deletion(-)
 
-Index: src/webkit/glue/webkit_glue.cc
+Index: src/webkit/glue/user_agent.cc
 ===================================================================
---- src.orig/webkit/glue/webkit_glue.cc
-+++ src/webkit/glue/webkit_glue.cc
-@@ -409,27 +409,34 @@
+--- src.orig/webkit/glue/user_agent.cc
++++ src/webkit/glue/user_agent.cc
+@@ -94,26 +94,33 @@
    // TODO(port): figure out correct locale
    const char kUserAgentLocale[] = "en-US";
  
@@ -36,9 +36,8 @@ Index: src/webkit/glue/webkit_glue.cc
 +      realproduct.c_str(),
        product.c_str(),
        WEBKIT_VERSION_MAJOR,
-       WEBKIT_VERSION_MINOR
-       );
+       WEBKIT_VERSION_MINOR);
  }
  
- void SetUserAgentToDefault() {
-   BuildUserAgent(false, &g_user_agent->user_agent);
+ }  // namespace webkit_glue
+ 

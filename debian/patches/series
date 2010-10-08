@@ -1,5 +1,4 @@
 # system_v8.patch
 ubuntu_dont_overwrite_default_download_directory.patch
 chromium_useragent.patch
-no_tree_sink_v8.patch
 disable_dlog_and_dcheck_in_release_builds.patch

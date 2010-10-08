@@ -28,6 +28,28 @@ ifeq (0,$(PROCESSORS))
 PROCESSORS := 1
 endif
 
+# Enable the hardening wrapper (See https://wiki.ubuntu.com/Security/HardeningWrapper)
+# Don't do it on {hardy,jaunty}+amd64 as it doesn't build for nacl on amd64
+# Don't do it on maverick/armel either for now, it fails to link
+ifeq (armel,$(DEB_BUILD_ARCH))
+ifeq (,$(filter 10.10,$(DEBIAN_DIST_VERSION)))
+export DEB_BUILD_HARDENING=1
+else
+$(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 10.10 armel)
+endif
+else
+ifeq (,$(filter 8.04 9.04,$(DEBIAN_DIST_VERSION)))
+export DEB_BUILD_HARDENING=1
+else
+ifneq (amd64,$(DEB_BUILD_ARCH))
+export DEB_BUILD_HARDENING=1
+else
+$(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 8.04/9.04 amd64)
+endif
+endif
+endif
+$(warning ## DEB_BUILD_HARDENING=$(DEB_BUILD_HARDENING))
+
 # Disable SSE2
 GYP_DEFINES = disable_sse2=1
 
@@ -49,7 +71,7 @@ GYP_DEFINES += \
 	linux_use_tcmalloc=0 \
 	$(NULL)
 WANT_LZMA_DEBS := 0
-ifneq (,$(filter unstable development,$(DEBIAN_DIST)))
+ifneq (,$(filter 10.10 unstable development,$(DEBIAN_DIST)))
 # on $(DEB_BUILD_ARCH) and $(DEBIAN_DIST), enforce an armv7 with thumb build (or not)
 GYP_DEFINES += \
 	armv7=0 \
@@ -147,6 +169,7 @@ INSTALL_EXCLUDE_FILES = \
 	mksnapshot \
 	ncdecode_table \
 	ncdecode_tablegen \
+	ssl_false_start_blacklist_process \
 	protoc \
 	gfx_unittests \
 	linker.lock \
@@ -244,7 +267,7 @@ debian/stamp-makefile-build-perf: debian/stamp-makefile-build
 
 clean::
 	rm -f debian/configure-stamp debian/stamp-makefile-build-*
-	rm -f $(subst_files)
+	rm -f $(subst_files) *.cdbs-config_list
 
 # Install: there's no install rules in scons yet, do it manually
 common-install-prehook-impl::
