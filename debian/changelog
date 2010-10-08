@@ -1,3 +1,10 @@
+nickel-browser (6.0.472.36~r55963-1jolicloud4) robby; urgency=low
+
+  [ Romain Huet ]
+  * Update the custom error page patch to change button styles
+
+ -- Andrew Stormont <andy@jolicloud.org>  Fri, 08 Oct 2010 12:28:58 +0200
+
 nickel-browser (6.0.472.36~r55963-1jolicloud3) robby; urgency=low
 
   [ Jeremy Selier ]
