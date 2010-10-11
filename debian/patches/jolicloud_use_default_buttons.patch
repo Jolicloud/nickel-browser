@@ -1,5 +1,7 @@
---- src.orig/chrome/browser/gtk/gtk_theme_provider.cc	2010-09-21 16:38:14.419786697 +0200
-+++ src/chrome/browser/gtk/gtk_theme_provider.cc	2010-09-21 16:39:30.089602693 +0200
+Index: src/chrome/browser/gtk/gtk_theme_provider.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/gtk_theme_provider.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/gtk/gtk_theme_provider.cc	2010-10-11 13:39:07.172390860 +0200
 @@ -275,6 +275,7 @@
  void GtkThemeProvider::Init(Profile* profile) {
    profile->GetPrefs()->AddPrefObserver(prefs::kUsesSystemTheme, this);
@@ -8,9 +10,9 @@
  
    BrowserThemeProvider::Init(profile);
  }
-@@ -347,12 +348,13 @@
+@@ -347,11 +348,12 @@
    if ((type == NotificationType::PREF_CHANGED) &&
-       (*Details<std::wstring>(details).ptr() == prefs::kUsesSystemTheme))
+       (*Details<std::string>(details).ptr() == prefs::kUsesSystemTheme))
      use_gtk_ = profile()->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme);
 +    use_gtk_buttons_ = false;
  }
@@ -22,8 +24,7 @@
    chrome_buttons_.push_back(button);
  
    signals_->Connect(button, "destroy", G_CALLBACK(OnDestroyChromeButtonThunk),
-
-@@ -377,6 +377,10 @@
+@@ -375,6 +377,10 @@
    return use_gtk_;
  }
  
@@ -34,7 +35,7 @@
  GdkColor GtkThemeProvider::GetGdkColor(int id) const {
    return gfx::SkColorToGdkColor(GetColor(id));
  }
-@@ -599,7 +600,7 @@
+@@ -586,7 +592,7 @@
    for (std::vector<GtkWidget*>::iterator it = chrome_buttons_.begin();
         it != chrome_buttons_.end(); ++it) {
      gtk_chrome_button_set_use_gtk_rendering(
@@ -43,8 +44,10 @@
    }
  }
  
---- src.orig/chrome/browser/gtk/gtk_theme_provider.h	2010-09-20 16:12:21.058771761 +0200
-+++ src/chrome/browser/gtk/gtk_theme_provider.h		2010-09-20 16:13:06.554771082 +0200
+Index: src/chrome/browser/gtk/gtk_theme_provider.h
+===================================================================
+--- src.orig/chrome/browser/gtk/gtk_theme_provider.h	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/gtk/gtk_theme_provider.h	2010-10-11 13:37:04.552393580 +0200
 @@ -68,8 +68,9 @@
    // FIXME
    GtkWidget* CreateToolbarSeparator();
@@ -56,7 +59,7 @@
  
    // A wrapper around ThemeProvider::GetColor, transforming the result to a
    // GdkColor.
-@@ -211,8 +211,9 @@
+@@ -223,8 +224,9 @@
    CHROMEGTK_CALLBACK_1(GtkThemeProvider, gboolean, OnSeparatorExpose,
                         GdkEventExpose*);
  
@@ -67,19 +70,22 @@
  
    // GtkWidgets that exist only so we can look at their properties (and take
    // their colors).
-
---- src.orig/chrome/browser/gtk/custom_button.cc	2010-09-21 19:36:43.604158368 +0200
-+++ src/chrome/browser/gtk/custom_button.cc		2010-09-21 19:40:31.388158362 +0200
-@@ -343,5 +343,5 @@
+Index: src/chrome/browser/gtk/custom_button.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/custom_button.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/gtk/custom_button.cc	2010-10-11 13:37:04.552393580 +0200
+@@ -341,5 +341,5 @@
  }
  
  bool CustomDrawButton::UseGtkTheme() {
 -  return theme_provider_ && theme_provider_->UseGtkTheme();
 +  return theme_provider_ && theme_provider_->UseGtkButtons();
  }
---- src.orig/chrome/browser/gtk/reload_button_gtk.cc	2010-09-21 19:46:16.944158357 +0200
-+++ src/chrome/browser/gtk/reload_button_gtk.cc		2010-09-21 19:47:02.080116259 +0200
-@@ -100,7 +100,7 @@
+Index: src/chrome/browser/gtk/reload_button_gtk.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/reload_button_gtk.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/gtk/reload_button_gtk.cc	2010-10-11 13:41:16.122390937 +0200
+@@ -178,7 +178,7 @@
  
  gboolean ReloadButtonGtk::OnExpose(GtkWidget* widget,
                                     GdkEventExpose* e) {
@@ -88,7 +94,7 @@
      return FALSE;
    return ((visible_mode_ == MODE_RELOAD) ? reload_ : stop_).OnExpose(
        widget, e, hover_controller_.GetCurrentValue());
-@@ -183,9 +183,9 @@
+@@ -206,9 +206,9 @@
  }
  
  void ReloadButtonGtk::UpdateThemeButtons() {
@@ -97,15 +103,13 @@
  
 -  if (use_gtk) {
 +  if (use_gtk_buttons) {
-     GdkPixbuf* pixbuf = gtk_widget_render_icon(widget(),
-         (intended_mode_ == MODE_RELOAD) ? GTK_STOCK_REFRESH : GTK_STOCK_STOP,
-         GTK_ICON_SIZE_SMALL_TOOLBAR, NULL);
-@@ -214,5 +214,5 @@
+     gtk_widget_ensure_style(widget());
+     GtkIconSet* icon_set = gtk_style_lookup_icon_set(
+         widget()->style,
+@@ -251,5 +251,5 @@
+     gtk_widget_set_double_buffered(widget(), FALSE);
    }
  
-   gtk_chrome_button_set_use_gtk_rendering(
--      GTK_CHROME_BUTTON(widget_.get()), use_gtk);
-+      GTK_CHROME_BUTTON(widget_.get()), use_gtk_buttons);
+-  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(widget()), use_gtk);
++  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(widget()), use_gtk_buttons);
  }
-
-
