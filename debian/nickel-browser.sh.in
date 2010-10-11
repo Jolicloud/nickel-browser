@@ -38,18 +38,14 @@ else
   LD_LIBRARY_PATH=$LIBDIR
 fi
 
-# icedtea6-plugin needs the xul libdir (See LP: #529242)
-if [ -e /usr/bin/xulrunner ] ; then
-  LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/xulrunner-`/usr/bin/xulrunner --gre-version`
-fi
-
 export LD_LIBRARY_PATH
 
 # For the Default Browser detection to work, we need to give access
 # to xdg-settings. Also set CHROME_WRAPPER in case xdg-settings is
 # not able to do anything useful
 export PATH="$LIBDIR:$PATH"
-export CHROME_WRAPPER=true
+export CHROME_WRAPPER="`readlink -f "$0"`"
+export CHROME_DESKTOP=$APPNAME.desktop
 
 # lsb_release is slow so try to source the static file /etc/lsb-release
 # instead, and fallback to lsb_release if we didn't get the information we need

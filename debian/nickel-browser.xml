@@ -5,7 +5,7 @@
     <web-browser>
       <name>Chromium</name>
       <executable>nickel-browser</executable>
-      <command>nickel-browser %s</command>
+      <command>/usr/bin/nickel-browser %s</command>
       <icon-name>nickel-browser</icon-name>
       <run-in-terminal>false</run-in-terminal>
       <netscape-remote>false</netscape-remote>
