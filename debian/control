@@ -54,7 +54,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 	xdg-utils,
 	nickel-browser-inspector,,
 	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-nonfree (>= 0.6)
-Recommends: nickel-browser-l10n
+Recommends: nickel-browser-l10n, google-talkplugin
 Provides: www-browser, jolicloud-webapps-engine
 Description: Nickel browser
  Nickel is an open-source browser project that aims to build a safer, faster,
