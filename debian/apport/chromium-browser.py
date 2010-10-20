@@ -11,7 +11,7 @@ option) any later version.  See http://www.gnu.org/copyleft/gpl.html for
 the full text of the license.
 '''
 
-import os
+import os, sys, getopt
 import time
 from stat import *
 import re
@@ -43,6 +43,7 @@ RELATED_PACKAGES = [
     'rhythmbox-plugins',
     'totem-mozilla',
     'icedtea6-plugin',
+    'moonlight-plugin-chromium',
     'sun-java6-bin',
     'acroread',
     # chrome
@@ -94,8 +95,11 @@ def user_prefs(report, file):
         report['ChromiumPrefs'] += "browser/check_default_browser = **unset** (no such key yet)\n"
 
     if 'theme' in entry['extensions']:
-        report['ChromiumPrefs'] += "extensions/theme/use_system = " + \
-            str(entry['extensions']['theme']['use_system']) + "\n"
+        if 'use_system' in entry['extensions']['theme']:
+            report['ChromiumPrefs'] += "extensions/theme/use_system = " + \
+                  str(entry['extensions']['theme']['use_system']) + "\n"
+        else:
+            report['ChromiumPrefs'] += "extensions/theme/use_system = **unset** (no such key)\n"
 
     # list entensions+versions
     report['ChromiumPrefs'] += "extensions/settings =\n"
@@ -182,7 +186,7 @@ def get_envs(envs):
         s += env + " = " + str(os.getenv(env)) + "\n"
     return s
 
-def add_info(report):
+def add_info(report, userdir = None):
     apport.hookutils.attach_related_packages(report, RELATED_PACKAGES)
     installed_version(report, RELATED_PACKAGES)
 
@@ -192,7 +196,13 @@ def add_info(report):
         report['CrashDB'] = 'ubuntu'
 
     try:
-        report['chromium-default'] = open('/etc/chromium-browser/default').read()
+        fd = open('/etc/chromium-browser/default')
+        report['chromium-default'] = ""
+        for l in fd.readlines():
+            if re.match('^(#|$)', l):
+                continue
+            report['chromium-default'] += l
+        fd.close()
     except IOError:
         pass
 
@@ -213,7 +223,7 @@ def add_info(report):
             '/desktop/gnome/interface/icon_theme',
             '/desktop/gnome/interface/gtk_theme',
             ])
-    user_dir = get_user_profile_dir(report)
+    user_dir = userdir if userdir is not None else get_user_profile_dir(report)
     user_prefs(report, user_dir + "/Preferences")
 
     list_installed_plugins(report)
@@ -228,7 +238,20 @@ def add_info(report):
 
 ## DEBUGING ##
 if __name__ == '__main__':
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "-u:", [ 'user-dir=' ])
+    except getopt.GetoptError, err:
+        print str(err)
+        sys.exit(2)
+
+    userdir = None
+    for o, a in opts:
+        if o in ("-u", "--user-dir"):
+            userdir = a
+        else:
+          assert False, "unhandled option"
+
     report = {}
-    add_info(report)
+    add_info(report, userdir = userdir)
     for key in report:
         print '[%s]\n%s\n' % (key, report[key])
