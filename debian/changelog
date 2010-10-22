@@ -1,13 +1,39 @@
-chromium-browser (7.0.517.36~r61761-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+chromium-browser (7.0.517.41~r62167-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
 
+  * New upstream Major release from the Stable Channel (LP: #663523), also
+    fixing the following security issues:
+    - [48225] [51727] Medium, Possible autofill / autocomplete profile
+      spamming. Credit to Google Chrome Security Team (Inferno).
+    - [48857] High, Crash with forms. Credit to the Chromium development
+      community.
+    - [50428] Critical, Browser crash with form autofill. Credit to the
+      Chromium development community.
+    - [51680] High, Possible URL spoofing on page unload. Credit to kuzzcc;
+      plus independent discovery by Jordi Chancel.
+    - [53002] Low, Pop-up block bypass. Credit to kuzzcc.
+    - [53985] Medium, Crash on shutdown with Web Sockets. Credit to the
+      Chromium development community.
+    - [54132] Low, Bad construction of PATH variable. Credit to Dan Rosenberg,
+      Virtual Security Research.
+    - [54500] High, Possible memory corruption with animated GIF. Credit to
+      Simon Schaak.
+    - [54794] High, Failure to sandbox worker processes on Linux. Credit to
+      Google Chrome Security Team (Chris Evans).
+    - [56451] High, Stale elements in an element map. Credit to Michal Zalewski
+      of the Google Security Team.
   * Drop the -fno-tree-sink workaround for the armel gcc inlining bug now that the
     strict-aliasing issue in dtoa has been fixed
     - drop debian/patches/no_tree_sink_v8.patch
     - update debian/patches/series
   * Drop the xdg-mime patch now that we catched up with v7
     - drop debian/patches/xdg-utils-update.patch
+  * Disable -Werror when building with gcc 4.5 until 
+    http://code.google.com/p/chromium/issues/detail?id=49533 gets fixed
+    - update debian/rules
+  * Fix the apport hook crash when the use_system key is unset (LP: #660579)
+    - update debian/apport/chromium-browser.py
 
- -- Fabien Tassin <fta@ubuntu.com>  Fri, 08 Oct 2010 09:43:57 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 20 Oct 2010 17:56:02 +0200
 
 chromium-browser (6.0.472.63~r59945-0ubuntu2) maverick; urgency=low
 

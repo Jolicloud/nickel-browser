@@ -133,6 +133,11 @@ ifeq (4.4,$(CC_VERSION))
 GYP_DEFINES += no_strict_aliasing=1 gcc_version=44
 endif
 
+# See http://code.google.com/p/chromium/issues/detail?id=49533
+ifeq (4.5,$(CC_VERSION))
+GYP_DEFINES += werror=$(NULL)
+endif
+
 ifeq (1,$(WANT_LZMA_SRC))
 TAR_EXT   := lzma
 TAR_FLAGS := --lzma
@@ -561,7 +566,10 @@ endif
 endif
 	# Checkout (drop the previous content and retry if gclient failed, see http://crbug.com/39954)
 	cd $(TMP_DIR) && ./tools/depot_tools/gclient update --nohooks $(REVISION) || \
-	  ( rm -rf $(foreach dir,src [0-9]*,$(wildcard $(TMP_DIR)/$(dir))) ; ./tools/depot_tools/gclient update --nohooks $(REVISION) )
+	  ( perl -i -pe 's,http://src.chromium.org/git,http://git.chromium.org/git,' */DEPS ; \
+	    ./tools/depot_tools/gclient update --nohooks $(REVISION) ) || \
+	  ( rm -rf $(foreach dir,src [0-9]*,$(wildcard $(TMP_DIR)/$(dir))) ; \
+	   ./tools/depot_tools/gclient update --nohooks $(REVISION) )
 
 ifneq (,$(LOCAL_BRANCH))
 	rm -rf $(TMP_DDIR)
