@@ -1,3 +1,27 @@
+nickel-browser (7.0.517.41~r62167-1jolicloud3) robby-1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 7.0.517.36~r61761
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 7.0.517.36~r61761-0ubuntu1~ucd~beta1~lucid
+
+  [ Benjamin Ryzman ]
+  * Update jolicloud_user_agent_extension.patch
+  * Update jolicloud_use_default_buttons.patch
+  * Update jolicloud_set_app_icon_from_desktop_file.patch
+  * Update jolicloud_add_desktop_mode.patch
+  * Recommend google-talkplugin to ease installation
+  * Imported Upstream version 7.0.517.41~r62167
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 7.0.517.41~r62167-0ubuntu1~ucd~beta3~lucid
+
+  [ Benjamin Ryzman ]
+  * Fix fullscreen issue
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 27 Oct 2010 12:36:40 +0200
+
 chromium-browser (7.0.517.41~r62167-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
 
   * New upstream Major release from the Stable Channel (LP: #663523), also
