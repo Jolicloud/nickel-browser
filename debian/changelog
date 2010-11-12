@@ -1,4 +1,14 @@
-chromium-browser (7.0.517.41~r62167-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
+chromium-browser (8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+
+  * New release from the Beta Channel
+  * Work-around a gcc 4.5 miscompilation bug causing regression in the
+    omnibar, breaking searches (LP: #664584)
+    - add debian/patches/gcc-4.5-build-workaround.patch
+    - update debian/patches/series
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 12 Nov 2010 03:06:54 +0100
+
+chromium-browser (7.0.517.41~r62167-0ubuntu1) natty; urgency=high
 
   * New upstream Major release from the Stable Channel (LP: #663523), also
     fixing the following security issues:
@@ -33,7 +43,7 @@ chromium-browser (7.0.517.41~r62167-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
   * Fix the apport hook crash when the use_system key is unset (LP: #660579)
     - update debian/apport/chromium-browser.py
 
- -- Fabien Tassin <fta@ubuntu.com>  Wed, 20 Oct 2010 17:56:02 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 19 Oct 2010 22:36:19 +0200
 
 chromium-browser (6.0.472.63~r59945-0ubuntu2) maverick; urgency=low
 
