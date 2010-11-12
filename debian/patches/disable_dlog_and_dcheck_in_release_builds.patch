@@ -6,10 +6,10 @@ Index: src/base/logging.h
 ===================================================================
 --- src.orig/base/logging.h
 +++ src/base/logging.h
-@@ -382,17 +382,17 @@
- //   #ifndef NDEBUG
- //     foo.CheckThatFoo();
- //   #endif
+@@ -495,17 +495,17 @@
+ #define CHECK_LT(val1, val2) CHECK_OP(LT, < , val1, val2)
+ #define CHECK_GE(val1, val2) CHECK_OP(GE, >=, val1, val2)
+ #define CHECK_GT(val1, val2) CHECK_OP(GT, > , val1, val2)
  
  // http://crbug.com/16512 is open for a real fix for this.  For now, Windows
  // uses OFFICIAL_BUILD and other platforms use the branding flag when NDEBUG is
@@ -17,11 +17,11 @@ Index: src/base/logging.h
  #if ( defined(OS_WIN) && defined(OFFICIAL_BUILD)) || \
 -    (!defined(OS_WIN) && defined(NDEBUG) && defined(GOOGLE_CHROME_BUILD))
 +    (!defined(OS_WIN) && defined(NDEBUG))
+ // Used by unit tests.
+ #define LOGGING_IS_OFFICIAL_BUILD
+ 
  // In order to have optimized code for official builds, remove DLOGs and
  // DCHECKs.
- #define OMIT_DLOG_AND_DCHECK 1
- #endif
+ #define ENABLE_DLOG 0
+ #define ENABLE_DCHECK 0
  
- #ifdef OMIT_DLOG_AND_DCHECK
- 
- #define DLOG(severity) \

@@ -15,3 +15,4 @@ jolicloud_custom_neterror_page.patch
 jolicloud_inhibit_desktop_resize.patch
 jolicloud_use_default_buttons.patch
 jolicloud-fix-maximize-with-newer-metacity.patch
+gcc-4.5-build-workaround.patch
