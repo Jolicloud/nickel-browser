@@ -1,3 +1,13 @@
+nickel-browser (8.0.552.200~r65749-1jolicloud1) robby-1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 8.0.552.200~r65749
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Fri, 12 Nov 2010 12:24:49 +0100
+
 chromium-browser (8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New release from the Beta Channel
