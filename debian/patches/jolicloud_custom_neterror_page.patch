@@ -1,7 +1,5 @@
-Index: src/chrome/renderer/resources/neterror.html
-===================================================================
---- src.orig/chrome/renderer/resources/neterror.html	2010-08-13 23:12:02.000000000 +0200
-+++ src/chrome/renderer/resources/neterror.html	2010-08-16 13:46:13.723641232 +0200
+--- a/chrome/renderer/resources/neterror.html
++++ b/chrome/renderer/resources/neterror.html
 @@ -73,6 +73,45 @@
    height: 0 !important;
  }

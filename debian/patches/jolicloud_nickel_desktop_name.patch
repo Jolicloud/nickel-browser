@@ -1,10 +1,8 @@
-Index: src/chrome/browser/shell_integration_linux.cc
-===================================================================
---- src.orig/chrome/browser/shell_integration_linux.cc	2010-04-14 21:00:11.000000000 +0200
-+++ src/chrome/browser/shell_integration_linux.cc	2010-05-05 13:10:10.223265357 +0200
-@@ -48,7 +48,7 @@
+--- a/chrome/browser/shell_integration_linux.cc
++++ b/chrome/browser/shell_integration_linux.cc
+@@ -190,7 +190,7 @@
    std::string name;
-   if (env_getter->GetEnv("CHROME_DESKTOP", &name) && !name.empty())
+   if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
      return name;
 -  return "chromium-browser.desktop";
 +  return "nickel-browser.desktop";

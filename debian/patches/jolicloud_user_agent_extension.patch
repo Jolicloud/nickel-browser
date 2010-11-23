@@ -1,8 +1,6 @@
-Index: src/webkit/glue/user_agent.cc
-===================================================================
---- src.orig/webkit/glue/user_agent.cc	2010-10-11 13:26:03.234267902 +0200
-+++ src/webkit/glue/user_agent.cc	2010-10-11 13:26:26.223641038 +0200
-@@ -68,7 +68,7 @@
+--- a/webkit/glue/user_agent.cc
++++ b/webkit/glue/user_agent.cc
+@@ -70,7 +70,7 @@
        os_minor_version,
        os_bugfix_version
  #else

@@ -5,16 +5,9 @@ See http://crbug.com/41887
  chrome/chrome_browser.gypi |    7 +++++++
  1 file changed, 7 insertions(+)
 
-Index: src/chrome/chrome_browser.gypi
-===================================================================
---- src.orig/chrome/chrome_browser.gypi
-+++ src/chrome/chrome_browser.gypi
-@@ -4057,16 +4057,23 @@
-                   'action': [
-                     '<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)protoc<(EXECUTABLE_SUFFIX)',
-                     'browser/metrics/system_metrics.proto',
-                     '--cpp_out=<(INTERMEDIATE_DIR)/chrome',
-                   ],
+--- a/chrome/chrome_browser.gypi
++++ b/chrome/chrome_browser.gypi
+@@ -4067,6 +4067,13 @@
                  },
                ],
              }],
@@ -28,8 +21,3 @@ Index: src/chrome/chrome_browser.gypi
            ],
            # Exclude files that should be excluded for all non-Windows platforms.
            'sources!': [
-             'browser/accessibility/browser_accessibility_win.cc',
-             'browser/accessibility/browser_accessibility_win.h',
-             'browser/accessibility/browser_accessibility_manager_win.cc',
-             'browser/accessibility/browser_accessibility_manager_win.h',
-             'browser/aeropeek_manager.cc',

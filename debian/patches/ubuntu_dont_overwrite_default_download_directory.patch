@@ -5,16 +5,9 @@ Restore the default Downloads location used on Ubuntu.
  chrome/common/chrome_paths_linux.cc |   15 ---------------
  1 file changed, 15 deletions(-)
 
-Index: src/chrome/common/chrome_paths_linux.cc
-===================================================================
---- src.orig/chrome/common/chrome_paths_linux.cc
-+++ src/chrome/common/chrome_paths_linux.cc
-@@ -41,34 +41,19 @@
- }
- 
- bool GetUserDocumentsDirectory(FilePath* result) {
-   scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DOCUMENTS", "Documents");
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -38,24 +38,9 @@
    return true;
  }
  
@@ -39,8 +32,3 @@ Index: src/chrome/common/chrome_paths_linux.cc
    return true;
  }
  
- bool GetUserDesktop(FilePath* result) {
-   scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DESKTOP", "Desktop");
-   return true;
- }

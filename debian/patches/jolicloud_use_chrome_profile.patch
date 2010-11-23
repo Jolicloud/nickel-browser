@@ -1,9 +1,7 @@
-Index: src/chrome/common/chrome_paths_linux.cc
-===================================================================
---- src.orig/chrome/common/chrome_paths_linux.cc	2010-03-12 09:22:17.000000000 +0100
-+++ src/chrome/common/chrome_paths_linux.cc	2010-03-12 09:23:00.000000000 +0100
-@@ -19,11 +19,7 @@
-       base::EnvironmentVariableGetter::Create());
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -20,11 +20,7 @@
+   scoped_ptr<base::Environment> env(base::Environment::Create());
    FilePath config_dir(
        base::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
 -#if defined(GOOGLE_CHROME_BUILD)
@@ -15,7 +13,7 @@ Index: src/chrome/common/chrome_paths_linux.cc
  }
  
 @@ -32,11 +28,7 @@
-       base::EnvironmentVariableGetter::Create());
+   scoped_ptr<base::Environment> env(base::Environment::Create());
    FilePath config_dir(
        base::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
 -#if defined(GOOGLE_CHROME_BUILD)
