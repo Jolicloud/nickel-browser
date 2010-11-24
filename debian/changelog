@@ -1,3 +1,26 @@
+nickel-browser (8.0.552.200~r65749-1jolicloud2) robby-1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 8.0.552.200~r65749
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid
+
+  [ Benjamin Ryzman ]
+  * fix jolicloud_use_liberation_fonts.patch
+  * fix jolicloud_set_app_icon_from_desktop_file.patch
+
+  [ Adam McDaniel ]
+  * Ran 'quilt refresh' on existing patch series
+  * Corrected 'jolicloud_add_desktop_mode' patch to be compatible with
+    Chromium v8
+
+  [ Benjamin Ryzman ]
+  * fix jolicloud_add_desktop_mode.patch
+  * fix jolicloud_set_app_icon_from_desktop_file.patch
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 24 Nov 2010 15:55:30 +0100
+
 chromium-browser (8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New release from the Beta Channel
