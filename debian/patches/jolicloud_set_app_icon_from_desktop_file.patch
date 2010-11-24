@@ -145,7 +145,12 @@ Index: src/chrome/browser/browser.cc
  // TODO(erikkay): There are multiple reasons why this could fail.  Should
  // this function return an error reason as well so that callers can show
  // reasonable errors?
-@@ -514,7 +516,7 @@
+@@ -510,11 +512,12 @@
+   UMA_HISTOGRAM_ENUMERATION("Extensions.AppLaunchContainer", container, 100);
+ 
+   // The app is not yet open.  Load it.
++  FilePath empty_icon(kEmptyIcon);
+   switch (container) {
      case extension_misc::LAUNCH_WINDOW:
      case extension_misc::LAUNCH_PANEL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
@@ -154,7 +159,7 @@ Index: src/chrome/browser/browser.cc
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, existing_tab);
-@@ -532,7 +534,8 @@
+@@ -532,7 +535,8 @@
      Profile* profile,
      Extension* extension,
      extension_misc::LaunchContainer container,
@@ -164,7 +169,7 @@ Index: src/chrome/browser/browser.cc
    GURL url;
    if (!url_input.is_empty()) {
      if (extension)
-@@ -550,6 +553,15 @@
+@@ -550,6 +554,15 @@
    bool as_panel = extension && (container == extension_misc::LAUNCH_PANEL);
    Browser* browser = Browser::CreateForApp(app_name, extension, profile,
                                             as_panel);
@@ -180,7 +185,7 @@ Index: src/chrome/browser/browser.cc
    TabContents* contents =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    contents->GetMutableRendererPrefs()->can_accept_load_drops = false;
-@@ -576,7 +588,7 @@
+@@ -576,7 +589,7 @@
  // static
  TabContents* Browser::OpenApplicationWindow(Profile* profile, GURL& url) {
    return OpenApplicationWindow(profile, NULL, extension_misc::LAUNCH_WINDOW,
@@ -189,7 +194,7 @@ Index: src/chrome/browser/browser.cc
  }
  
  // static
-@@ -678,6 +690,15 @@
+@@ -678,6 +691,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -205,12 +210,12 @@ Index: src/chrome/browser/browser.cc
  std::string Browser::GetWindowPlacementKey() const {
    std::string name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -750,6 +771,18 @@
+@@ -750,6 +772,18 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
 +GURL Browser::GetURLForCurrentTab() const {
-+  TabContents* contents = tabstrip_model_.GetSelectedTabContents();
++  TabContents* contents = tabstrip_model()->GetSelectedTabContents();
 +  GURL url;
 +
 +  // |contents| can be NULL because GetWindowTitleForCurrentTab is called by the
@@ -224,7 +229,7 @@ Index: src/chrome/browser/browser.cc
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents =
        tab_handler_->GetTabStripModel()->GetSelectedTabContents();
-@@ -2030,6 +2063,7 @@
+@@ -2030,6 +2064,7 @@
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
    prefs->RegisterDictionaryPref(prefs::kBrowserWindowPlacement);
@@ -232,7 +237,7 @@ Index: src/chrome/browser/browser.cc
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterIntegerPref(prefs::kDevToolsSplitLocation, -1);
    prefs->RegisterDictionaryPref(prefs::kPreferencesWindowPlacement);
-@@ -4208,10 +4242,14 @@
+@@ -4208,10 +4243,14 @@
    std::string window_pref(prefs::kBrowserWindowPlacement);
    window_pref.append("_");
    window_pref.append(app_name);
