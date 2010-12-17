@@ -1,3 +1,69 @@
+chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #689849)
+    This release fixes the following security issues:
+    - [64-bit Linux only] [56449] High Bad validation for message
+      deserialization on 64-bit builds. Credit to Lei Zhang of the Chromium
+      development community.
+    - [60761] Medium, Bad extension can cause browser crash in tab handling.
+      Credit to kuzzcc.
+    - [63529] Low, Browser crash with NULL pointer in web worker handling.
+      Credit to Nathan Weizenbaum of Google.
+    - [63866] Medium, Out-of-bounds read in CSS parsing. Credit to Chris Rohlf.
+    - [64959] High, Stale pointers in cursor handling. Credit to Sławomir
+      Błażek and Sergey Glazunov.
+  * Don't build with PIE on Natty/armel, for the same reason as for Maverick
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 14 Dec 2010 10:25:11 +0100
+
+chromium-browser (8.0.552.215~r67652-0ubuntu1) natty; urgency=high
+
+  * New upstream Major release from the Stable Channel (LP: #684502), also
+    fixing the following security issues:
+    - [17655] Low, Possible pop-up blocker bypass. Credit to Google Chrome
+      Security Team (SkyLined).
+    - [55745] Medium, Cross-origin video theft with canvas. Credit to Nirankush
+      Panchbhai and Microsoft Vulnerability Research (MSVR).
+    - [56237] Low, Browser crash with HTML5 databases. Credit to Google Chrome
+      Security Team (Inferno).
+    - [58319] Low, Prevent excessive file dialogs, possibly leading to browser
+      crash. Credit to Cezary Tomczak (gosu.pl).
+    - [59554] High, Use after free in history handling. Credit to Stefan
+      Troger.
+    - [59817] Medium, Make sure the “dangerous file types” list is uptodate
+      with the Windows platforms. Credit to Billy Rios of the Google Security
+      Team.
+    - [61701] Low, Browser crash with HTTP proxy authentication. Credit to
+      Mohammed Bouhlel.
+    - [61653] Medium, Out-of-bounds read regression in WebM video support.
+      Credit to Google Chrome Security Team (Chris Evans), based on earlier
+      testcases from Mozilla and Microsoft (MSVR).
+    - [62127] High, Crash due to bad indexing with malformed video. Credit to
+      miaubiz.
+    - [62168] Medium, Possible browser memory corruption via malicious
+      privileged extension. Credit to kuzzcc.
+    - [62401] High, Use after free with SVG animations. Credit to Sławomir
+      Błażek.
+    - [63051] Medium, Use after free in mouse dragging event handling. Credit
+      to kuzzcc.
+    - [63444] High, Double free in XPath handling. Credit to Yang Dingning from
+      NCNIPC, Graduate University of Chinese Academy of Sciences.
+  * Work-around a gcc 4.5 miscompilation bug causing regression in the
+    omnibar, breaking searches (LP: #664584)
+    - add debian/patches/gcc-4.5-build-workaround.patch
+    - update debian/patches/series
+  * Automatically merge Launchpad translations with the upstream grit files and
+    produce patches in the source tarball. Apply those patches at build time
+    during configure
+    - update debian/rules
+  * Add x-scheme-handler/http and x-scheme-handler/https to the MimeType
+    entry of the desktop file (needed on Natty where handlers are no longer
+    searched for in gconf)
+    - update debian/chromium-browser.desktop
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 02 Dec 2010 20:32:06 +0100
+
 nickel-browser (8.0.552.200~r65749-1jolicloud2) robby-1.1; urgency=low
 
   [ Benjamin Ryzman ]
@@ -21,15 +87,35 @@ nickel-browser (8.0.552.200~r65749-1jolicloud2) robby-1.1; urgency=low
 
  -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 24 Nov 2010 15:55:30 +0100
 
-chromium-browser (8.0.552.200~r65749-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+chromium-browser (7.0.517.44~r64615-0ubuntu1) natty; urgency=high
 
-  * New release from the Beta Channel
-  * Work-around a gcc 4.5 miscompilation bug causing regression in the
+  * New upstream Major release from the Stable Channel (LP: #671420), also
+    fixing the following security issues:
+    - [51602] High, Use-after-free in text editing. Credit to David Bloom of
+      the Google Security Team, Google Chrome Security Team (Inferno) and
+      Google Chrome Security Team (Cris Neckar).
+    - [55257] High, Memory corruption with enormous text area. Credit to wushi
+      of team509.
+    - [58657] High, Bad cast with the SVG use element. Credit to the kuzzcc.
+    - [58731] High, Invalid memory read in XPath handling. Credit to Bui Quang
+      Minh from Bkis (www.bkis.com).
+    - [58741] High, Use-after-free in text control selections. Credit to
+      “vkouchna”.
+    - [59320] High, Integer overflows in font handling. Credit to Aki Helin of
+      OUSPG.
+    - [60055] High, Memory corruption in libvpx. Credit to Christoph Diehl.
+    - [60238] High, Bad use of destroyed frame object. Credit to various
+      developers, including “gundlach”.
+    - [60327] [60769] [61255] High, Type confusions with event objects. Credit
+      to “fam.lam” and Google Chrome Security Team (Inferno).
+    - [60688] High, Out-of-bounds array access in SVG handling. Credit to wushi
+      of team509.
+  * Work-around a gcc 4.5 miscompilation bug causing a regression in the
     omnibar, breaking searches (LP: #664584)
     - add debian/patches/gcc-4.5-build-workaround.patch
     - update debian/patches/series
 
- -- Fabien Tassin <fta@ubuntu.com>  Fri, 12 Nov 2010 03:06:54 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 04 Nov 2010 20:53:09 +0100
 
 nickel-browser (7.0.517.41~r62167-1jolicloud3) robby-1.1; urgency=low
 
