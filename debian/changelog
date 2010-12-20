@@ -1,3 +1,13 @@
+nickel-browser (9.0.597.19~r68937-1jolicloud1) robby-1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 9.0.597.19~r68937
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 9.0.597.19~r68937-0ubuntu1~ucd~beta3~lucid
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 20 Dec 2010 10:59:31 +0100
+
 chromium-browser (9.0.597.19~r68937-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
 
   * New upstream release from the Beta Channel
