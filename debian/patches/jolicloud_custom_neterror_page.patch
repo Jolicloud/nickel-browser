@@ -59,8 +59,8 @@ Index: src/chrome/renderer/resources/neterror.html
 +    document.getElementById('t').className = '';
 +  } else {      
 +    var url = document.querySelector('#errorSummary > p > strong').innerHTML.trim();
-+    if (url.indexOf('my.jolicloud.com') != -1 ||
-+        url.indexOf('dev.jolicloud.org') != -1) {
++    if (url.indexOf('//my.jolicloud.com') != -1 ||
++        url.indexOf('.dev.jolicloud.org') != -1) {
 +      document.addEventListener('contextmenu', function(e) {
 +        e.preventDefault();
 +      });
@@ -74,6 +74,11 @@ Index: src/chrome/renderer/resources/neterror.html
 +}
 +function reload() {
 +  var url = document.querySelector('#errorSummary > p > strong').innerHTML.trim();
++  if ((url.indexOf('//my.jolicloud.com') != -1 ||
++      url.indexOf('.dev.jolicloud.org') != -1) &&
++      url.indexOf('?') == -1) {
++    url = url + '?unique=' + (+new Date());
++  }
 +  window.location.href = url;
 +}
 +</script>
