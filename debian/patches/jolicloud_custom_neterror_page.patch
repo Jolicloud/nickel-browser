@@ -48,7 +48,7 @@ Index: src/chrome/renderer/resources/neterror.html
  </head>
  
  <script>
-@@ -103,45 +142,76 @@
+@@ -103,45 +142,81 @@
  if (window.screen.colorDepth >= 24)
    document.documentElement.setAttribute('high-color-depth', '');
  </script>
@@ -77,7 +77,7 @@ Index: src/chrome/renderer/resources/neterror.html
 +  if ((url.indexOf('//my.jolicloud.com') != -1 ||
 +      url.indexOf('.dev.jolicloud.org') != -1) &&
 +      url.indexOf('?') == -1) {
-+    url = url + '?unique=' + (+new Date());
++      url = url + '?unique=' + (+new Date());
 +  }
 +  window.location.href = url;
 +}
