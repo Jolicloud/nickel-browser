@@ -1,12 +1,13 @@
---- a/chrome/browser/browser.cc
-+++ b/chrome/browser/browser.cc
-@@ -2017,8 +2017,7 @@
-   if (home_page_pref &&
+Index: src/chrome/browser/ui/browser.cc
+===================================================================
+--- src.orig/chrome/browser/ui/browser.cc
++++ src/chrome/browser/ui/browser.cc
+@@ -1963,7 +1963,7 @@
        !home_page_pref->IsManaged() &&
        !prefs->HasPrefPath(prefs::kHomePage)) {
--    prefs->SetString(prefs::kHomePage,
+     prefs->SetString(prefs::kHomePage,
 -        GoogleURLTracker::kDefaultGoogleHomepage);
-+    prefs->SetString(prefs::kHomePage, "http://www.jolicloud.com/start");
++        "http://www.jolicloud.com/start");
    }
    const PrefService::Preference* home_page_is_new_tab_page_pref =
        prefs->FindPreference(prefs::kHomePageIsNewTabPage);
