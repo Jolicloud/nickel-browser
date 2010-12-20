@@ -1,4 +1,16 @@
-chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+chromium-browser (9.0.597.19~r68937-0ubuntu1~ucd~beta3~lucid) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+  * Drop the gcc 4.5 work-around, applied upstream
+    - remove debian/patches/gcc-4.5-build-workaround.patch
+    - update debian/patches/series
+  * Add libxtst-dev to Build-deps now that chromoting uses the XTest extension
+    to execute mouse and keyboard events
+    - update debian/control
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 17 Dec 2010 04:25:04 +0100
+
+chromium-browser (8.0.552.224~r68599-0ubuntu1) natty; urgency=high
 
   * New upstream release from the Stable Channel (LP: #689849)
     This release fixes the following security issues:
@@ -15,7 +27,7 @@ chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=
   * Don't build with PIE on Natty/armel, for the same reason as for Maverick
     - update debian/rules
 
- -- Fabien Tassin <fta@ubuntu.com>  Tue, 14 Dec 2010 10:25:11 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Mon, 13 Dec 2010 21:21:39 +0100
 
 chromium-browser (8.0.552.215~r67652-0ubuntu1) natty; urgency=high
 
