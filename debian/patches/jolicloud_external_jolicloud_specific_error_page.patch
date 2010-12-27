@@ -1,0 +1,38 @@
+Index: src/chrome/renderer/render_view.cc
+===================================================================
+--- src.orig/chrome/renderer/render_view.cc
++++ src/chrome/renderer/render_view.cc
+@@ -1584,6 +1584,7 @@
+ 
+ // WebViewDelegate ------------------------------------------------------------
+ 
++static const char kJolicloudNetErrorURL[] = "file:///usr/lib/nickel-browser/resources/jolicloud/neterror.html";
+ void RenderView::LoadNavigationErrorPage(WebFrame* frame,
+                                          const WebURLRequest& failed_request,
+                                          const WebURLError& error,
+@@ -1592,9 +1593,9 @@
+   GURL failed_url = error.unreachableURL;
+   std::string alt_html;
+   ExtensionRendererInfo* extension = NULL;
++  int resource_id;
+   if (html.empty()) {
+     // Use a local error page.
+-    int resource_id;
+     DictionaryValue error_strings;
+ 
+     if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
+@@ -1623,6 +1624,14 @@
+     alt_html = html;
+   }
+ 
++  if (resource_id == IDR_NET_ERROR_HTML) {
++    GURL net_error_url(kJolicloudNetErrorURL);
++    if (file_util::PathExists(FilePath(net_error_url.path()))) {
++      frame->loadRequest(WebKit::WebURLRequest(net_error_url));
++      return;
++    }
++  }
++
+   frame->loadHTMLString(alt_html,
+                         GURL(kUnreachableWebDataURL),
+                         failed_url,

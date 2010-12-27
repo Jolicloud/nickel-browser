@@ -16,3 +16,4 @@ jolicloud_inhibit_desktop_resize.patch
 jolicloud_use_default_buttons.patch
 jolicloud-fix-maximize-with-newer-metacity.patch
 gcc-4.5-build-workaround.patch
+jolicloud_external_jolicloud_specific_error_page.patch
