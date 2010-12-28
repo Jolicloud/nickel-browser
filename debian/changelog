@@ -1,3 +1,19 @@
+nickel-browser (8.0.552.224~r68599-1jolicloud1) robby1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 8.0.552.224~r68599
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid
+
+  [ Jeremy Selier ]
+  * Detect that url is in host and not in the callback.
+
+  [ Benjamin Ryzman ]
+  * Fix weird patch error
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Tue, 28 Dec 2010 13:49:08 +0100
+
 chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
 
   * New upstream release from the Stable Channel (LP: #689849)
