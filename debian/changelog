@@ -1,4 +1,10 @@
-nickel-browser (8.0.552.224~r68599-1jolicloud1) robby1.1; urgency=low
+nickel-browser (8.0.552.224~r68599-1jolicloud2) robby-1.1; urgency=low
+
+  * Add patch to fetch net error page from local file
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 27 Dec 2010 20:24:41 +0100
+
+nickel-browser (8.0.552.224~r68599-1jolicloud1) robby-1.1; urgency=low
 
   [ Benjamin Ryzman ]
   * Imported Upstream version 8.0.552.224~r68599
@@ -12,7 +18,7 @@ nickel-browser (8.0.552.224~r68599-1jolicloud1) robby1.1; urgency=low
   [ Benjamin Ryzman ]
   * Fix weird patch error
 
- -- Benjamin Ryzman <benjamin@jolicloud.org>  Tue, 28 Dec 2010 13:49:08 +0100
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 20 Dec 2010 16:09:02 +0100
 
 chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
 
