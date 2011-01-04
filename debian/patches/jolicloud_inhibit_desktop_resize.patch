@@ -1,6 +1,8 @@
---- a/chrome/browser/gtk/browser_window_gtk.cc
-+++ b/chrome/browser/gtk/browser_window_gtk.cc
-@@ -763,18 +763,26 @@
+Index: src/chrome/browser/gtk/browser_window_gtk.cc
+===================================================================
+--- src.orig/chrome/browser/gtk/browser_window_gtk.cc
++++ src/chrome/browser/gtk/browser_window_gtk.cc
+@@ -853,18 +853,26 @@
  }
  
  void BrowserWindowGtk::SetDesktop() {
@@ -24,7 +26,7 @@
 +
 +  // Decrease the desktop size by the size of the gnome-panel.
 +  // FIXME: Figure this out properly!
-+  rect.y = 25;
++  rect.y = 24;
 +  rect.height -= rect.y;
 +
 +  LOG(INFO) << "Setting browser size: " << rect.x << "x" << rect.y << "+" << rect.width << "+" << rect.height;
