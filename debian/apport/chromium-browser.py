@@ -46,6 +46,7 @@ RELATED_PACKAGES = [
     'moonlight-plugin-chromium',
     'sun-java6-bin',
     'acroread',
+    'google-talkplugin',
     # chrome
     'google-chrome-unstable',
     'google-chrome-beta',
