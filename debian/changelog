@@ -1,8 +1,12 @@
-nickel-browser (8.0.552.224~r68599-1jolicloud2) robby-1.1; urgency=low
+nickel-browser (8.0.552.224~r68599-1jolicloud3) robby-1.1; urgency=low
 
-  * Add patch to fetch net error page from local file
+  * Run make in parallel according to number of cores
+  * Set desktop window geometry to 24px less than the desktop height
+  * Rename jolicloud patch to use underscore, not dash
+  * Automatically resize desktop window upon screen geometry change
+  * Use same error page for Jolicloud Launcher and Jolicloud Web App
 
- -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 27 Dec 2010 20:24:41 +0100
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Thu, 13 Jan 2011 16:37:26 +0100
 
 nickel-browser (8.0.552.224~r68599-1jolicloud1) robby-1.1; urgency=low
 
