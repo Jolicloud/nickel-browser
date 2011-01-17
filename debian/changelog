@@ -1,3 +1,38 @@
+chromium-browser (8.0.552.237~r70801-0ubuntu1~ucd~stable2~lucid) lucid; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #702542)
+    This release fixes the following security issues:
+    - [58053] Medium, Browser crash in extensions notification handling. Credit
+      to Eric Roman of the Chromium development community.
+    - [65764] High, Bad pointer handling in node iteration. Credit to Sergey
+      Glazunov.
+    - [66560] High, Stale pointer with CSS + canvas. Credit to Sergey Glazunov.
+    - [66748] High, Stale pointer with CSS + cursors. Credit to Jan Tošovský.
+    - [67303] High, Bad memory access with mismatched video frame sizes. Credit
+      to Aki Helin of OUSPG; plus independent discovery by Google Chrome
+      Security Team (SkyLined) and David Warren of CERT.
+    - [67363] High, Stale pointer with SVG use element. Credited anonymously;
+      plus indepdent discovery by miaubiz.
+    - [67393] Medium, Uninitialized pointer in the browser triggered by rogue
+      extension. Credit to kuzzcc.
+    - [68115] High, Vorbis decoder buffer overflows. Credit to David Warren of
+      CERT.
+    - [68178] High, Bad cast in anchor handling. Credit to Sergey Glazunov.
+    - [68181] High, Bad cast in video handling. Credit to Sergey Glazunov.
+    - [68439] High, Stale rendering node after DOM node removal. Credit to
+      Martin Barbella; plus independent discovery by Google Chrome Security
+      Team (SkyLined).
+    - [68666] Critical, Stale pointer in speech handling. Credit to Sergey
+      Glazunov.
+  * Add the chrome/app/policy/policy_templates.grd template to the list
+    of templates translated in Launchpad
+    - update debian/rules
+  * Add Basque and Galician to the list of supported langs for the lang-packs
+    (translations from Launchpad/Rosetta)
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 13 Jan 2011 23:35:52 +0100
+
 nickel-browser (8.0.552.224~r68599-1jolicloud3) robby-1.1; urgency=low
 
   * Run make in parallel according to number of cores
@@ -24,7 +59,7 @@ nickel-browser (8.0.552.224~r68599-1jolicloud1) robby-1.1; urgency=low
 
  -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 20 Dec 2010 16:09:02 +0100
 
-chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+chromium-browser (8.0.552.224~r68599-0ubuntu1) natty; urgency=high
 
   * New upstream release from the Stable Channel (LP: #689849)
     This release fixes the following security issues:
@@ -41,7 +76,7 @@ chromium-browser (8.0.552.224~r68599-0ubuntu1~ucd~stable1~lucid) lucid; urgency=
   * Don't build with PIE on Natty/armel, for the same reason as for Maverick
     - update debian/rules
 
- -- Fabien Tassin <fta@ubuntu.com>  Tue, 14 Dec 2010 10:25:11 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Mon, 13 Dec 2010 21:21:39 +0100
 
 chromium-browser (8.0.552.215~r67652-0ubuntu1) natty; urgency=high
 
