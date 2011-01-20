@@ -1,3 +1,16 @@
+nickel-browser (8.0.552.237~r70801-1jolicloud1) robby-1.1; urgency=low
+
+  [ Benjamin Ryzman ]
+  * Always apply the app icon, whatever the tab URL
+  * Imported Upstream version 8.0.552.237~r70801
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 8.0.552.237~r70801-0ubuntu1~ucd~stable2~lucid
+
+  [ Benjamin Ryzman ]
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Mon, 17 Jan 2011 15:41:56 +0100
+
 chromium-browser (8.0.552.237~r70801-0ubuntu1~ucd~stable2~lucid) lucid; urgency=high
 
   * New upstream release from the Stable Channel (LP: #702542)
