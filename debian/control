@@ -1,18 +1,14 @@
 Source: nickel-browser
 Section: web
 Priority: optional
-Maintainer: Fabien Tassin <fta@ubuntu.com>
-Vcs-Bzr: https://code.launchpad.net/~chromium-team/chromium-browser/chromium-browser.head
-Homepage: http://code.google.com/chromium/
+Maintainer: Jolicloud Developers <developers@jolicloud.org>
 Build-Depends: cdbs,
 	debhelper (>= 5),
 	pkg-config,
 	lsb-release,
 	lzma,
-	gyp (>= 0.1~svn837),
 	quilt,
 	patchutils (>= 0.2.25),
-	g++-4.3 | g++-4.2,
 	libc6-dev-i386 [amd64],
 	g++-multilib [amd64],
 	hardening-wrapper,
@@ -20,6 +16,8 @@ Build-Depends: cdbs,
 	bison,
 	flex,
 	gperf,
+	yasm (>= 0.7),
+	libvpx-dev,
 	libjpeg62-dev,
 	libpng12-dev,
 	libbz2-dev,
@@ -37,6 +35,8 @@ Build-Depends: cdbs,
 	mesa-common-dev,
 	libgl1-mesa-dev,
 	libglu1-mesa-dev,
+	libxt-dev,
+	libxtst-dev,
 	libxss-dev,
 	libpango1.0-dev,
 	libglib2.0-dev,
@@ -52,13 +52,15 @@ Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
-	nickel-browser-inspector,,
+	nickel-browser-inspector,
 	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-nonfree (>= 0.6)
 Recommends: nickel-browser-l10n, google-talkplugin
-Provides: www-browser, jolicloud-webapps-engine
+Provides: www-browser, jolicloud-webapps-engine, chromium-testsuite
+Replaces: chromium-testsuite
+Conflicts: chromium-testsuite
 Description: Nickel browser
- Nickel is an open-source browser project that aims to build a safer, faster,
- and more stable way for all Internet users to experience the web.
+ Nickel is a fork of Chromium, an open-source browser project that aims to build
+ a safer, faster, and more stable way for all Internet users to experience the web.
  .
  This package contains the Nickel browser
 
@@ -68,6 +70,9 @@ Section: devel
 Priority: optional
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
+Provides: chromium-testsuite-dbg
+Replaces: chromium-testsuite-dbg
+Conflicts: chromium-testsuite-dbg
 Description: nickel-browser debug symbols
  Debug symbols for the Nickel browser
 
@@ -78,8 +83,8 @@ Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version}
 Breaks: nickel-browser (<< 3.0.197.0~svn20090804r22432)
 Replaces: nickel-browser (<< 3.0.197.0~svn20090804r22432)
 Description: nickel-browser language packages
- Nickel is an open-source browser project that aims to build a safer, faster,
- and more stable way for all Internet users to experience the web.
+ Nickel is a fork of Chromium, an open-source browser project that aims to build
+ a safer, faster, and more stable way for all Internet users to experience the web.
  .
  This package contains language packages for 53 languages:
  am, ar, bg, bn, ca, cs, da, de, el, en-GB, es, es-419, et, eu, fa, fi, fil, fr,
@@ -91,8 +96,73 @@ Architecture: all
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser
 Description: page inspector for the nickel-browser
- Nickel is an open-source browser project that aims to build a safer, faster,
- and more stable way for all Internet users to experience the web.
+ Nickel is a fork of Chromium, an open-source browser project that aims to build
+ a safer, faster, and more stable way for all Internet users to experience the web.
  .
  This package contains 'inspector', allowing web developpers to inspect any
  element of a web page at runtime (html, javascript, css, ..)
+
+Package: nickel-codecs-ffmpeg
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
+Conflicts: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
+Replaces: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
+Breaks: nickel-browser (<< 3.0.197.0~svn20090802r22252)
+Description: Free ffmpeg codecs for the Nickel Browser
+ Nickel is a fork of Chromium, an open-source browser project that aims to build
+ a safer, faster, and more stable way for all Internet users to experience the web.
+ .
+ This package contains the multi-threaded ffmpeg codecs needed for the HTML5
+ <audio> and <video> tags. Only the free ogg, vorbis and theora codecs are
+ included. See nickel-codecs-ffmpeg-extra for additionnal codecs
+
+Package: nickel-codecs-ffmpeg-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg (= ${binary:Version})
+Conflicts: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
+Replaces: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
+Description: nickel-codecs-ffmpeg debug symbols
+ Debug symbols for the free ffmpeg-mt codecs
+
+Package: nickel-codecs-ffmpeg-extra
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
+Conflicts: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree (<< 0.5+svn20100323r42310+42573+42709)
+Breaks: nickel-browser (<< 3.0.197.0~svn20090802r22252)
+Replaces: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree, nickel-browser
+Provides: nickel-codecs-ffmpeg-nonfree
+Description: Extra ffmpeg codecs for the Nickel Browser
+ Nickel is a fork of Chromium, an open-source browser project that aims to build
+ a safer, faster, and more stable way for all Internet users to experience the web.
+ .
+ This package contains the multi-threaded ffmpeg codecs needed for the HTML5
+ <audio> and <video> tags. In addition to the patent-free ogg, vorbis and theora codecs,
+ aac/ac3/mpeg4audio/h264/mov/mp3 are also included.
+ See nickel-codecs-ffmpeg if you prefer only the patent-free codecs
+
+Package: nickel-codecs-ffmpeg-extra-dbg
+Architecture: any
+Section: debug
+Priority: extra
+Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg-extra (= ${binary:Version})
+Conflicts: nickel-codecs-ffmpeg-dbg, nickel-codecs-ffmpeg-nonfree-dbg (<< 0.5+svn20100323r42310+42573+42709)
+Replaces: nickel-codecs-ffmpeg-dbg, nickel-codecs-ffmpeg-nonfree-dbg
+Provides: nickel-codecs-ffmpeg-nonfree-dbg
+Description: nickel-codecs-ffmpeg-extra debug symbols
+ Debug symbols for the extra ffmpeg-mt codecs
+
+Package: nickel-codecs-ffmpeg-nonfree
+Architecture: all
+Depends: nickel-codecs-ffmpeg-extra
+Description: dummy upgrade package
+ This is a transitional package so nickel-codecs-ffmpeg-nonfree users
+ get nickel-codecs-ffmpeg-extra on upgrade. It can be safely removed.
+
+Package: nickel-codecs-ffmpeg-nonfree-dbg
+Architecture: all
+Depends: nickel-codecs-ffmpeg-extra-dbg
+Description: dummy upgrade package
+ This is a transitional package so nickel-codecs-ffmpeg-nonfree-dbg users
+ get nickel-codecs-ffmpeg-extra-dbg on upgrade. It can be safely removed.

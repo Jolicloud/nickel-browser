@@ -1,3 +1,95 @@
+chromium-browser (10.0.648.82~r75062-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+
+  * New upstream release from the Beta Channel
+  * Bump the lang-pack package from Suggests to Recommends (LP: #689267)
+    - update debian/control
+  * Add libxt-dev to Build-deps needed by ppGoogleNaClPluginChrome
+    - update debian/control
+  * Fix the Webkit version in about:version (the build system expects the svn
+    or git directories to be available at build time)
+    - add debian/patches/webkit_rev_parser.patch
+    - update debian/patches/series
+  * Add the disk usage to the Apport hooks
+    - update debian/apport/chromium-browser.py
+  * Merge back the ffmpeg codecs (from the chromium-codecs-ffmpeg source package)
+    - update debian/rules
+    - update debian/control
+    - add debian/chromium-codecs-ffmpeg-extra.install
+    - add debian/chromium-codecs-ffmpeg.install
+  * Drop gyp from Build-Depends, use in-source gyp instead
+    - update debian/control
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 18 Feb 2011 15:19:15 +0100
+
+chromium-browser (9.0.597.94~r73967-0ubuntu1) natty; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #715357)
+    This release fixes the following security issues:
+    - [67234] High, Stale pointer in animation event handling. Credit to Rik
+      Cabanier.
+    - [68120] High, Use-after-free in SVG font faces. Credit to miaubiz.
+    - [69556] High, Stale pointer with anonymous block handling. Credit to
+      Martin Barbella.
+    - [69970] Medium, Out-of-bounds read in plug-in handling. Credit to Bill
+      Budge of Google.
+    - [70456] Medium, Possible failure to terminate process on out-of-memory
+      condition. Credit to David Warren of CERT/CC.
+  * Update the gl dlopen patch to search for libGLESv2.so.2 instead of .1
+    - update debian/patches/dlopen_sonamed_gl.patch
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 08 Feb 2011 20:18:51 +0100
+
+chromium-browser (9.0.597.84~r72991-0ubuntu1) natty; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #712655)
+    This release fixes the following security issues:
+    - [55831] High, Use-after-free in image loading. Credit to Aki Helin of
+      OUSPG.
+    - [59081] Low, Apply some restrictions to cross-origin drag + drop. Credit
+      to Google Chrome Security Team (SkyLined) and the Google Security Team
+      (Michal Zalewski, David Bloom).
+    - [62791] Low, Browser crash with extension with missing key. Credit to
+      Brian Kirchoff.
+    - [64669] Low, Handle merging of autofill profiles more gracefully. Credit
+      to Google Chrome Security Team (Inferno).
+    - [68244] Low, Browser crash with bad volume setting. Credit to Matthew
+      Heidermann.
+    - [69195] Critical, Race condition in audio handling. Credit to the gamers
+      of Reddit!
+  * Add the app/resources/app_strings.grd template to the list
+    of templates translated in Launchpad
+    - update debian/rules
+  * Drop the gcc 4.5 work-around, applied upstream
+    - remove debian/patches/gcc-4.5-build-workaround.patch
+    - update debian/patches/series
+  * Drop gcc 4.2/4.3 from Build-depends and remove the gcc 4.4 workarounds
+    now done in the upstream gyp files
+    - update debian/control
+    - update debian/rules
+  * Add libxtst-dev to Build-deps now that chromoting uses the XTest extension
+    to execute mouse and keyboard events
+    - update debian/control
+  * Remove GNOME_DESKTOP_SESSION_ID from the Apport report, it's useless
+    - update debian/apport/chromium-browser.py
+  * Add a system to enable/disable distribution specific patches from the quilt
+    series
+    - add debian/enable-dist-patches.pl
+    - update debian/rules
+  * Disable the gtk resize grip on Natty (LP: #703451)
+    Original patch by Cody Russell <crussell@ubuntu.com>, ported to v9
+    - add debian/patches/disable_gtk_resize_grip_on_natty.patch
+    - update debian/patches/series
+  * Fix the libgnutls dlopen to look for the sonamed lib
+    - add debian/patches/dlopen_libgnutls.patch
+    - update debian/patches/series
+  * Fix the libosmesa/libGLESv2/libEGL dlopen() to look for the sonamed libs.
+    This assumes either the libgles2-mesa + libegl1-mesa packages (better) or
+    the libosmesa6 package are installed
+    - add debian/patches/dlopen_sonamed_gl.patch
+    - update debian/patches/series
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 03 Feb 2011 22:56:37 +0100
+
 nickel-browser (8.0.552.237~r70801-1jolicloud1) robby-1.1; urgency=low
 
   [ Benjamin Ryzman ]
@@ -44,7 +136,7 @@ chromium-browser (8.0.552.237~r70801-0ubuntu1~ucd~stable2~lucid) lucid; urgency=
     (translations from Launchpad/Rosetta)
     - update debian/rules
 
- -- Fabien Tassin <fta@ubuntu.com>  Thu, 13 Jan 2011 23:35:52 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 13 Jan 2011 07:31:05 +0100
 
 nickel-browser (8.0.552.224~r68599-1jolicloud3) robby-1.1; urgency=low
 

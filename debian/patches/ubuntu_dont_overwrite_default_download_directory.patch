@@ -5,9 +5,16 @@ Restore the default Downloads location used on Ubuntu.
  chrome/common/chrome_paths_linux.cc |   15 ---------------
  1 file changed, 15 deletions(-)
 
---- a/chrome/common/chrome_paths_linux.cc
-+++ b/chrome/common/chrome_paths_linux.cc
-@@ -38,24 +38,9 @@
+Index: src/chrome/common/chrome_paths_linux.cc
+===================================================================
+--- src.orig/chrome/common/chrome_paths_linux.cc
++++ src/chrome/common/chrome_paths_linux.cc
+@@ -41,34 +41,19 @@
+ }
+ 
+ bool GetUserDocumentsDirectory(FilePath* result) {
+   scoped_ptr<base::Environment> env(base::Environment::Create());
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DOCUMENTS", "Documents");
    return true;
  }
  
@@ -15,7 +22,7 @@ Restore the default Downloads location used on Ubuntu.
 -// ~ or their desktop directory, in which case we default to ~/Downloads.
  bool GetUserDownloadsDirectory(FilePath* result) {
    scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DOWNLOAD", "Downloads");
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DOWNLOAD", "Downloads");
 -
 -  FilePath home = file_util::GetHomeDir();
 -  if (*result == home) {
@@ -32,3 +39,8 @@ Restore the default Downloads location used on Ubuntu.
    return true;
  }
  
+ bool GetUserDesktop(FilePath* result) {
+   scoped_ptr<base::Environment> env(base::Environment::Create());
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DESKTOP", "Desktop");
+   return true;
+ }

@@ -1,0 +1,26 @@
+---
+ chrome/browser/ui/gtk/browser_window_gtk.cc |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
+===================================================================
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc
++++ src/chrome/browser/ui/gtk/browser_window_gtk.cc
+@@ -311,16 +311,17 @@
+   // are partially off-screen causes them to get snapped back on screen, not
+   // always even on the current virtual desktop.  If we are running under
+   // compiz, suppress such raises, as they are not necessary in compiz anyway.
+   std::string wm_name;
+   if (ui::GetWindowManagerName(&wm_name) && wm_name == "compiz")
+     suppress_window_raise_ = true;
+ 
+   window_ = GTK_WINDOW(gtk_window_new(GTK_WINDOW_TOPLEVEL));
++  gtk_window_set_has_resize_grip(window_, FALSE);
+   g_object_set_qdata(G_OBJECT(window_), GetBrowserWindowQuarkKey(), this);
+   gtk_widget_add_events(GTK_WIDGET(window_), GDK_BUTTON_PRESS_MASK |
+                                              GDK_POINTER_MOTION_MASK);
+ 
+   // Add this window to its own unique window group to allow for
+   // window-to-parent modality.
+   gtk_window_group_add_window(gtk_window_group_new(), window_);
+   g_object_unref(gtk_window_get_group(window_));

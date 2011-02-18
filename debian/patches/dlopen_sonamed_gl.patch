@@ -1,0 +1,66 @@
+dlopen the sonamed libs directly, like it has already been done for libGL.so.1,
+as we don't want to Depend on the -dev packages for the .so files:
+- libosmesa.so.6: was already available in Hardy
+- libGLESv2.so.1 and libEGL.so.1: available only since Maverick
+
+---
+ app/gfx/gl/gl_implementation_linux.cc |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+Index: src/app/gfx/gl/gl_implementation_linux.cc
+===================================================================
+--- src.orig/app/gfx/gl/gl_implementation_linux.cc
++++ src/app/gfx/gl/gl_implementation_linux.cc
+@@ -40,19 +40,19 @@
+     case kGLImplementationOSMesaGL: {
+       FilePath module_path;
+       if (!PathService::Get(base::DIR_MODULE, &module_path)) {
+         LOG(ERROR) << "PathService::Get failed.";
+         return false;
+       }
+ 
+       base::NativeLibrary library = base::LoadNativeLibrary(
+-          module_path.Append("libosmesa.so"));
++          module_path.Append("libosmesa.so.6"));
+       if (!library) {
+-        VLOG(1) << "libosmesa.so not found";
++        VLOG(1) << "libosmesa.so.6 not found";
+         return false;
+       }
+ 
+       GLGetProcAddressProc get_proc_address =
+           reinterpret_cast<GLGetProcAddressProc>(
+               base::GetFunctionPointerFromNativeLibrary(
+                   library, "OSMesaGetProcAddress"));
+       if (!get_proc_address) {
+@@ -92,26 +92,26 @@
+       SetGLImplementation(kGLImplementationDesktopGL);
+ 
+       InitializeGLBindingsGL();
+       InitializeGLBindingsGLX();
+       break;
+     }
+     case kGLImplementationEGLGLES2: {
+       base::NativeLibrary gles_library = base::LoadNativeLibrary(
+-          FilePath("libGLESv2.so"));
++          FilePath("libGLESv2.so.2"));
+       if (!gles_library) {
+-        VLOG(1) << "libGLESv2.so not found";
++        VLOG(1) << "libGLESv2.so.2 not found";
+         return false;
+       }
+ 
+       base::NativeLibrary egl_library = base::LoadNativeLibrary(
+-          FilePath("libEGL.so"));
++          FilePath("libEGL.so.1"));
+       if (!egl_library) {
+-        VLOG(1) << "libEGL.so not found";
++        VLOG(1) << "libEGL.so.1 not found";
+         base::UnloadNativeLibrary(gles_library);
+         return false;
+       }
+ 
+       GLGetProcAddressProc get_proc_address =
+           reinterpret_cast<GLGetProcAddressProc>(
+               base::GetFunctionPointerFromNativeLibrary(
+                   egl_library, "eglGetProcAddress"));
