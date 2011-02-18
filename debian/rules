@@ -7,6 +7,7 @@ DEBIAN_REVISION		:= $(shell echo $(DEBIAN_VERSION) | sed 's/^.*r\([^-]*\)-.*/\1/
 DEBIAN_DIST		:= $(shell lsb_release -ds | tr -d '()')
 DEBIAN_DIST_NAME	:= $(shell lsb_release -si)
 DEBIAN_DIST_VERSION	:= $(shell lsb_release -sr)
+DEBIAN_CODECS_NAME      := $(subst browser,codecs-ffmpeg,$(DEBIAN_NAME))
 
 # DEB_TAR_SRCDIR has to be 'src' as this is what gyp expects :(
 DEB_TAR_SRCDIR := src
@@ -56,17 +57,12 @@ $(warning ## DEB_BUILD_HARDENING=$(DEB_BUILD_HARDENING))
 # Disable SSE2
 GYP_DEFINES = disable_sse2=1
 
-# Enable all codecs for HTML5 in chromium, depending on which ffmpeg sumo lib
-# is installed, the set of usable codecs (at runtime) will still vary
-GYP_DEFINES += proprietary_codecs=1
-
 # Only keep -Werror when building for the Debian or Ubuntu development branches
 ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
 GYP_DEFINES += werror=$(NULL)
 endif
 
 ifeq (armel,$(DEB_BUILD_ARCH))
-AVOID_GCC_44 := 0
 GYP_DEFINES += \
 	arm_thumb=1 \
 	target_arch=arm \
@@ -119,20 +115,8 @@ ifeq (1,$(WANT_SHARED_LIBS))
 GYP_DEFINES += library=shared_library
 endif
 
-# Set this to use gcc 4.3 instead of 4.4
-AVOID_GCC_44 ?= 0
 CC_VERSION   := $(shell gcc -dumpversion | cut -d. -f-2)
  
-ifeq (1/4.4,$(AVOID_GCC_44)/$(CC_VERSION))
-CC  := gcc-4.3
-CXX := g++-4.3
-BUILD_ARGS += CC=$(CC) CXX=$(CXX) CC.host=$(CC) CXX.host=$(CXX)
-endif
-
-ifeq (4.4,$(CC_VERSION))
-GYP_DEFINES += no_strict_aliasing=1 gcc_version=44
-endif
-
 # See http://code.google.com/p/chromium/issues/detail?id=49533
 ifeq (4.5,$(CC_VERSION))
 GYP_DEFINES += werror=$(NULL)
@@ -148,6 +132,9 @@ TAR_EXT   := bz2
 TAR_FLAGS := -j
 COMPRESS  := bzip2
 endif
+
+post-patches::
+	perl $(CURDIR)/debian/enable-dist-patches.pl $(DEBIAN_DIST_VERSION) $(CURDIR)/debian/patches/series
 
 include $(CURDIR)/debian/cdbs/tarball.mk
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
@@ -174,6 +161,7 @@ INSTALL_EXCLUDE_FILES = \
 	product_logo_48.png \
 	libnpapi_layout_test_plugin.so \
 	libnpapi_test_plugin.so \
+	libppGoogleNaClPluginChrome.so \
 	mksnapshot \
 	ncdecode_table \
 	ncdecode_tablegen \
@@ -184,7 +172,24 @@ INSTALL_EXCLUDE_FILES = \
 	$(NULL)
 
 # FFmpeg-mt
-GYP_DEFINES += build_ffmpegsumo=0
+# Don't build it as part of chromium. Build it separately twice, once with
+# the Chrome branding to gain the extra codecs, and once without branding.
+# The ffmpeg_branding variable controls which codecs are built inside the sumo lib.
+# By default, ffmpeg_branding equals to "Chromium" and only builds the ogg/vorbis/theora codecs.
+# When set to "Chrome", it also builds aac/ac3/mpeg4audio/h264/mov/mp3
+DEB_DH_SHLIBDEPS_ARGS_$(DEBIAN_CODECS_NAME) := -l$(CURDIR)/debian/$(DEBIAN_CODECS_NAME)/$(LIB_DIR)
+DEB_DH_SHLIBDEPS_ARGS_$(DEBIAN_CODECS_NAME)-extra := -l$(CURDIR)/debian/$(DEBIAN_CODECS_NAME)-extra/$(LIB_DIR)
+BROWSER_GYP_DEFINES += \
+	proprietary_codecs=1 \
+	build_ffmpegsumo=0 \
+	$(NULL)
+FFMPEG_MT_GYP_DEFINES = \
+	use_system_yasm=1 \
+	use_system_vpx=1 \
+	release_extra_cflags=-g \
+	$(NULL)
+FFMPEG_MT_STD_GYP_DEFINES   = $(NULL)
+FFMPEG_MT_EXTRA_GYP_DEFINES = ffmpeg_branding=Chrome
 
 USE_SYSTEM_SQLITE := $(shell pkg-config 'sqlite3 >= 3.6.1' && echo 1 || echo 0)
 USE_SYSTEM_SQLITE := 0
@@ -268,7 +273,7 @@ configure/$(DEBIAN_NAME):: debian/configure-stamp
 
 debian/configure-stamp: GYP_ENV = GYP_GENERATORS=make
 ifneq (,$(GYP_DEFINES))
-debian/configure-stamp: GYP_ENV += GYP_DEFINES="$(GYP_DEFINES)"
+debian/configure-stamp: GYP_ENV += GYP_DEFINES="$(GYP_DEFINES) $(BROWSER_GYP_DEFINES)"
 endif
 debian/configure-stamp:
 	cd $(SRC_DIR) && $(GYP_ENV) python build/gyp_chromium --no-circular-check build/all.gyp
@@ -278,14 +283,32 @@ debian/configure-stamp:
 	echo "$(DEBIAN_REVISION)" > $(SRC_DIR)/build/LASTCHANGE.in
 	# BUILD_ARGS=$(BUILD_ARGS)
 
+common-build-arch:: debian/stamp-build-ffmpeg-std debian/stamp-build-ffmpeg-extra
+
+debian/stamp-configure-ffmpeg-%:
+	rm -rf $(FFMPEG_SRC_DIR)/*.mk $(FFMPEG_SRC_DIR)/out
+	cd $(SRC_DIR) && GYP_DEFINES="$(GYP_DEFINES)" GYP_GENERATORS=make build/gyp_chromium --depth=../src $(FFMPEG_DIR)/ffmpeg.gyp
+	touch $@
+
+debian/stamp-build-ffmpeg-%: GYP_DEFINES += $(FFMPEG_MT_$(subst std,STD,$(subst extra,EXTRA,$*))_GYP_DEFINES) $(FFMPEG_MT_GYP_DEFINES)
+debian/stamp-build-ffmpeg-%: FFMPEG_DIR = third_party/ffmpeg
+debian/stamp-build-ffmpeg-%: FFMPEG_SRC_DIR = $(SRC_DIR)/$(FFMPEG_DIR)
+debian/stamp-build-ffmpeg-%: BUILD_ARGS += CFLAGS="" CXXFLAGS="" CPPFLAGS="" LDFLAGS=""
+debian/stamp-build-ffmpeg-%: debian/stamp-configure-ffmpeg-%
+	cd $(FFMPEG_SRC_DIR) ; $(MAKE) -f ffmpeg.Makefile $(BUILD_ARGS)
+	install -d -m 755 $(CURDIR)/debian/tmp-$*/$(LIB_DIR)
+	install -m 644 $(FFMPEG_SRC_DIR)/out/$(BUILD_TYPE)/libffmpegsumo.so $(CURDIR)/debian/tmp-$*/$(LIB_DIR)
+	touch $@
+
 common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
 debian/stamp-makefile-build-perf: debian/stamp-makefile-build
 	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
 	touch $@
 
 clean::
-	rm -f debian/*-stamp debian/stamp-*
+	rm -f debian/*-stamp debian/stamp-* debian/tmp-*
 	rm -f $(subst_files) *.cdbs-config_list
+	perl $(CURDIR)/debian/enable-dist-patches.pl --clean $(CURDIR)/debian/patches/series
 
 # Install: there's no install rules in scons yet, do it manually
 common-install-prehook-impl::
@@ -362,7 +385,7 @@ endif
 
 compare:
 	# Look for duplicates, fail if we find any
-	@DUPES=`find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | cut -d/ -f3- | sort | uniq -c | grep -vE '^  *1 '` ; \
+	@DUPES=`find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | cut -d/ -f3- | sort | uniq -c | grep -vE '^ *2 .*/libffmpegsumo.so$$' | grep -vE '^  *1 '` ; \
 	if [ "Z$$DUPES" != Z ] ; then \
 	  echo " => Found duplicates:\n $$DUPES" ; \
 	  exit 1 ; \
@@ -370,7 +393,7 @@ compare:
 	  echo " => No duplicate found" ; \
 	fi
 	# Find missing
-	@find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | grep -vE '(/usr/lib/debug|/locales/|/inspector/)' | \
+	@find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | grep -vE '(/usr/lib/debug|/locales/|/inspector/|libffmpegsumo.so)' | \
 	  grep $(LIB_DIR) | cut -d/ -f5- | sort > /tmp/pkg-$$$$.indebs ; \
 	find debian/tmp/$(LIB_DIR) -type f -print | cut -d/ -f5- | grep -vE '(\.log$$|/locales/|/inspector/)' | sort > /tmp/pkg-$$$$.inhammer ; \
 	diff -u /tmp/pkg-$$$$.inhammer /tmp/pkg-$$$$.indebs ; \
@@ -398,12 +421,12 @@ GRIT_TEMPLATES := \
 	chrome/app/chromium_strings.grd \
 	chrome/app/generated_resources.grd \
 	chrome/app/policy/policy_templates.grd \
+	app/resources/app_strings.grd \
 	webkit/glue/inspector_strings.grd \
 	webkit/glue/webkit_strings.grd \
 	$(NULL)
 OTHER_GRIT_TEMPLATES := \
 	app/resources/app_locale_settings.grd \
-	app/resources/app_strings.grd \
 	chrome/app/resources/locale_settings.grd \
 	chrome/app/resources/locale_settings_linux.grd \
 	$(NULL)
@@ -432,7 +455,6 @@ STRIP_TARBALL ?= 1
 
 STRIPPED_DIRS_FROM_CO := \
 	src/breakpad/src \
-	src/tools/gyp \
 	src/chrome/tools/test/reference_build \
 	src/chrome/tools/test/reference_build/chrome_linux \
 	src/webkit/data/layout_tests/LayoutTests \

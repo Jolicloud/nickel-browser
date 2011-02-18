@@ -14,7 +14,7 @@ Index: src/chrome/common/chrome_paths_linux.cc
  
  bool GetUserDocumentsDirectory(FilePath* result) {
    scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DOCUMENTS", "Documents");
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DOCUMENTS", "Documents");
    return true;
  }
  
@@ -22,7 +22,7 @@ Index: src/chrome/common/chrome_paths_linux.cc
 -// ~ or their desktop directory, in which case we default to ~/Downloads.
  bool GetUserDownloadsDirectory(FilePath* result) {
    scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DOWNLOAD", "Downloads");
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DOWNLOAD", "Downloads");
 -
 -  FilePath home = file_util::GetHomeDir();
 -  if (*result == home) {
@@ -41,6 +41,6 @@ Index: src/chrome/common/chrome_paths_linux.cc
  
  bool GetUserDesktop(FilePath* result) {
    scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::GetXDGUserDirectory(env.get(), "DESKTOP", "Desktop");
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DESKTOP", "Desktop");
    return true;
  }

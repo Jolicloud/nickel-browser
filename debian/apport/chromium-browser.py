@@ -230,12 +230,16 @@ def add_info(report, userdir = None):
     list_installed_plugins(report)
 
     # DE
-    report['Desktop-Session'] = get_envs([ 'DESKTOP_SESSION', 'GNOME_DESKTOP_SESSION_ID',
-                                           'XDG_CONFIG_DIRS', 'XDG_DATA_DIRS' ])
+    report['Desktop-Session'] = get_envs([ 'DESKTOP_SESSION', 'XDG_CONFIG_DIRS', 'XDG_DATA_DIRS' ])
 
     # Env
     report['Env'] = get_envs([ 'MOZ_PLUGIN_PATH', 'LD_LIBRARY_PATH' ])
 
+    # Disk usage
+    script = subprocess.Popen([ 'df', '-h' ], stdout=subprocess.PIPE)
+    report['DiskUsage'] = script.communicate()[0] + "\n\nInodes:\n"
+    script = subprocess.Popen([ 'df', '-ih' ], stdout=subprocess.PIPE)
+    report['DiskUsage'] += script.communicate()[0]
 
 ## DEBUGING ##
 if __name__ == '__main__':

@@ -6,7 +6,7 @@ Index: src/webkit/glue/user_agent.cc
 ===================================================================
 --- src.orig/webkit/glue/user_agent.cc
 +++ src/webkit/glue/user_agent.cc
-@@ -94,26 +94,33 @@
+@@ -96,26 +96,33 @@
    // TODO(port): figure out correct locale
    const char kUserAgentLocale[] = "en-US";
  
@@ -22,7 +22,7 @@ Index: src/webkit/glue/user_agent.cc
 +      realproduct.replace(0, pos, "Chromium");
 +
    // Derived from Safari's UA string.
-   StringAppendF(
+   base::StringAppendF(
        result,
        "Mozilla/5.0 (%s; %c; %s; %s) AppleWebKit/%d.%d"
 -      " (KHTML, like Gecko) %s Safari/%d.%d",
