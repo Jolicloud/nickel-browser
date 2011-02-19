@@ -1,7 +1,7 @@
-Index: src/chrome/browser/gtk/gtk_theme_provider.cc
+Index: src/chrome/browser/ui/gtk/gtk_theme_provider.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/gtk_theme_provider.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/gtk/gtk_theme_provider.cc	2010-10-11 13:39:07.172390860 +0200
+--- src.orig/chrome/browser/ui/gtk/gtk_theme_provider.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/ui/gtk/gtk_theme_provider.cc	2010-10-11 13:39:07.172390860 +0200
 @@ -275,6 +275,7 @@
  void GtkThemeProvider::Init(Profile* profile) {
    profile->GetPrefs()->AddPrefObserver(prefs::kUsesSystemTheme, this);
@@ -44,10 +44,10 @@ Index: src/chrome/browser/gtk/gtk_theme_provider.cc
    }
  }
  
-Index: src/chrome/browser/gtk/gtk_theme_provider.h
+Index: src/chrome/browser/ui/gtk/gtk_theme_provider.h
 ===================================================================
---- src.orig/chrome/browser/gtk/gtk_theme_provider.h	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/gtk/gtk_theme_provider.h	2010-10-11 13:37:04.552393580 +0200
+--- src.orig/chrome/browser/ui/gtk/gtk_theme_provider.h	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/ui/gtk/gtk_theme_provider.h	2010-10-11 13:37:04.552393580 +0200
 @@ -68,8 +68,9 @@
    // FIXME
    GtkWidget* CreateToolbarSeparator();
@@ -70,10 +70,10 @@ Index: src/chrome/browser/gtk/gtk_theme_provider.h
  
    // GtkWidgets that exist only so we can look at their properties (and take
    // their colors).
-Index: src/chrome/browser/gtk/custom_button.cc
+Index: src/chrome/browser/ui/gtk/custom_button.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/custom_button.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/gtk/custom_button.cc	2010-10-11 13:37:04.552393580 +0200
+--- src.orig/chrome/browser/ui/gtk/custom_button.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/ui/gtk/custom_button.cc	2010-10-11 13:37:04.552393580 +0200
 @@ -341,5 +341,5 @@
  }
  
@@ -81,10 +81,10 @@ Index: src/chrome/browser/gtk/custom_button.cc
 -  return theme_provider_ && theme_provider_->UseGtkTheme();
 +  return theme_provider_ && theme_provider_->UseGtkButtons();
  }
-Index: src/chrome/browser/gtk/reload_button_gtk.cc
+Index: src/chrome/browser/ui/gtk/reload_button_gtk.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/reload_button_gtk.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/gtk/reload_button_gtk.cc	2010-10-11 13:41:16.122390937 +0200
+--- src.orig/chrome/browser/ui/gtk/reload_button_gtk.cc	2010-09-30 20:04:24.000000000 +0200
++++ src/chrome/browser/ui/gtk/reload_button_gtk.cc	2010-10-11 13:41:16.122390937 +0200
 @@ -178,7 +178,7 @@
  
  gboolean ReloadButtonGtk::OnExpose(GtkWidget* widget,

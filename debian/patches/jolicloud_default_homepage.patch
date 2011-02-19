@@ -1,5 +1,5 @@
---- a/chrome/browser/browser.cc
-+++ b/chrome/browser/browser.cc
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
 @@ -2017,8 +2017,7 @@
    if (home_page_pref &&
        !home_page_pref->IsManaged() &&

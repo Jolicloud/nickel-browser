@@ -1,8 +1,8 @@
-Index: src/chrome/browser/gtk/browser_window_gtk.cc
+Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
 ===================================================================
---- src.orig/chrome/browser/gtk/browser_window_gtk.cc	2010-10-25 16:58:06.000000000 +0200
-+++ src/chrome/browser/gtk/browser_window_gtk.cc	2010-10-25 16:59:31.000000000 +0200
-@@ -816,20 +816,7 @@
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc
++++ src/chrome/browser/ui/gtk/browser_window_gtk.cc
+@@ -777,20 +777,7 @@
    if (fullscreen) {
      gtk_window_fullscreen(window_);
    } else {
@@ -12,7 +12,7 @@ Index: src/chrome/browser/gtk/browser_window_gtk.cc
 -    // panel or not.
 -    std::string wm_name;
 -    bool unmaximize_before_unfullscreen = IsMaximized() &&
--        x11_util::GetWindowManagerName(&wm_name) && wm_name == "Metacity";
+-        ui::GetWindowManagerName(&wm_name) && wm_name == "Metacity";
 -    if (unmaximize_before_unfullscreen)
 -      UnMaximize();
 -
