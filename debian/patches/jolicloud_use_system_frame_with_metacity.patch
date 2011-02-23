@@ -1,0 +1,12 @@
+Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
+===================================================================
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc
++++ src/chrome/browser/ui/gtk/browser_window_gtk.cc
+@@ -2252,7 +2252,6 @@
+   return (wm_name == "Blackbox" ||
+           wm_name == "compiz" ||
+           wm_name == "e16" ||  // Enlightenment DR16
+-          wm_name == "Metacity" ||
+           wm_name == "Mutter" ||
+           wm_name == "Openbox" ||
+           wm_name == "Xfwm4");
