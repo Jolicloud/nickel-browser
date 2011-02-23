@@ -5,7 +5,7 @@ DEBIAN_VERSION		:= $(shell dpkg-parsechangelog | sed -n 's/^Version: *\(.*\)$$/\
 DEBIAN_UPSTREAM_VERSION	:= $(shell echo $(DEBIAN_VERSION) | sed 's/^\(.*\)-[^-]*$$/\1/')
 DEBIAN_REVISION		:= $(shell echo $(DEBIAN_VERSION) | sed 's/^.*r\([^-]*\)-.*/\1/')
 DEBIAN_DIST			:= Jolicloud
-DEBIAN_DIST_NAME	:= Jolicloud
+DEBIAN_DIST_NAME	:= Joli OS
 DEBIAN_DIST_VERSION	:= 1.2
 DEBIAN_CODECS_NAME      := $(subst browser,codecs-ffmpeg,$(DEBIAN_NAME))
 
