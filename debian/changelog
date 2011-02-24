@@ -1,3 +1,31 @@
+nickel-browser (10.0.648.82~r75062-1jolicloud1) robby-1.2; urgency=low
+
+  [ Romain Huet ]
+  * Add LICENSE file
+
+  [ Jeremy Selier ]
+  * Update patch of neterror page to adapt to the new layout.
+
+  [ Benjamin Ryzman ]
+  * Imported Upstream version 10.0.648.82~r75062
+
+  [ Fabien Tassin ]
+  * Imported Debian patch 10.0.648.82~r75062-0ubuntu1~ucd~beta1~lucid
+
+  [ Benjamin Ryzman ]
+  * Fix patch by Jeremy so that it applies correctly
+  * Update patches against new Upstream release
+  * Use system fram when WM is Metacity
+
+  [ Jeremy Selier ]
+  * Update style of neterror online button.
+
+  [ Benjamin Ryzman ]
+  * Update nickel-codecs-ffmpeg packaging
+  * Jolicloud -> Joli OS
+
+ -- Benjamin Ryzman <benjamin@jolicloud.org>  Wed, 23 Feb 2011 23:06:38 +0100
+
 chromium-browser (10.0.648.82~r75062-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New upstream release from the Beta Channel
