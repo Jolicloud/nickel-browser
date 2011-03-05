@@ -236,7 +236,7 @@ def add_info(report, userdir = None):
     report['Env'] = get_envs([ 'MOZ_PLUGIN_PATH', 'LD_LIBRARY_PATH' ])
 
     # Disk usage
-    script = subprocess.Popen([ 'df', '-h' ], stdout=subprocess.PIPE)
+    script = subprocess.Popen([ 'df', '-Th' ], stdout=subprocess.PIPE)
     report['DiskUsage'] = script.communicate()[0] + "\n\nInodes:\n"
     script = subprocess.Popen([ 'df', '-ih' ], stdout=subprocess.PIPE)
     report['DiskUsage'] += script.communicate()[0]

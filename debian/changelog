@@ -1,25 +1,71 @@
-chromium-browser (10.0.648.82~r75062-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+chromium-browser (10.0.648.127~r76697-0ubuntu1~ucd~beta2~lucid) lucid; urgency=low
 
   * New upstream release from the Beta Channel
-  * Bump the lang-pack package from Suggests to Recommends (LP: #689267)
-    - update debian/control
+  * Fix the FTBFS on arm by re-adding the lost arm_neon=0, and really set armv7=1
+    on maverick and natty
+    - update debian/rules
+  * Fix the broken symlinks in /usr/share/doc created by CDBS (See LP: #194574)
+    - update debian/rules
   * Add libxt-dev to Build-deps needed by ppGoogleNaClPluginChrome
     - update debian/control
   * Fix the Webkit version in about:version (the build system expects the svn
     or git directories to be available at build time)
     - add debian/patches/webkit_rev_parser.patch
     - update debian/patches/series
+
+ -- Fabien Tassin <fta@ubuntu.com>  Sat, 05 Mar 2011 17:31:59 +0100
+
+chromium-browser (9.0.597.107~r75357-0ubuntu1) natty; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #726895)
+    This release fixes the following security issues:
+    + Webkit bugs:
+      - [54262] High, URL bar spoof with history interaction. Credit to Jordi
+        Chancel.
+      - [68263] High, Stylesheet node stale pointer. Credit to Sergey Glazunov.
+      - [68741] High, Stale pointer with key frame rule. Credit to Sergey
+        Glazunov.
+      - [70078] High, Crash with forms controls. Credit to Stefan van Zanden.
+      - [70244] High, Crash in SVG rendering. Credit to Sławomir Błażek.
+      - [71114] High, Stale node in table child handling. Credit to Martin
+        Barbella.
+      - [71115] High, Stale pointer in table rendering. Credit to Martin
+        Barbella.
+      - [71296] High, Stale pointer in SVG animations. Credit to miaubiz.
+      - [71386] High, Stale nodes in XHTML. Credit to wushi of team509.
+      - [71388] High, Crash in textarea handling. Credit to wushi of team509.
+      - [71595] High, Stale pointer in device orientation. Credit to Sergey
+        Glazunov.
+      - [71855] High, Integer overflow in textarea handling. Credit to miaubiz.
+      - [71960] Medium, Out-of-bounds read in WebGL. Credit to Google Chrome
+        Security Team (Inferno).
+      - [73235] High, Stale pointer in layout. Credit to Martin Barbella.
+    + Chromium bugs:
+      - [63732] High, Crash with javascript dialogs. Credit to Sergey
+        Radchenko.
+      - [64-bit only] [70376] Medium, Out-of-bounds read in pickle
+        deserialization. Credit to Evgeniy Stepanov of the Chromium development
+        community.
+      - [71717] Medium, Out-of-bounds read in WebGL. Credit to miaubiz.
+      - [72214] High, Accidental exposure of internal extension functions.
+        Credit to Tavis Ormandy of the Google Security Team.
+      - [72437] High, Use-after-free with blocked plug-ins. Credit to Chamal de
+        Silva.
+  * Bump the lang-pack package from Suggests to Recommends (LP: #689267)
+    - update debian/control
+  * Disable PIE on Armel/Lucid (LP: #716703)
+    - update debian/rules
   * Add the disk usage to the Apport hooks
     - update debian/apport/chromium-browser.py
+  * Drop gyp from Build-Depends, use in-source gyp instead
+    - update debian/control
   * Merge back the ffmpeg codecs (from the chromium-codecs-ffmpeg source package)
     - update debian/rules
     - update debian/control
     - add debian/chromium-codecs-ffmpeg-extra.install
     - add debian/chromium-codecs-ffmpeg.install
-  * Drop gyp from Build-Depends, use in-source gyp instead
-    - update debian/control
 
- -- Fabien Tassin <fta@ubuntu.com>  Fri, 18 Feb 2011 15:19:15 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 01 Mar 2011 00:14:02 +0100
 
 chromium-browser (9.0.597.94~r73967-0ubuntu1) natty; urgency=high
 

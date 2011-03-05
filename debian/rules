@@ -14,7 +14,7 @@ DEB_TAR_SRCDIR := src
 SRC_DIR        := $(CURDIR)/build-tree/$(DEB_TAR_SRCDIR)
 LIB_DIR        := usr/lib/$(DEBIAN_NAME)
 DEB_BUILDDIR   := $(SRC_DIR)
-#BUILD_ARGS     := --keep-going
+CDBS_NO_DOC_SYMLINKING := 1 # See LP #194574
 
 WANT_LZMA_SRC    ?= 1
 WANT_LZMA_DEBS   ?= 1
@@ -35,11 +35,12 @@ WANT_LP_TRANSLATIONS ?= 1
 # Enable the hardening wrapper (See https://wiki.ubuntu.com/Security/HardeningWrapper)
 # Don't do it on {hardy,jaunty}+amd64 as it doesn't build for nacl on amd64
 # Don't do it on maverick/armel either for now, it fails to link
+# Don't do it on lucid/armel either, it crashes: LP #716703
 ifeq (armel,$(DEB_BUILD_ARCH))
-ifeq (,$(filter 10.10 11.04,$(DEBIAN_DIST_VERSION)))
+ifeq (,$(filter 10.04 10.10 11.04,$(DEBIAN_DIST_VERSION)))
 export DEB_BUILD_HARDENING=1
 else
-$(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 10.10+ armel. See LP #641126)
+$(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 10.04+ armel. See LP #641126 and LP #716703)
 endif
 else
 ifeq (,$(filter 8.04 9.04,$(DEBIAN_DIST_VERSION)))
@@ -65,15 +66,16 @@ endif
 ifeq (armel,$(DEB_BUILD_ARCH))
 GYP_DEFINES += \
 	arm_thumb=1 \
+	arm_neon=0 \
 	target_arch=arm \
 	disable_nacl=1 \
 	linux_use_tcmalloc=0 \
 	$(NULL)
 WANT_LZMA_DEBS := 0
-ifneq (,$(filter 10.10 unstable development,$(DEBIAN_DIST)))
+ifneq (,$(filter 10.10 11.04 unstable development,$(DEBIAN_DIST)))
 # on $(DEB_BUILD_ARCH) and $(DEBIAN_DIST), enforce an armv7 with thumb build (or not)
 GYP_DEFINES += \
-	armv7=0 \
+	armv7=1 \
 	$(NULL)
 endif
 else
@@ -169,6 +171,13 @@ INSTALL_EXCLUDE_FILES = \
 	protoc \
 	gfx_unittests \
 	linker.lock \
+	genmacro \
+	genmodule \
+	genperf \
+	genstring \
+	genversion \
+	re2c \
+	yasm \
 	$(NULL)
 
 # FFmpeg-mt
@@ -184,7 +193,6 @@ BROWSER_GYP_DEFINES += \
 	build_ffmpegsumo=0 \
 	$(NULL)
 FFMPEG_MT_GYP_DEFINES = \
-	use_system_yasm=1 \
 	use_system_vpx=1 \
 	release_extra_cflags=-g \
 	$(NULL)
@@ -371,16 +379,19 @@ PKG_DIRS = $(addprefix debian/,$(shell grep ^Package debian/control | cut -d' ' 
 
 binary-predeb/$(DEBIAN_NAME):: compare
 ifneq (,$(findstring Ubuntu,$(DEBIAN_DIST)))
-	# we need space on the CD, so remove duplicates of the copyright file
-	CF=debian/$(DEBIAN_NAME)/usr/share/doc/$(DEBIAN_NAME)/copyright ; \
-	for file in `find $(addsuffix /usr/share/doc,$(filter-out debian/$(DEBIAN_NAME),$(PKG_DIRS))) -type f -name copyright -print`; do \
-	 cmp -s $$file $$CF ; \
-	 if [ $$? -eq 0 ] ; then \
-	   rm -f $$file ; \
-	   ( cd `dirname $$file` ; ln -s ../$(DEBIAN_NAME)/copyright ) ; \
-	 fi ; \
+	# we need space on the CD, so remove duplicates of the doc files
+	# (See LP: #194574 as for why we don't let cdbs do it)
+	@for doc in copyright AUTHORS changelog.Debian.gz ; do \
+	  F=debian/$(DEBIAN_NAME)/usr/share/doc/$(DEBIAN_NAME)/$$doc ; \
+	  for file in `find $(addsuffix /usr/share/doc,$(filter-out debian/$(DEBIAN_NAME),$(PKG_DIRS))) -type f -name $$doc -print`; do \
+	    cmp -s $$file $$F ; \
+	    if [ $$? -eq 0 ] ; then \
+	      rm -f $$file ; \
+	      echo "  symlinking $$doc in '"`echo $$file | awk 'BEGIN{ FS="/"} { print $$2 }'`"' to file in '$(DEBIAN_NAME)'" ; \
+	      ( cd `dirname $$file` ; ln -s ../$(DEBIAN_NAME)/$$doc ) ; \
+	    fi ; \
+	  done ; \
 	done
-	find $(PKG_DIRS) -name copyright\* -ls
 endif
 
 compare:
