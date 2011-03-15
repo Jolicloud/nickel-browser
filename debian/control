@@ -85,10 +85,10 @@ Description: nickel-browser language packages
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
  .
- This package contains language packages for 53 languages:
+ This package contains language packages for 54 languages:
  am, ar, bg, bn, ca, cs, da, de, el, en-GB, es, es-419, et, eu, fa, fi, fil, fr,
  gl, gu, he, hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr, nb, nl, pl, pt-BR,
- pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, uk, vi, zh-CN, zh-TW
+ pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, ug, uk, vi, zh-CN, zh-TW
 
 Package: nickel-browser-inspector
 Architecture: all
