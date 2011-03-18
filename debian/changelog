@@ -1,4 +1,4 @@
-chromium-browser (10.0.648.133~r77742-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+chromium-browser (10.0.648.151~r78498-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
 
   * New upstream security release from the Stable Channel (LP: #733514)
     + Webkit:
@@ -6,7 +6,7 @@ chromium-browser (10.0.648.133~r77742-0ubuntu1~ucd~stable1~lucid) lucid; urgency
         to Vincenzo Iozzo, Ralf Philipp Weinmann and Willem Pinckaers reported
         through ZDI.
 
- -- Fabien Tassin <fta@ubuntu.com>  Fri, 11 Mar 2011 22:15:45 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 17 Mar 2011 22:16:51 +0100
 
 chromium-browser (10.0.648.127~r76697-0ubuntu1) natty; urgency=high
 
