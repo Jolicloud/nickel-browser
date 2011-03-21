@@ -29,9 +29,6 @@ ifeq (0,$(PROCESSORS))
 PROCESSORS := 1
 endif
 
-# Build the launchpad translations
-WANT_LP_TRANSLATIONS ?= 1
-
 # Enable the hardening wrapper (See https://wiki.ubuntu.com/Security/HardeningWrapper)
 # Don't do it on {hardy,jaunty}+amd64 as it doesn't build for nacl on amd64
 # Don't do it on maverick/armel either for now, it fails to link
@@ -57,6 +54,11 @@ $(warning ## DEB_BUILD_HARDENING=$(DEB_BUILD_HARDENING))
 
 # Disable SSE2
 GYP_DEFINES = disable_sse2=1
+
+# Build the launchpad translations (already landed upstream)
+GYP_DEFINES += use_third_party_translations=1
+# Also merges the newer translations from launchpad
+WANT_LP_TRANSLATIONS ?= 1
 
 # Only keep -Werror when building for the Debian or Ubuntu development branches
 ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
