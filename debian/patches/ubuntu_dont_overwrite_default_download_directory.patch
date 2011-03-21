@@ -9,7 +9,7 @@ Index: src/chrome/common/chrome_paths_linux.cc
 ===================================================================
 --- src.orig/chrome/common/chrome_paths_linux.cc
 +++ src/chrome/common/chrome_paths_linux.cc
-@@ -41,34 +41,19 @@
+@@ -79,35 +79,20 @@
  }
  
  bool GetUserDocumentsDirectory(FilePath* result) {
@@ -22,18 +22,19 @@ Index: src/chrome/common/chrome_paths_linux.cc
 -// ~ or their desktop directory, in which case we default to ~/Downloads.
  bool GetUserDownloadsDirectory(FilePath* result) {
    scoped_ptr<base::Environment> env(base::Environment::Create());
-   *result = base::nix::GetXDGUserDirectory(env.get(), "DOWNLOAD", "Downloads");
+   *result = base::nix::GetXDGUserDirectory(env.get(), "DOWNLOAD",
+                                            kDownloadsDir);
 -
 -  FilePath home = file_util::GetHomeDir();
 -  if (*result == home) {
--    *result = home.Append("Downloads");
+-    *result = home.Append(kDownloadsDir);
 -    return true;
 -  }
 -
 -  FilePath desktop;
 -  GetUserDesktop(&desktop);
 -  if (*result == desktop) {
--    *result = home.Append("Downloads");
+-    *result = home.Append(kDownloadsDir);
 -  }
 -
    return true;

@@ -1,4 +1,15 @@
-chromium-browser (10.0.648.151~r78498-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+chromium-browser (11.0.696.14~r78500-0ubuntu1~ucd~dev1~lucid) lucid; urgency=low
+
+  * New upstream release from the Dev Channel
+  * Add libxt-dev to Build-deps needed by ppGoogleNaClPluginChrome, and libpam0g-dev
+    needed by "Chromoting"
+    - update debian/control
+  * Enable the third_party translations at build time (they come from Launchpad)
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 18 Mar 2011 13:15:09 +0100
+
+chromium-browser (10.0.648.133~r77742-0ubuntu1) natty; urgency=high
 
   * New upstream security release from the Stable Channel (LP: #733514)
     + Webkit:
@@ -6,7 +17,7 @@ chromium-browser (10.0.648.151~r78498-0ubuntu1~ucd~stable1~lucid) lucid; urgency
         to Vincenzo Iozzo, Ralf Philipp Weinmann and Willem Pinckaers reported
         through ZDI.
 
- -- Fabien Tassin <fta@ubuntu.com>  Thu, 17 Mar 2011 22:16:51 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 11 Mar 2011 22:10:11 +0100
 
 chromium-browser (10.0.648.127~r76697-0ubuntu1) natty; urgency=high
 

@@ -6,9 +6,9 @@ Index: src/webkit/glue/user_agent.cc
 ===================================================================
 --- src.orig/webkit/glue/user_agent.cc
 +++ src/webkit/glue/user_agent.cc
-@@ -96,26 +96,33 @@
-   // TODO(port): figure out correct locale
-   const char kUserAgentLocale[] = "en-US";
+@@ -97,24 +97,31 @@
+       "Unknown; ";
+ #endif
  
    // Get the product name and version, and replace Safari's Version/X string
    // with it.  This is done to expose our product name in a manner that is
@@ -24,13 +24,11 @@ Index: src/webkit/glue/user_agent.cc
    // Derived from Safari's UA string.
    base::StringAppendF(
        result,
-       "Mozilla/5.0 (%s; %c; %s; %s) AppleWebKit/%d.%d"
+       "Mozilla/5.0 (%s%s) AppleWebKit/%d.%d"
 -      " (KHTML, like Gecko) %s Safari/%d.%d",
 +      " (KHTML, like Gecko) @BUILD_DIST_NAME@/@BUILD_DIST_VERSION@ %s %s Safari/%d.%d",
-       mimic_windows ? "Windows" : kUserAgentPlatform,
-       kUserAgentSecurity,
-       ((mimic_windows ? "Windows " : "") + BuildOSCpuInfo()).c_str(),
-       kUserAgentLocale,
+       mimic_windows ? "Windows " : kUserAgentPlatform,
+       BuildOSCpuInfo().c_str(),
        WEBKIT_VERSION_MAJOR,
        WEBKIT_VERSION_MINOR,
 +      realproduct.c_str(),
