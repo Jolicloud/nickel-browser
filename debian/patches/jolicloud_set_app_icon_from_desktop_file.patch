@@ -131,10 +131,11 @@
  #include "base/logging.h"
  #include "base/metrics/histogram.h"
  #include "base/path_service.h"
-@@ -504,11 +505,12 @@
+@@ -504,11 +505,13 @@
  
    UMA_HISTOGRAM_ENUMERATION("Extensions.AppLaunchContainer", container, 100);
  
++  const FilePath::CharType kEmptyIcon[] = FILE_PATH_LITERAL("");
 +  FilePath empty_icon(kEmptyIcon);
    switch (container) {
      case extension_misc::LAUNCH_WINDOW:
@@ -145,7 +146,7 @@
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, existing_tab);
-@@ -527,6 +529,7 @@
+@@ -527,6 +530,7 @@
      const Extension* extension,
      extension_misc::LaunchContainer container,
      const GURL& url_input,
@@ -153,7 +154,7 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -559,6 +562,14 @@
+@@ -559,6 +563,14 @@
    if (app_browser)
      *app_browser = browser;
  
@@ -168,7 +169,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -574,6 +585,7 @@
+@@ -574,6 +586,7 @@
  
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
@@ -176,7 +177,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -581,6 +593,7 @@
+@@ -581,6 +594,7 @@
        NULL,  // this is a URL app.  No extension.
        extension_misc::LAUNCH_WINDOW,
        url,
@@ -184,7 +185,7 @@
        &app_browser);
  
    if (!tab)
-@@ -728,6 +741,15 @@
+@@ -728,6 +742,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -200,7 +201,7 @@
  std::string Browser::GetWindowPlacementKey() const {
    std::string name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -800,6 +822,13 @@
+@@ -800,6 +823,13 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
@@ -214,7 +215,7 @@
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents = GetSelectedTabContents();
    string16 title;
-@@ -2042,6 +2071,7 @@
+@@ -2042,6 +2072,7 @@
  
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
@@ -222,7 +223,7 @@
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterIntegerPref(prefs::kExtensionSidebarWidth, -1);
    prefs->RegisterIntegerPref(prefs::kMultipleProfilePrefMigration, 0);
-@@ -4287,7 +4317,11 @@
+@@ -4287,7 +4318,11 @@
    std::string window_pref(prefs::kBrowserWindowPlacement);
    window_pref.append("_");
    window_pref.append(app_name);
