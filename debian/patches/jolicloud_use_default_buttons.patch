@@ -1,16 +1,14 @@
-Index: src/chrome/browser/ui/gtk/gtk_theme_provider.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_theme_provider.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/ui/gtk/gtk_theme_provider.cc	2010-10-11 13:39:07.172390860 +0200
-@@ -275,6 +275,7 @@
- void GtkThemeProvider::Init(Profile* profile) {
-   profile->GetPrefs()->AddPrefObserver(prefs::kUsesSystemTheme, this);
+--- a/chrome/browser/ui/gtk/gtk_theme_provider.cc
++++ b/chrome/browser/ui/gtk/gtk_theme_provider.cc
+@@ -286,6 +286,7 @@
+   registrar_.Init(profile->GetPrefs());
+   registrar_.Add(prefs::kUsesSystemTheme, this);
    use_gtk_ = profile->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme);
 +  use_gtk_buttons_ = false;
  
    BrowserThemeProvider::Init(profile);
  }
-@@ -347,11 +348,12 @@
+@@ -358,11 +359,12 @@
    if ((type == NotificationType::PREF_CHANGED) &&
        (*Details<std::string>(details).ptr() == prefs::kUsesSystemTheme))
      use_gtk_ = profile()->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme);
@@ -24,7 +22,7 @@ Index: src/chrome/browser/ui/gtk/gtk_theme_provider.cc
    chrome_buttons_.push_back(button);
  
    signals_->Connect(button, "destroy", G_CALLBACK(OnDestroyChromeButtonThunk),
-@@ -375,6 +377,10 @@
+@@ -386,6 +388,10 @@
    return use_gtk_;
  }
  
@@ -35,21 +33,19 @@ Index: src/chrome/browser/ui/gtk/gtk_theme_provider.cc
  GdkColor GtkThemeProvider::GetGdkColor(int id) const {
    return gfx::SkColorToGdkColor(GetColor(id));
  }
-@@ -586,7 +592,7 @@
+@@ -632,7 +638,7 @@
    for (std::vector<GtkWidget*>::iterator it = chrome_buttons_.begin();
         it != chrome_buttons_.end(); ++it) {
      gtk_chrome_button_set_use_gtk_rendering(
 -        GTK_CHROME_BUTTON(*it), use_gtk_);
 +        GTK_CHROME_BUTTON(*it), use_gtk_buttons_);
    }
- }
  
-Index: src/chrome/browser/ui/gtk/gtk_theme_provider.h
-===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_theme_provider.h	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/ui/gtk/gtk_theme_provider.h	2010-10-11 13:37:04.552393580 +0200
-@@ -68,8 +68,9 @@
-   // FIXME
+   GtkWindow* window = BrowserList::GetLastActive()->window()->GetNativeHandle();
+--- a/chrome/browser/ui/gtk/gtk_theme_provider.h
++++ b/chrome/browser/ui/gtk/gtk_theme_provider.h
+@@ -72,8 +72,9 @@
+   // Creates a theme-aware vertical separator widget.
    GtkWidget* CreateToolbarSeparator();
  
 -  // Whether we should use the GTK system theme.
@@ -57,9 +53,9 @@ Index: src/chrome/browser/ui/gtk/gtk_theme_provider.h
    bool UseGtkTheme() const;
 +  bool UseGtkButtons() const;
  
-   // A wrapper around ThemeProvider::GetColor, transforming the result to a
+   // A wrapper around ui::ThemeProvider::GetColor, transforming the result to a
    // GdkColor.
-@@ -223,8 +224,9 @@
+@@ -243,8 +244,9 @@
    CHROMEGTK_CALLBACK_1(GtkThemeProvider, gboolean, OnSeparatorExpose,
                         GdkEventExpose*);
  
@@ -70,10 +66,8 @@ Index: src/chrome/browser/ui/gtk/gtk_theme_provider.h
  
    // GtkWidgets that exist only so we can look at their properties (and take
    // their colors).
-Index: src/chrome/browser/ui/gtk/custom_button.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/custom_button.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/ui/gtk/custom_button.cc	2010-10-11 13:37:04.552393580 +0200
+--- a/chrome/browser/ui/gtk/custom_button.cc
++++ b/chrome/browser/ui/gtk/custom_button.cc
 @@ -341,5 +341,5 @@
  }
  
@@ -81,11 +75,9 @@ Index: src/chrome/browser/ui/gtk/custom_button.cc
 -  return theme_provider_ && theme_provider_->UseGtkTheme();
 +  return theme_provider_ && theme_provider_->UseGtkButtons();
  }
-Index: src/chrome/browser/ui/gtk/reload_button_gtk.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/reload_button_gtk.cc	2010-09-30 20:04:24.000000000 +0200
-+++ src/chrome/browser/ui/gtk/reload_button_gtk.cc	2010-10-11 13:41:16.122390937 +0200
-@@ -178,7 +178,7 @@
+--- a/chrome/browser/ui/gtk/reload_button_gtk.cc
++++ b/chrome/browser/ui/gtk/reload_button_gtk.cc
+@@ -194,7 +194,7 @@
  
  gboolean ReloadButtonGtk::OnExpose(GtkWidget* widget,
                                     GdkEventExpose* e) {
@@ -94,7 +86,7 @@ Index: src/chrome/browser/ui/gtk/reload_button_gtk.cc
      return FALSE;
    return ((visible_mode_ == MODE_RELOAD) ? reload_ : stop_).OnExpose(
        widget, e, hover_controller_.GetCurrentValue());
-@@ -206,9 +206,9 @@
+@@ -222,9 +222,9 @@
  }
  
  void ReloadButtonGtk::UpdateThemeButtons() {
@@ -106,10 +98,12 @@ Index: src/chrome/browser/ui/gtk/reload_button_gtk.cc
      gtk_widget_ensure_style(widget());
      GtkIconSet* icon_set = gtk_style_lookup_icon_set(
          widget()->style,
-@@ -251,5 +251,5 @@
+@@ -267,7 +267,7 @@
      gtk_widget_set_double_buffered(widget(), FALSE);
    }
  
 -  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(widget()), use_gtk);
 +  gtk_chrome_button_set_use_gtk_rendering(GTK_CHROME_BUTTON(widget()), use_gtk_buttons);
  }
+ 
+ void ReloadButtonGtk::OnDoubleClickTimer() {

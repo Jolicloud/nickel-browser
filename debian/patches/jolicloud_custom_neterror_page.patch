@@ -1,8 +1,6 @@
-Index: src/chrome/renderer/render_view.cc
-===================================================================
---- src.orig/chrome/renderer/render_view.cc
-+++ src/chrome/renderer/render_view.cc
-@@ -1890,6 +1890,7 @@
+--- a/chrome/renderer/render_view.cc
++++ b/chrome/renderer/render_view.cc
+@@ -1893,6 +1893,7 @@
                                           bool replace) {
    GURL failed_url = error.unreachableURL;
    std::string alt_html;
@@ -10,7 +8,7 @@ Index: src/chrome/renderer/render_view.cc
    const Extension* extension = NULL;
    if (html.empty()) {
      // Use a local error page.
-@@ -1898,7 +1899,7 @@
+@@ -1901,7 +1902,7 @@
  
      if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
        extension = render_thread_->GetExtensions()->GetByURL(failed_url);
@@ -19,11 +17,9 @@ Index: src/chrome/renderer/render_view.cc
        LocalizedError::GetAppErrorStrings(error, failed_url, extension,
                                           &error_strings);
  
-Index: src/chrome/renderer/resources/neterror.html
-===================================================================
---- src.orig/chrome/renderer/resources/neterror.html
-+++ src/chrome/renderer/resources/neterror.html
-@@ -78,6 +78,75 @@
+--- a/chrome/renderer/resources/neterror.html
++++ b/chrome/renderer/resources/neterror.html
+@@ -106,6 +106,75 @@
    word-wrap: break-word;
  }
  </style>
@@ -99,7 +95,7 @@ Index: src/chrome/renderer/resources/neterror.html
  </head>
  
  <script>
-@@ -104,8 +173,12 @@
+@@ -138,8 +207,12 @@
    document.documentElement.setAttribute('high-color-depth', '');
  </script>
  

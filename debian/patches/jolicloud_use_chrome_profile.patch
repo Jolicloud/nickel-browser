@@ -1,11 +1,9 @@
-Index: src/chrome/common/chrome_paths_linux.cc
-===================================================================
---- src.orig/chrome/common/chrome_paths_linux.cc
-+++ src/chrome/common/chrome_paths_linux.cc
-@@ -21,11 +21,7 @@
-   scoped_ptr<base::Environment> env(base::Environment::Create());
-   FilePath config_dir(
-       base::nix::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
+--- a/chrome/common/chrome_paths_linux.cc
++++ b/chrome/common/chrome_paths_linux.cc
+@@ -30,11 +30,7 @@
+   FilePath config_dir(base::nix::GetXDGDirectory(env.get(),
+                                                  kXdgConfigHomeEnvVar,
+                                                  kDotConfigDir));
 -#if defined(GOOGLE_CHROME_BUILD)
    *result = config_dir.Append("google-chrome");
 -#else
@@ -14,10 +12,10 @@ Index: src/chrome/common/chrome_paths_linux.cc
    return true;
  }
  
-@@ -59,11 +55,7 @@
-   scoped_ptr<base::Environment> env(base::Environment::Create());
-   FilePath config_dir(
-       base::nix::GetXDGDirectory(env.get(), "XDG_CONFIG_HOME", ".config"));
+@@ -70,11 +66,7 @@
+   FilePath config_dir(base::nix::GetXDGDirectory(env.get(),
+                                                  kXdgConfigHomeEnvVar,
+                                                  kDotConfigDir));
 -#if defined(GOOGLE_CHROME_BUILD)
    *result = config_dir.Append("google-chrome-frame");
 -#else

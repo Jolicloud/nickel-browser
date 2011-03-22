@@ -1,8 +1,6 @@
-Index: src/chrome/browser/browser_main.cc
-===================================================================
---- src.orig/chrome/browser/browser_main.cc
-+++ src/chrome/browser/browser_main.cc
-@@ -1225,12 +1225,10 @@
+--- a/chrome/browser/browser_main.cc
++++ b/chrome/browser/browser_main.cc
+@@ -1267,12 +1267,10 @@
          !FirstRun::ProcessMasterPreferences(user_data_dir, &master_prefs);
      AddFirstRunNewTabs(&browser_init, master_prefs.new_tabs);
  

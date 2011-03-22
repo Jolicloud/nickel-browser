@@ -1,8 +1,6 @@
-Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc
-+++ src/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -777,20 +777,7 @@
+--- a/chrome/browser/ui/gtk/browser_window_gtk.cc
++++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
+@@ -743,20 +743,7 @@
    if (fullscreen) {
      gtk_window_fullscreen(window_);
    } else {

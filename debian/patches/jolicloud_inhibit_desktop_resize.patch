@@ -1,8 +1,6 @@
-Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc
-+++ src/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -852,19 +852,41 @@
+--- a/chrome/browser/ui/gtk/browser_window_gtk.cc
++++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
+@@ -768,19 +768,41 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -56,11 +54,9 @@ Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
  }
  
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
-Index: src/chrome/browser/ui/gtk/browser_window_gtk.h
-===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_window_gtk.h
-+++ src/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -72,6 +72,7 @@
+--- a/chrome/browser/ui/gtk/browser_window_gtk.h
++++ b/chrome/browser/ui/gtk/browser_window_gtk.h
+@@ -73,6 +73,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
