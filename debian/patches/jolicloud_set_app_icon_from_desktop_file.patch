@@ -1,8 +1,6 @@
-Index: src/chrome/common/chrome_switches.cc
-===================================================================
---- src.orig/chrome/common/chrome_switches.cc
-+++ src/chrome/common/chrome_switches.cc
-@@ -740,6 +740,9 @@
+--- a/chrome/common/chrome_switches.cc
++++ b/chrome/common/chrome_switches.cc
+@@ -690,6 +690,9 @@
  // Ignores GPU blacklist.
  const char kIgnoreGpuBlacklist[]            = "ignore-gpu-blacklist";
  
@@ -12,10 +10,8 @@ Index: src/chrome/common/chrome_switches.cc
  // Perform importing from another browser. The value associated with this
  // setting encodes the target browser and what items to import.
  const char kImport[]                        = "import";
-Index: src/chrome/browser/ui/gtk/gtk_util.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.cc
-+++ src/chrome/browser/ui/gtk/gtk_util.cc
+--- a/chrome/browser/ui/gtk/gtk_util.cc
++++ b/chrome/browser/ui/gtk/gtk_util.cc
 @@ -11,6 +11,7 @@
  #include <cstdarg>
  #include <map>
@@ -24,15 +20,15 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
  #include "base/environment.h"
  #include "base/i18n/rtl.h"
  #include "base/linux_util.h"
-@@ -28,6 +29,7 @@
- #include "chrome/browser/tab_contents/tab_contents.h"
+@@ -26,6 +27,7 @@
+ #include "chrome/browser/profiles/profile.h"
  #include "chrome/browser/ui/gtk/cairo_cached_surface.h"
  #include "chrome/browser/ui/gtk/gtk_theme_provider.h"
 +#include "chrome/common/chrome_switches.h"
  #include "chrome/common/renderer_preferences.h"
- #include "gfx/gtk_util.h"
- #include "googleurl/src/gurl.h"
-@@ -118,15 +120,6 @@
+ #include "content/browser/disposition_utils.h"
+ #include "content/browser/renderer_host/render_view_host.h"
+@@ -124,15 +126,6 @@
        GetCharacterWidthForPixels(label,GPOINTER_TO_INT(pixel_width)));
  }
  
@@ -48,7 +44,7 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
  // Expose event handler for a container that simply suppresses the default
  // drawing and propagates the expose event to the container's children.
  gboolean PaintNoBackground(GtkWidget* widget,
-@@ -201,6 +194,48 @@
+@@ -205,6 +198,48 @@
  const GdkColor kGdkBlack = GDK_COLOR_RGB(0x00, 0x00, 0x00);
  const GdkColor kGdkGreen = GDK_COLOR_RGB(0x00, 0xff, 0x00);
  
@@ -97,7 +93,7 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
  GtkWidget* CreateLabeledControlsGroup(std::vector<GtkWidget*>* labels,
                                        const char* text, ...) {
    va_list ap;
-@@ -606,13 +641,13 @@
+@@ -610,7 +645,7 @@
  }
  
  void SetWindowIcon(GtkWindow* window) {
@@ -106,18 +102,18 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
    gtk_window_set_icon_list(window, icon_list);
    g_list_free(icon_list);
  }
- 
- void SetDefaultWindowIcon() {
--  GList* icon_list = GetIconList();
-+  GList* icon_list = gtk_util::ProductIconList();
-   gtk_window_set_default_icon_list(icon_list);
-   g_list_free(icon_list);
- }
-Index: src/chrome/common/chrome_switches.h
-===================================================================
---- src.orig/chrome/common/chrome_switches.h
-+++ src/chrome/common/chrome_switches.h
-@@ -211,6 +211,7 @@
+@@ -627,7 +662,7 @@
+     // case where the first window created doesn't have an icon.
+     gtk_window_set_icon_name(window, kIconName);
+   } else {
+-    GList* icon_list = GetIconList();
++    GList* icon_list = gtk_util::ProductIconList();
+     gtk_window_set_default_icon_list(icon_list);
+     // Same logic applies here.
+     gtk_window_set_icon_list(window, icon_list);
+--- a/chrome/common/chrome_switches.h
++++ b/chrome/common/chrome_switches.h
+@@ -196,6 +196,7 @@
  extern const char kHostRules[];
  extern const char kHostResolverParallelism[];
  extern const char kHostResolverRules[];
@@ -125,10 +121,8 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kIgnoreGpuBlacklist[];
  extern const char kImport[];
  extern const char kImportFromFile[];
-Index: src/chrome/browser/ui/browser.cc
-===================================================================
---- src.orig/chrome/browser/ui/browser.cc
-+++ src/chrome/browser/ui/browser.cc
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
 @@ -14,6 +14,7 @@
  
  #include "base/base_paths.h"
@@ -137,15 +131,7 @@ Index: src/chrome/browser/ui/browser.cc
  #include "base/logging.h"
  #include "base/metrics/histogram.h"
  #include "base/path_service.h"
-@@ -474,6 +475,7 @@
- }
- 
- // static
-+const FilePath::CharType kEmptyIcon[] = FILE_PATH_LITERAL("");
- // TODO(erikkay): There are multiple reasons why this could fail.  Should
- // this function return an error reason as well so that callers can show
- // reasonable errors?
-@@ -503,11 +505,12 @@
+@@ -504,11 +505,12 @@
  
    UMA_HISTOGRAM_ENUMERATION("Extensions.AppLaunchContainer", container, 100);
  
@@ -159,7 +145,7 @@ Index: src/chrome/browser/ui/browser.cc
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, existing_tab);
-@@ -526,6 +529,7 @@
+@@ -527,6 +529,7 @@
      const Extension* extension,
      extension_misc::LaunchContainer container,
      const GURL& url_input,
@@ -167,7 +153,7 @@ Index: src/chrome/browser/ui/browser.cc
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -558,6 +562,14 @@
+@@ -559,6 +562,14 @@
    if (app_browser)
      *app_browser = browser;
  
@@ -182,7 +168,7 @@ Index: src/chrome/browser/ui/browser.cc
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -573,6 +585,7 @@
+@@ -574,6 +585,7 @@
  
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
@@ -190,7 +176,7 @@ Index: src/chrome/browser/ui/browser.cc
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -580,6 +593,7 @@
+@@ -581,6 +593,7 @@
        NULL,  // this is a URL app.  No extension.
        extension_misc::LAUNCH_WINDOW,
        url,
@@ -198,7 +184,7 @@ Index: src/chrome/browser/ui/browser.cc
        &app_browser);
  
    if (!tab)
-@@ -721,6 +735,15 @@
+@@ -728,6 +741,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -214,7 +200,7 @@ Index: src/chrome/browser/ui/browser.cc
  std::string Browser::GetWindowPlacementKey() const {
    std::string name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -793,6 +816,13 @@
+@@ -800,6 +822,13 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
@@ -228,33 +214,28 @@ Index: src/chrome/browser/ui/browser.cc
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents = GetSelectedTabContents();
    string16 title;
-@@ -1995,6 +2025,7 @@
+@@ -2042,6 +2071,7 @@
+ 
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
-   prefs->RegisterDictionaryPref(prefs::kBrowserWindowPlacement);
 +  prefs->RegisterFilePathPref(prefs::kBrowserWindowIcon, FilePath());
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
-   prefs->RegisterIntegerPref(prefs::kDevToolsSplitLocation, -1);
-   prefs->RegisterDictionaryPref(prefs::kPreferencesWindowPlacement);
-@@ -4154,10 +4185,14 @@
+   prefs->RegisterIntegerPref(prefs::kExtensionSidebarWidth, -1);
+   prefs->RegisterIntegerPref(prefs::kMultipleProfilePrefMigration, 0);
+@@ -4287,7 +4317,11 @@
    std::string window_pref(prefs::kBrowserWindowPlacement);
    window_pref.append("_");
    window_pref.append(app_name);
 +  std::string icon_pref(prefs::kBrowserWindowIcon);
 +  icon_pref.append("_");
 +  icon_pref.append(app_name);
-   PrefService* prefs = g_browser_process->local_state();
-   DCHECK(prefs);
- 
-   prefs->RegisterDictionaryPref(window_pref.c_str());
+   profile->GetPrefs()->RegisterDictionaryPref(window_pref.c_str());
 +  prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath());
  }
  
  void Browser::TabRestoreServiceChanged(TabRestoreService* service) {
-Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
-===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_titlebar.cc
-+++ src/chrome/browser/ui/gtk/browser_titlebar.cc
+--- a/chrome/browser/ui/gtk/browser_titlebar.cc
++++ b/chrome/browser/ui/gtk/browser_titlebar.cc
 @@ -16,6 +16,7 @@
  #include "base/string_tokenizer.h"
  #include "base/utf_string_conversions.h"
@@ -262,7 +243,7 @@ Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
 +#include "chrome/browser/browser_process.h"
  #include "chrome/browser/prefs/pref_service.h"
  #include "chrome/browser/profiles/profile.h"
- #include "chrome/browser/tab_contents/tab_contents.h"
+ #include "chrome/browser/ui/browser.h"
 @@ -551,14 +552,27 @@
      // Update the system app icon.  We don't need to update the icon in the top
      // left of the custom frame, that will get updated when the throbber is
@@ -298,11 +279,9 @@ Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
    }
  }
  
-Index: src/chrome/browser/ui/browser.h
-===================================================================
---- src.orig/chrome/browser/ui/browser.h
-+++ src/chrome/browser/ui/browser.h
-@@ -248,6 +248,7 @@
+--- a/chrome/browser/ui/browser.h
++++ b/chrome/browser/ui/browser.h
+@@ -246,6 +246,7 @@
        const Extension* extension,
        extension_misc::LaunchContainer container,
        const GURL& url,
@@ -310,7 +289,7 @@ Index: src/chrome/browser/ui/browser.h
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -288,6 +289,7 @@
+@@ -286,6 +287,7 @@
    // State Storage and Retrieval for UI ///////////////////////////////////////
  
    // Save and restore the window position.
@@ -318,7 +297,7 @@ Index: src/chrome/browser/ui/browser.h
    std::string GetWindowPlacementKey() const;
    bool ShouldSaveWindowPlacement() const;
    void SaveWindowPlacement(const gfx::Rect& bounds, bool maximized);
-@@ -297,6 +299,9 @@
+@@ -295,6 +297,9 @@
    // Gets the FavIcon of the page in the selected tab.
    SkBitmap GetCurrentPageIcon() const;
  
@@ -328,10 +307,8 @@ Index: src/chrome/browser/ui/browser.h
    // Gets the title of the window based on the selected tab's title.
    string16 GetWindowTitleForCurrentTab() const;
  
-Index: src/chrome/browser/ui/gtk/gtk_util.h
-===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.h
-+++ src/chrome/browser/ui/gtk/gtk_util.h
+--- a/chrome/browser/ui/gtk/gtk_util.h
++++ b/chrome/browser/ui/gtk/gtk_util.h
 @@ -72,6 +72,10 @@
  // Horizontal Spacing between controls in a form.
  const int kFormControlSpacing = 10;
@@ -343,11 +320,9 @@ Index: src/chrome/browser/ui/gtk/gtk_util.h
  // Create a table of labeled controls, using proper spacing and alignment.
  // Arguments should be pairs of const char*, GtkWidget*, concluding with a
  // NULL.  The first argument is a vector in which to place all labels
-Index: src/chrome/common/pref_names.cc
-===================================================================
---- src.orig/chrome/common/pref_names.cc
-+++ src/chrome/common/pref_names.cc
-@@ -813,6 +813,9 @@
+--- a/chrome/common/pref_names.cc
++++ b/chrome/common/pref_names.cc
+@@ -854,6 +854,9 @@
  // window to restore on startup.
  const char kBrowserWindowPlacement[] = "browser.window_placement";
  
@@ -357,11 +332,9 @@ Index: src/chrome/common/pref_names.cc
  // A collection of position, size, and other data relating to the task
  // manager window to restore on startup.
  const char kTaskManagerWindowPlacement[] = "task_manager.window_placement";
-Index: src/chrome/common/pref_names.h
-===================================================================
---- src.orig/chrome/common/pref_names.h
-+++ src/chrome/common/pref_names.h
-@@ -285,6 +285,7 @@
+--- a/chrome/common/pref_names.h
++++ b/chrome/common/pref_names.h
+@@ -292,6 +292,7 @@
  extern const char kUninstallLastLaunchTimeSec[];
  extern const char kUninstallLastObservedRunTimeSec[];
  
@@ -369,19 +342,3 @@ Index: src/chrome/common/pref_names.h
  extern const char kBrowserWindowPlacement[];
  extern const char kTaskManagerWindowPlacement[];
  extern const char kKeywordEditorWindowPlacement[];
-Index: src/chrome/browser/ui/browser_init.cc
-===================================================================
---- src.orig/chrome/browser/ui/browser_init.cc
-+++ src/chrome/browser/ui/browser_init.cc
-@@ -748,9 +748,11 @@
-         ChildProcessSecurityPolicy::GetInstance();
-     if (policy->IsWebSafeScheme(url.scheme()) ||
-         url.SchemeIs(chrome::kFileScheme)) {
-+      std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
-       TabContents* app_tab = Browser::OpenAppShortcutWindow(
-           profile,
-           url,
-+          FilePath(icon_id),
-           true);  // Update app info.
-       return (app_tab != NULL);
-     }
