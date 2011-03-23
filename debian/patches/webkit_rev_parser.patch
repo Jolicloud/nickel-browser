@@ -2,9 +2,16 @@
  webkit/build/webkit_version.py |    9 +++++++++
  1 file changed, 9 insertions(+)
 
---- a/webkit/build/webkit_version.py
-+++ b/webkit/build/webkit_version.py
-@@ -51,6 +51,15 @@
+Index: src/webkit/build/webkit_version.py
+===================================================================
+--- src.orig/webkit/build/webkit_version.py
++++ src/webkit/build/webkit_version.py
+@@ -46,16 +46,25 @@
+   # "svn info" tells us what we want, but third_party/WebKit does *not*
+   # point at the upstream repo.  So instead we run svn info on the directory
+   # containing the versioning file (which is some subdirectory of WebKit).
+   version_file_dir = os.path.dirname(version_file)
+   version_info = lastchange.FetchVersionInfo(
        default_lastchange=None,
        directory=os.path.join(webkit_dir, version_file_dir))
  
@@ -20,3 +27,8 @@
    if (version_info.url.startswith(version_info.root) and
        version_info.url.endswith(version_file_dir)):
      # Now compute the real WebKit URL by stripping off the version file
+     # directory from the URL we get out of version_info.
+     # Further, we want to strip off the "http://svn..." from the left.
+     # This is the root URL from the repository.
+     webkit_url = version_info.url[len(version_info.root):-len(version_file_dir)]
+     webkit_url = webkit_url.strip('/')
