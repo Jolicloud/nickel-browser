@@ -128,6 +128,7 @@ Description: nickel-codecs-ffmpeg debug symbols
 
 Package: nickel-codecs-ffmpeg-extra
 Architecture: any
+Section: restricted/web
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
 Conflicts: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree (<< 0.5+svn20100323r42310+42573+42709)
 Breaks: nickel-browser (<< 3.0.197.0~svn20090802r22252)
@@ -144,7 +145,7 @@ Description: Extra ffmpeg codecs for the Nickel Browser
 
 Package: nickel-codecs-ffmpeg-extra-dbg
 Architecture: any
-Section: debug
+Section: restricted/debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg-extra (= ${binary:Version})
 Conflicts: nickel-codecs-ffmpeg-dbg, nickel-codecs-ffmpeg-nonfree-dbg (<< 0.5+svn20100323r42310+42573+42709)
@@ -155,6 +156,7 @@ Description: nickel-codecs-ffmpeg-extra debug symbols
 
 Package: nickel-codecs-ffmpeg-nonfree
 Architecture: all
+Section: restricted/web
 Depends: nickel-codecs-ffmpeg-extra
 Description: dummy upgrade package
  This is a transitional package so nickel-codecs-ffmpeg-nonfree users
@@ -162,6 +164,7 @@ Description: dummy upgrade package
 
 Package: nickel-codecs-ffmpeg-nonfree-dbg
 Architecture: all
+Section: restricted/debug
 Depends: nickel-codecs-ffmpeg-extra-dbg
 Description: dummy upgrade package
  This is a transitional package so nickel-codecs-ffmpeg-nonfree-dbg users
