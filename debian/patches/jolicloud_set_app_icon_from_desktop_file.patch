@@ -223,15 +223,16 @@
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterIntegerPref(prefs::kExtensionSidebarWidth, -1);
    prefs->RegisterIntegerPref(prefs::kMultipleProfilePrefMigration, 0);
-@@ -4287,7 +4318,11 @@
-   std::string window_pref(prefs::kBrowserWindowPlacement);
+@@ -4288,6 +4319,12 @@
    window_pref.append("_");
    window_pref.append(app_name);
+   profile->GetPrefs()->RegisterDictionaryPref(window_pref.c_str());
++
++  // We need to register the app-icon pref.
 +  std::string icon_pref(prefs::kBrowserWindowIcon);
 +  icon_pref.append("_");
 +  icon_pref.append(app_name);
-   profile->GetPrefs()->RegisterDictionaryPref(window_pref.c_str());
-+  prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath());
++  profile->GetPrefs()->RegisterFilePathPref(icon_pref.c_str(), FilePath());
  }
  
  void Browser::TabRestoreServiceChanged(TabRestoreService* service) {
@@ -343,3 +344,17 @@
  extern const char kBrowserWindowPlacement[];
  extern const char kTaskManagerWindowPlacement[];
  extern const char kKeywordEditorWindowPlacement[];
+--- a/chrome/browser/ui/browser_init.cc
++++ b/chrome/browser/ui/browser_init.cc
+@@ -848,9 +848,11 @@
+         url.SchemeIs(chrome::kFileScheme)) {
+ 
+       RecordCmdLineAppHistogram();
++      std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
+       TabContents* app_tab = Browser::OpenAppShortcutWindow(
+           profile,
+           url,
++          FilePath(icon_id),
+           true);  // Update app info.
+       return (app_tab != NULL);
+     }

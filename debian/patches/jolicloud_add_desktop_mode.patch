@@ -38,7 +38,7 @@
  Browser* Browser::CreateForDevTools(Profile* profile) {
    Browser* browser = new Browser(TYPE_DEVTOOLS, profile);
    browser->app_name_ = DevToolsWindow::kDevToolsApp;
-@@ -510,7 +527,7 @@
+@@ -511,7 +528,7 @@
      case extension_misc::LAUNCH_WINDOW:
      case extension_misc::LAUNCH_PANEL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
@@ -47,7 +47,7 @@
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, existing_tab);
-@@ -530,6 +547,7 @@
+@@ -531,6 +548,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
@@ -55,7 +55,7 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -557,8 +575,12 @@
+@@ -558,8 +576,12 @@
      window_size.SetSize(extension->launch_width(),
                          extension->launch_height());
  
@@ -70,7 +70,7 @@
    if (app_browser)
      *app_browser = browser;
  
-@@ -570,6 +592,9 @@
+@@ -571,6 +593,9 @@
        prefs->SetFilePath(icon_pref_key.c_str(), icon_id);
    }
  
@@ -80,7 +80,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -586,6 +611,7 @@
+@@ -587,6 +612,7 @@
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -88,7 +88,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -594,6 +620,7 @@
+@@ -595,6 +621,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -96,7 +96,7 @@
        &app_browser);
  
    if (!tab)
-@@ -880,7 +907,9 @@
+@@ -881,7 +908,9 @@
  }
  
  bool Browser::ShouldCloseWindow() {
@@ -107,7 +107,7 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1241,22 +1270,27 @@
+@@ -1242,22 +1271,27 @@
    features |= FEATURE_DOWNLOADSHELF;
  #endif  // !defined(OS_CHROMEOS)
  
@@ -139,7 +139,7 @@
    }
    return !!(features & feature);
  }
-@@ -1577,7 +1611,7 @@
+@@ -1578,7 +1612,7 @@
      }
    }
  #endif
@@ -148,7 +148,7 @@
  }
  
  void Browser::BookmarkCurrentPage() {
-@@ -2661,7 +2695,7 @@
+@@ -2662,7 +2696,7 @@
    // in-progress downloads.
    // Note that the next call when it returns false will ask the user for
    // confirmation before closing the browser if the user decides so.
@@ -157,7 +157,7 @@
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -3117,6 +3151,10 @@
+@@ -3118,6 +3152,10 @@
      return;
    }
  
@@ -274,10 +274,10 @@
  bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
    std::string url_string, app_id;
    if (!IsAppLaunch(&url_string, &app_id))
-@@ -851,6 +859,7 @@
-       TabContents* app_tab = Browser::OpenAppShortcutWindow(
+@@ -853,6 +861,7 @@
            profile,
            url,
+           FilePath(icon_id),
 +          IsDesktopLaunch(),
            true);  // Update app info.
        return (app_tab != NULL);
