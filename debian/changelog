@@ -1,3 +1,11 @@
+nickel-browser (11.0.696.14~r78500-1jolicloud1) robby-1.2.1; urgency=low
+
+  * Merged chromium-browser 11 into nickel-browser
+  * Refreshed Jolicloud patches
+  * Corrected two patches that failed to migrate cleanly into Chromium 11
+
+ -- Adam McDaniel <adam@jolicloud.org>  Wed, 23 Mar 2011 14:17:16 -0600
+
 chromium-browser (11.0.696.14~r78500-0ubuntu1~ucd~dev1~lucid) lucid; urgency=low
 
   * New upstream release from the Dev Channel
