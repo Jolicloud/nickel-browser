@@ -9,7 +9,13 @@
        </message>
  
        <!-- The relative font size in % used in Web UI (e.g. History).  -->
-@@ -149,17 +149,17 @@
+@@ -144,22 +144,22 @@
+ 
+       <!-- The default value for |WebPreference::standard_font_family| -->
+       <message name="IDS_STANDARD_FONT_FAMILY" use_name_for_id="true">
+-        Times New Roman
++        Liberation Serif
+       </message>
  
        <!-- The default value for |WebPreference::fixed_font_family| -->
        <message name="IDS_FIXED_FONT_FAMILY" use_name_for_id="true">
