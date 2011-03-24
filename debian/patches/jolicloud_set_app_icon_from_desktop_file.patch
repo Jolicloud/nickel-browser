@@ -154,22 +154,20 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -559,6 +563,14 @@
+@@ -559,6 +563,12 @@
    if (app_browser)
      *app_browser = browser;
  
 +  // save icon-id value for later use by UpdateWindowIcon
 +  if (!icon_id.empty()) {
 +      std::string icon_pref_key = browser->GetWindowIconKey();
-+      PrefService* prefs = g_browser_process->local_state();
-+      DCHECK(prefs);
-+      prefs->SetFilePath(icon_pref_key.c_str(), icon_id);
++      profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
 +  }
 +
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -574,6 +586,7 @@
+@@ -574,6 +584,7 @@
  
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
@@ -177,7 +175,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -581,6 +594,7 @@
+@@ -581,6 +592,7 @@
        NULL,  // this is a URL app.  No extension.
        extension_misc::LAUNCH_WINDOW,
        url,
@@ -185,7 +183,7 @@
        &app_browser);
  
    if (!tab)
-@@ -728,6 +742,15 @@
+@@ -728,6 +740,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -201,7 +199,7 @@
  std::string Browser::GetWindowPlacementKey() const {
    std::string name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -800,6 +823,13 @@
+@@ -800,6 +821,13 @@
    return contents ? contents->GetFavIcon() : SkBitmap();
  }
  
@@ -215,7 +213,7 @@
  string16 Browser::GetWindowTitleForCurrentTab() const {
    TabContents* contents = GetSelectedTabContents();
    string16 title;
-@@ -2042,6 +2072,7 @@
+@@ -2042,6 +2070,7 @@
  
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
@@ -223,7 +221,7 @@
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterIntegerPref(prefs::kExtensionSidebarWidth, -1);
    prefs->RegisterIntegerPref(prefs::kMultipleProfilePrefMigration, 0);
-@@ -4288,6 +4319,12 @@
+@@ -4288,6 +4317,12 @@
    window_pref.append("_");
    window_pref.append(app_name);
    profile->GetPrefs()->RegisterDictionaryPref(window_pref.c_str());
