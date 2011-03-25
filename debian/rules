@@ -145,25 +145,6 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/makefile.mk
 
-NICKEL_ICONS_DIR := debian/nickel_icons/
-NICKEL_ICONS := chromium_icon_32.png product_logo_256.png product_logo_48.png product_logo_32.png product_logo_16.png product_logo.png product_logo_white.png product_logo.png
-NICKEL_ICONS_B64 := $(addsuffix .b64,$(NICKEL_ICONS))
-NICKEL_ICONS_DEBIAN := $(addprefix $(NICKEL_ICONS_DIR), $(NICKEL_ICONS))
-NICKEL_ICONS_CHROMIUM := $(addprefix $(SRC_DIR)/chrome/app/theme/chromium/, $(NICKEL_ICONS))
-
-% : %.b64
-	base64 -d $< > $@
-
-$(NICKEL_ICONS_CHROMIUM) debian/stamp-reverse-icons : $(NICKEL_ICONS_DEBIAN)
-	for f in $(NICKEL_ICONS_DEBIAN); do t="$(SRC_DIR)/chrome/app/theme/chromium/$$(basename $$f)" ; mv $$t $$t.orig ; cp $$f $$t ; done
-	touch debian/stamp-reverse-icons
-
-post-patches:: $(NICKEL_ICONS_CHROMIUM) $(NICKEL_ICONS_DEBIAN)
-
-clean::
-	rm -f $(NICKEL_ICONS_DEBIAN)
-	rm -f debian/stamp-reverse-icons
-
 ifneq (1,$(PROCESSORS))
 DEB_MAKE_EXTRA_ARGS += -j$(PROCESSORS)
 endif
