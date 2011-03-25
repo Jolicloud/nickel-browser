@@ -1,3 +1,13 @@
+nickel-browser (11.0.696.14~r78500-1jolicloud2) robby-1.2.1; urgency=low
+
+  * Flag packages nickel-codecs-ffmpeg-{extra,nonfree} as restricted
+  * Use 'Liberation Serif' for IDS_STANDARD_FONT_FAMILY
+  * Corrected the use of SetFilePath() when saving the icon_id peference
+  * Removed nickel's custom icons; use chromium's new built-in icons by
+    default.
+
+ -- Adam McDaniel <adam@jolicloud.org>  Fri, 25 Mar 2011 08:33:49 -0600
+
 nickel-browser (11.0.696.14~r78500-1jolicloud1) robby-1.2.1; urgency=low
 
   * Merged chromium-browser 11 into nickel-browser
