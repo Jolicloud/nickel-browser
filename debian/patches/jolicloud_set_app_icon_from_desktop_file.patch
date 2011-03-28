@@ -264,7 +264,7 @@
 +    GdkPixbuf* icon_pixbuf = NULL;
 +    std::string icon_pref_key = browser_window_->browser()->GetWindowIconKey();
 +    size_t found = icon_pref_key.find(current_host);
-+    PrefService* prefs = g_browser_process->local_state();
++    PrefService* prefs = browser_window_->browser()->profile()->GetPrefs();
 +    FilePath prefs_icon_id = prefs->GetFilePath(icon_pref_key.c_str());
 +    if (!prefs_icon_id.empty())
 +      icon_pixbuf = gtk_util::GetPixbufFromIconID(prefs_icon_id.value());
