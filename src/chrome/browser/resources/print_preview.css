@@ -1,0 +1,93 @@
+body {
+  -webkit-user-select: none;
+  display: -webkit-box;
+  font-size: 100%;
+  overflow: hidden;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0;
+}
+
+#settings-title {
+  -webkit-padding-end: 24px;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: end;
+  font-size: 125%;
+  font-weight: normal;
+  color: #53627d;
+}
+
+#navbar-container {
+  background-color: #f8fafd;
+  width: 295px;
+  height: 100%;
+  overflow: auto;
+}
+
+#destination-container {
+  background-color: #fff;
+  padding: 10px;
+}
+
+#destination-container > h1 {
+  font-size: 100%;
+  margin: 0;
+}
+
+#separator {
+  background: -webkit-linear-gradient(left, #a4a4a4, #ccc);
+  height: 100%;
+  width: 6px;
+}
+
+#mainview {
+  -webkit-box-flex: 1;
+  -webkit-padding-start: 10px;
+  background-color: #ccc;
+}
+
+#pdf-viewer {
+  width: 100%;
+  height: 100%;
+}
+
+section {
+  -webkit-box-orient: horizontal;
+  display: -webkit-box;
+  margin-top: 15px;
+}
+
+section > h3 {
+  -webkit-padding-start: 10px;
+  font-size: 100%;
+  font-weight: normal;
+  margin: 0;
+  width: 50px;
+}
+
+.hidden {
+  display: none;
+}
+
+select {
+  margin: 0;
+}
+
+.link-button {
+  background-color: transparent;
+  border: none;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+
+.text-button {
+  background-color: transparent;
+  border-color: transparent;
+  padding: 0;
+}

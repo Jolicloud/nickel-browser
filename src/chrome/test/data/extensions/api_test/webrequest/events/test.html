@@ -1,0 +1,127 @@
+<script>
+var getURL = chrome.extension.getURL;
+var expectedEventData;
+var capturedEventData;
+var captureFilteredEvents;
+
+function expect(data, filtered) {
+  expectedEventData = data;
+  capturedEventData = [];
+  captureFilteredEvents = filtered;
+}
+
+function checkExpectations() {
+  if (capturedEventData.length < expectedEventData.length) {
+    return;
+  }
+  // TODO(mpcomplete): allow partial ordering of events
+  chrome.test.assertEq(JSON.stringify(expectedEventData),
+      JSON.stringify(capturedEventData));
+  chrome.test.succeed();
+}
+
+function captureEvent(name, details, isFiltered) {
+  // TODO(mpcomplete): implement the rest of the parameters.
+  delete details.requestId;
+  delete details.tabId;
+  delete details.timeStamp;
+  delete details.type;
+  if (captureFilteredEvents == isFiltered)
+    capturedEventData.push([name, details]);
+  checkExpectations();
+}
+
+chrome.experimental.webRequest.onBeforeRequest.addListener(
+    function(details) {
+  captureEvent("onBeforeRequest", details);
+});
+chrome.experimental.webRequest.onRequestSent.addListener(
+    function(details) {
+  captureEvent("onRequestSent", details);
+});
+chrome.experimental.webRequest.onHeadersReceived.addListener(
+    function(details) {
+  captureEvent("onHeadersReceived", details);
+});
+chrome.experimental.webRequest.onBeforeRedirect.addListener(
+    function(details) {
+  captureEvent("onBeforeRedirect", details);
+});
+chrome.experimental.webRequest.onCompleted.addListener(
+    function(details) {
+  captureEvent("onCompleted", details);
+});
+chrome.experimental.webRequest.onErrorOccurred.addListener(
+    function(details) {
+  captureEvent("onErrorOccurred", details);
+});
+
+// For filter tests.
+chrome.experimental.webRequest.onBeforeRequest.addListener(
+    function(details) {
+  captureEvent("onBeforeRequest", details, true);
+},
+    {urls: [getURL("simpleLoad/*")]}
+);
+
+chrome.tabs.getSelected(null, function(tab) {
+  var tabId = tab.id;
+
+  chrome.test.runTests([
+    // Navigates to a blank page.
+    function simpleLoad() {
+      expect([
+        [ "onBeforeRequest",
+          {
+            method: "GET",
+            url: getURL("simpleLoad/a.html")
+          }
+        ],
+      ]);
+      chrome.tabs.update(tabId, { url: getURL("simpleLoad/a.html") });
+    },
+
+    // Navigates to a page with subresources.
+    // TODO(mpcomplete): add multiple subresources; requires support for
+    // recognizing partial ordering.
+    function complexLoad() {
+      expect([
+        [ "onBeforeRequest",
+          {
+            method: "GET",
+            url: getURL("complexLoad/a.html")
+          }
+        ],
+        [ "onBeforeRequest",
+          {
+            method: "GET",
+            url: getURL("complexLoad/b.html")
+          }
+        ],
+        [ "onBeforeRequest",
+          {
+            method: "GET",
+            url: getURL("complexLoad/b.jpg")
+          }
+        ],
+      ]);
+      chrome.tabs.update(tabId, { url: getURL("complexLoad/a.html") });
+    },
+
+    // Loads several resources, but should only see the simpleLoad
+    // due to the filter.
+    function simpleLoadFiltered() {
+      expect([
+        [ "onBeforeRequest",
+          {
+            method: "GET",
+            url: getURL("simpleLoad/a.html")
+          }
+        ],
+      ], true);
+      chrome.tabs.update(tabId, { url: getURL("complexLoad/a.html") });
+      chrome.tabs.update(tabId, { url: getURL("simpleLoad/a.html") });
+    },
+  ]);
+});
+</script>

@@ -1,0 +1,18 @@
+;;
+;; Copyright (c) 2010 The Chromium Authors. All rights reserved.
+;; Use of this source code is governed by a BSD-style license that can be
+;; found in the LICENSE file.
+;;
+
+; *** The contents of chrome/common/common.sb are implicitly included here. ***
+
+; The GPU process opens a shared memory file to communicate with the renderer.
+; This is backed by a file in /var/folders.
+; TODO(thakis): Let the browser allocated the pipe and hand the handles to
+;               renderer and GPU process and remove this: http://crbug.com/65344
+(allow file-read* file-write* (regex "^/(private/)?(tmp|var)(/|$)"))
+
+; Allow communication between the GPU process and the UI server.
+(allow mach-lookup (global-name "com.apple.tsm.uiserver"))
+
+(allow file-read-metadata (literal "/"))

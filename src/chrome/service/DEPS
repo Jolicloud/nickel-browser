@@ -1,0 +1,9 @@
+include_rules = [
+  # For generated headers.
+  "+grit",
+  # For Media initialization definition.
+  "+media/base",
+  # For Chromoting Host Process.
+  "+remoting/base",
+  "+remoting/host",
+]

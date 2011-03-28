@@ -1,0 +1,168 @@
+// Copyright (c) 2010 The Chromium Authors. All rights reserved.
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+#include "chrome/browser/chromeos/customization_document.h"
+
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace {
+
+const char kGoodStartupManifest[] =
+    "{"
+    "  \"version\": \"1.0\","
+    "  \"initial_locale\" : \"en-US\","
+    "  \"initial_timezone\" : \"US/Pacific\","
+    "  \"keyboard_layout\" : \"xkb:us::eng\","
+    "  \"registration_url\" : \"http://www.google.com\","
+    "  \"setup_content\" : {"
+    "    \"en-US\" : {"
+    "      \"help_page\" : \"file:///opt/oem/help/en-US/help.html\","
+    "      \"eula_page\" : \"file:///opt/oem/eula/en-US/eula.html\","
+    "    },"
+    "    \"ru-RU\" : {"
+    "      \"help_page\" : \"file:///opt/oem/help/ru-RU/help.html\","
+    "      \"eula_page\" : \"file:///opt/oem/eula/ru-RU/eula.html\","
+    "    },"
+    "    \"default\" : {"
+    "      \"help_page\" : \"file:///opt/oem/help/en/help.html\","
+    "      \"eula_page\" : \"file:///opt/oem/eula/en/eula.html\","
+    "    },"
+    "  },"
+    "  \"hwid_map\" : ["
+    "    {"
+    "      \"hwid_mask\": \"ZGA*34\","
+    "      \"initial_locale\" : \"ja\","
+    "      \"initial_timezone\" : \"Asia/Tokyo\","
+    "      \"keyboard_layout\" : \"mozc-jp\","
+    "    },"
+    "    {"
+    "      \"hwid_mask\": \"Mario 1?3*\","
+    "      \"initial_locale\" : \"ru-RU\","
+    "      \"initial_timezone\" : \"Europe/Moscow\","
+    "      \"keyboard_layout\" : \"xkb:ru::rus\","
+    "    },"
+    "  ],"
+    "}";
+
+const char kBadManifest[] = "{\"version\": \"1\"}";
+
+const char kGoodServicesManifest[] =
+    "{"
+    "  \"version\": \"1.0\","
+    "  \"app_content\" : {"
+    "    \"en-US\" : {"
+    "      \"initial_start_page\": \"http://mario/promo\","
+    "      \"support_page\": \"http://mario/us\","
+    "    },"
+    "    \"ru-RU\" : {"
+    "      \"initial_start_page\": \"http://mario/ru/promo\","
+    "      \"support_page\": \"http://mario/ru\","
+    "    },"
+    "    \"default\" : {"
+    "      \"initial_start_page\": \"http://mario/global/promo\","
+    "      \"support_page\": \"http://mario/global\","
+    "    },"
+    "  },"
+    "}";
+
+const char kHWID[] = "Mario 123-456";
+
+const char kVPD[] =
+    "\"initial_locale\"=\"ja\"\n"
+    "\"initial_timezone\"=\"Asia/Tokyo\"\n"
+    "\"keyboard_layout\"=\"mozc-jp\"\n";
+
+class TestDocument : public chromeos::StartupCustomizationDocument {
+ public:
+  TestDocument() : hwid_(kHWID), vpd_() {
+  }
+
+  void set_hwid(const std::string& hwid) { hwid_ = hwid; }
+  void set_vpd(const std::string& vpd) { vpd_ = vpd; }
+
+ private:
+  virtual std::string GetHWID() const {
+    return hwid_;
+  }
+
+  virtual std::string GetVPD() const {
+    return vpd_;
+  }
+
+  std::string hwid_;
+  std::string vpd_;
+
+  DISALLOW_COPY_AND_ASSIGN(TestDocument);
+};
+
+}  // anonymous namespace
+
+// StartupCustomizationDocumentTest implementation.
+class StartupCustomizationDocumentTest : public testing::Test {
+ protected:
+  TestDocument customization_;
+};
+
+TEST_F(StartupCustomizationDocumentTest, Basic) {
+  EXPECT_TRUE(customization_.LoadManifestFromString(kGoodStartupManifest));
+  EXPECT_EQ(customization_.initial_locale(), "ru-RU");
+  EXPECT_EQ(customization_.initial_timezone(), "Europe/Moscow");
+  EXPECT_EQ(customization_.keyboard_layout(), "xkb:ru::rus");
+  EXPECT_EQ(customization_.registration_url(), "http://www.google.com");
+
+  EXPECT_EQ(customization_.GetHelpPage("en-US"),
+            "file:///opt/oem/help/en-US/help.html");
+  EXPECT_EQ(customization_.GetHelpPage("ru-RU"),
+            "file:///opt/oem/help/ru-RU/help.html");
+  EXPECT_EQ(customization_.GetHelpPage("ja"),
+            "file:///opt/oem/help/en/help.html");
+
+  EXPECT_EQ(customization_.GetEULAPage("en-US"),
+            "file:///opt/oem/eula/en-US/eula.html");
+  EXPECT_EQ(customization_.GetEULAPage("ru-RU"),
+            "file:///opt/oem/eula/ru-RU/eula.html");
+  EXPECT_EQ(customization_.GetEULAPage("ja"),
+            "file:///opt/oem/eula/en/eula.html");
+}
+
+TEST_F(StartupCustomizationDocumentTest, VPD) {
+  customization_.set_vpd(kVPD);
+  EXPECT_TRUE(customization_.LoadManifestFromString(kGoodStartupManifest));
+  EXPECT_EQ(customization_.initial_locale(), "ja");
+  EXPECT_EQ(customization_.initial_timezone(), "Asia/Tokyo");
+  EXPECT_EQ(customization_.keyboard_layout(), "mozc-jp");
+}
+
+TEST_F(StartupCustomizationDocumentTest, BadManifest) {
+  EXPECT_FALSE(customization_.LoadManifestFromString(kBadManifest));
+}
+
+// ServicesCustomizationDocumentTest implementation.
+class ServicesCustomizationDocumentTest : public testing::Test {
+ protected:
+  chromeos::ServicesCustomizationDocument customization_;
+};
+
+TEST_F(ServicesCustomizationDocumentTest, Basic) {
+  EXPECT_TRUE(customization_.LoadManifestFromString(kGoodServicesManifest));
+
+  EXPECT_EQ(customization_.GetInitialStartPage("en-US"),
+            "http://mario/promo");
+  EXPECT_EQ(customization_.GetInitialStartPage("ru-RU"),
+            "http://mario/ru/promo");
+  EXPECT_EQ(customization_.GetInitialStartPage("ja"),
+            "http://mario/global/promo");
+
+
+  EXPECT_EQ(customization_.GetSupportPage("en-US"),
+            "http://mario/us");
+  EXPECT_EQ(customization_.GetSupportPage("ru-RU"),
+            "http://mario/ru");
+  EXPECT_EQ(customization_.GetSupportPage("ja"),
+            "http://mario/global");
+}
+
+TEST_F(ServicesCustomizationDocumentTest, BadManifest) {
+  EXPECT_FALSE(customization_.LoadManifestFromString(kBadManifest));
+}

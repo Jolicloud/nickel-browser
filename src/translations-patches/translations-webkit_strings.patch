@@ -1,0 +1,1650 @@
+diff -Nur old/third_party/launchpad_translations/webkit_strings_ast.xtb new/third_party/launchpad_translations/webkit_strings_ast.xtb
+--- old/third_party/launchpad_translations/webkit_strings_ast.xtb	2011-03-10 17:03:15.000000000 +0000
++++ new/third_party/launchpad_translations/webkit_strings_ast.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,4 +2,62 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="ast">
+ <translation id="1171774979989969504">Introduz una direición de corréu-e válida</translation>
++<translation id="1235745349614807883">Desaniciar guetes recientes</translation>
++<translation id="1416462845279468967">Hebo un fallu al instalar el complementu.</translation>
++<translation id="1639239467298939599">Cargando</translation>
++<translation id="1842960171412779397">seleicionar</translation>
++<translation id="2226276347425096477">Encurtia'l testu por que tenga a lo más <ph name="MAX_CHARACTERS"/> carauteres. Anguaño tien <ph name="CURRENT_LENGTH"/> carauteres.</translation>
++<translation id="2507943997699731163">Completa esti campu.</translation>
++<translation id="2548326553472216322">Nun hai busques recientes</translation>
++<translation id="2597378329261239068">Esti documentu ta protexíu por contraseña. Introduz una contraseña.</translation>
++<translation id="2653659639078652383">Unviar</translation>
++<translation id="2745343197843472802">Obtener complementu</translation>
++<translation id="2761667185364618470">Marca'l caxellu si quies siguir.</translation>
++<translation id="2846343701378493991">1024 (Grau mediu)</translation>
++<translation id="2908441821576996758">Introduz una llista de direiciones de corréu electrónicu separtaes por comes.</translation>
++<translation id="3018094406922859308">Descargando complementu...</translation>
++<translation id="3040011195152428237">enllaz</translation>
++<translation id="310520048233152454">Introduz una URL.</translation>
++<translation id="3358049263351449631">Esto ye un índiz de busca. Introduz los términos de busca: '''</translation>
++<translation id="3450233048674729344">El valor tien de ser menor o igual a <ph name="MAXIMUM"/>.</translation>
++<translation id="370665806235115550">Cargando...</translation>
++<translation id="372362261556059955">Precísase un complementu adicional</translation>
++<translation id="3789841737615482174">Instalar</translation>
++<translation id="3851140433852960970">Nun hai un complementu disponible p'amosar esti conteníu.</translation>
++<translation id="3934680773876859118">Nun pudo cargase'l documentu PDF</translation>
++<translation id="4202807286478387388">saltar</translation>
++<translation id="4519964825805946997">Hebo un fallu al descargar el complementu de la páxina <ph name="URL"/>.</translation>
++<translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
++<translation id="5048533449481078685">marcador de llistes</translation>
++<translation id="5129723458012748440">el complementu <ph name="PLUGIN"/> nun ta instaláu.</translation>
++<translation id="5164977714490026579">El valor tien de ser mayor o igual a <ph name="MINIMUM"/>.</translation>
++<translation id="5253117816378681419">Confirma que quies instalar el complementu <ph name="PLUGIN"/>. Namái debieras instalar complementos nos que confíes.</translation>
++<translation id="5466621249238537318">Seleiciona ún o más ficheros.</translation>
++<translation id="5476505524087279545">desconseñar</translation>
++<translation id="5650795167354946011">Una vegada que tengas instaláu el complementu, calca equí p'anovar la ventana.</translation>
++<translation id="5776402066334188252">Confirma que quies instalar esti complementu. Namái debieras instalar complementos nos que confíes.</translation>
++<translation id="5939518447894949180">Reaniciar</translation>
++<translation id="5944544982112848342">2048 (Grau altu)</translation>
++<translation id="6119846243427417423">activar</translation>
++<translation id="6663448176199120256">Busques recientes</translation>
++<translation id="6845533974506654842">primir</translation>
++<translation id="709897737746224366">Caltén el formatu afayadizu</translation>
++<translation id="7263440858009898357">Escueyi un elementu de la llista.</translation>
++<translation id="7335060848622232389">Desactivóse la instalación de complementos</translation>
++<translation id="7364796246159120393">Escoyer un ficheru</translation>
++<translation id="7638452146404718955">Calca equí pa descargar el complementu.</translation>
++<translation id="7658239707568436148">Encaboxar</translation>
++<translation id="7740050170769002709">Conteníu HTML</translation>
++<translation id="795667975304826397">Nun se seleicionó nengún ficheru</translation>
++<translation id="8244226242650769279">mapa d'imáxenes</translation>
++<translation id="835897206747267392">Valor non válidu.</translation>
++<translation id="838869780401515933">conseñar</translation>
++<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> ficheros</translation>
++<translation id="8451268428117625855">Escueyi un ficheru</translation>
++<translation id="8475551193147984329">Ye necesariu'l complementu <ph name="PLUGIN"/></translation>
++<translation id="8597182159515967513">testera</translation>
++<translation id="8750798805984357768">Escueyi una d'estes opciones.</translation>
++<translation id="8964020114565522021">Arrastrar ficheru hasta equí</translation>
++<translation id="9186171386827445984">Cargando documentu: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> páxines...</translation>
++<translation id="9198010615634362518">El complementu necesariu nun ta instaláu.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_bn.xtb new/webkit/glue/resources/webkit_strings_bn.xtb
+--- old/webkit/glue/resources/webkit_strings_bn.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_bn.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -12,7 +12,7 @@
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">বাতিল</translation>
+ <translation id="795667975304826397">কোনও ফাইল চয়ন করা হয় নি</translation>
+-<translation id="1416462845279468967">প্লাগ-ইন ইনস্টলেশান ব্যর্থ হয়েছে</translation>
++<translation id="1416462845279468967">প্লাগ-ইন ইনস্টলেশন ব্যর্থ হয়েছে</translation>
+ <translation id="8141602879876242471">এটি অনুসন্ধানযোগ্য সূচি৷ অনুসন্ধানের মূলশব্দ প্রবেশ করান:</translation>
+ <translation id="5650795167354946011">প্ল্যাগ-ইন ইনস্টল করার পরে, রিফ্রেশ করার জন্য এখানে ক্লিক করুন</translation>
+ <translation id="370665806235115550">লোড হচ্ছে...</translation>
+diff -Nur old/webkit/glue/resources/webkit_strings_ca.xtb new/webkit/glue/resources/webkit_strings_ca.xtb
+--- old/webkit/glue/resources/webkit_strings_ca.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_ca.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -52,7 +52,7 @@
+ <translation id="6119846243427417423">activa</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> fitxers</translation>
+ <translation id="3934680773876859118">No es pot carregar el document en format PDF</translation>
+-<translation id="8597182159515967513">Encapçalament</translation>
++<translation id="8597182159515967513">Capçalera</translation>
+ <translation id="2653659639078652383">Envia</translation>
+ <translation id="8475551193147984329">Es necessita el connector <ph name="PLUGIN"/></translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_da.xtb new/webkit/glue/resources/webkit_strings_da.xtb
+--- old/webkit/glue/resources/webkit_strings_da.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_da.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -3,7 +3,7 @@
+ <translationbundle lang="da">
+ <translation id="4519964825805946997">Installation af plugin fra <ph name="URL"/> mislykkedes</translation>
+ <translation id="9186171386827445984">Indlæser dokument: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> sider...</translation>
+-<translation id="1235745349614807883">Slet nylige søgninger</translation>
++<translation id="1235745349614807883">Slet seneste søgninger</translation>
+ <translation id="1171774979989969504">Angiv en e-mail-adresse.</translation>
+ <translation id="709897737746224366">Find et match til det anmodede format.</translation>
+ <translation id="5048533449481078685">listemarkering</translation>
+@@ -15,7 +15,7 @@
+ <translation id="1416462845279468967">Installation af plugin mislykkedes</translation>
+ <translation id="8141602879876242471">Der kan søges i dette indeks. Indtast søge-nøgleord:</translation>
+ <translation id="5650795167354946011">Når du har installeret plugin'et, skal du klikke her for at opdatere</translation>
+-<translation id="370665806235115550">Indlæser ...</translation>
++<translation id="370665806235115550">Indlæser...</translation>
+ <translation id="6845533974506654842">tryk</translation>
+ <translation id="8244226242650769279">billedekort</translation>
+ <translation id="310520048233152454">Angiv en webadresse.</translation>
+@@ -35,13 +35,13 @@
+ <translation id="2846343701378493991">1024 (Mellemklasse)</translation>
+ <translation id="5476505524087279545">fjern markering</translation>
+ <translation id="3789841737615482174">Installer</translation>
+-<translation id="2507943997699731163">Udfyld dette felt.</translation>
++<translation id="2507943997699731163">Udfyld venligst dette felt.</translation>
+ <translation id="5253117816378681419">Bekræft, at du vil installere dette <ph name="PLUGIN"/>-plugin. Du skal kun installere plugins, som du har tillid til.</translation>
+ <translation id="6663448176199120256">Nylige søgninger</translation>
+ <translation id="2597378329261239068">Dette dokument er adgangskodebeskyttet. Indtast en adgangskode.</translation>
+ <translation id="5466621249238537318">Vælg en eller flere filer.</translation>
+ <translation id="8750798805984357768">Vælg en af disse muligheder.</translation>
+-<translation id="7740050170769002709">HTML-indhold</translation>
++<translation id="7740050170769002709">HTML indhold</translation>
+ <translation id="2226276347425096477">Forkort denne tekst til <ph name="MAX_CHARACTERS"/> tegn eller færre (du bruger i øjeblikket <ph name="CURRENT_LENGTH"/> tegn).</translation>
+ <translation id="2908441821576996758">Angiv en kommasepareret liste over e-mail-adresser.</translation>
+ <translation id="5939518447894949180">Nulstil</translation>
+@@ -51,7 +51,7 @@
+ <translation id="7638452146404718955">Klik her for at downloade plugin</translation>
+ <translation id="6119846243427417423">aktiver</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> filer</translation>
+-<translation id="3934680773876859118">PDF-dokumentet kunne ikke indlæses</translation>
++<translation id="3934680773876859118">Fejl ved indlæsning af PDF dokument</translation>
+ <translation id="8597182159515967513">overskrift</translation>
+ <translation id="2653659639078652383">Indsend</translation>
+ <translation id="8475551193147984329"><ph name="PLUGIN"/>-plugin er påkrævet</translation>
+diff -Nur old/webkit/glue/resources/webkit_strings_de.xtb new/webkit/glue/resources/webkit_strings_de.xtb
+--- old/webkit/glue/resources/webkit_strings_de.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_de.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,57 +2,63 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="de">
+ <translation id="4519964825805946997">Installation des Plug-ins von <ph name="URL"/> fehlgeschlagen</translation>
+-<translation id="9186171386827445984">Dokument wird geladen <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> Seiten...</translation>
+-<translation id="1235745349614807883">Vor kurzem durchgeführte Suchanfragen löschen</translation>
+-<translation id="1171774979989969504">Geben Sie eine E-Mail-Adresse ein.</translation>
+-<translation id="709897737746224366">Ihre Eingabe muss mit dem geforderten Format übereinstimmen.</translation>
++<translation id="9186171386827445984">Dokument wird geladen, <ph name="PAGE_NUMBER"/> von <ph name="NUMBER_OF_PAGES"/> Seiten ...</translation>
++<translation id="1235745349614807883">Letzte Suchanfragen löschen</translation>
++<translation id="1171774979989969504">Bitte eine gültige E-Mail-Adresse eingeben.</translation>
++<translation id="709897737746224366">Bitte das vorgegebene Format beachten.</translation>
+ <translation id="5048533449481078685">Listenmarkierung</translation>
+ <translation id="372362261556059955">Zusätzliches Plug-in erforderlich</translation>
+ <translation id="4202807286478387388">springen</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Abbrechen</translation>
+ <translation id="795667975304826397">Keine Datei ausgewählt</translation>
+-<translation id="1416462845279468967">Plug-in-Installation fehlgeschlagen</translation>
++<translation id="1416462845279468967">Plugin-Installation ist fehlgeschlagen</translation>
+ <translation id="8141602879876242471">Dieser Index kann durchsucht werden. Geben Sie Suchbegriffe ein:</translation>
+ <translation id="5650795167354946011">Klicken Sie nach der Installation des Plug-ins hier, um eine Aktualisierung durchzuführen.</translation>
+-<translation id="370665806235115550">Wird geladen...</translation>
++<translation id="370665806235115550">Wird geladen …</translation>
+ <translation id="6845533974506654842">klicken</translation>
+ <translation id="8244226242650769279">Imagemap</translation>
+-<translation id="310520048233152454">Geben Sie eine URL ein.</translation>
++<translation id="310520048233152454">Bitte eine korrekte URL eingeben.</translation>
+ <translation id="2548326553472216322">Keine vor kurzem durchgeführte Suchanfragen</translation>
+-<translation id="7263440858009898357">Wählen Sie ein Element in der Liste aus.</translation>
+-<translation id="5164977714490026579">Wert muss größer als oder gleich <ph name="MINIMUM"/> sein.</translation>
++<translation id="7263440858009898357">Bitte einen Eintrag der Liste auswählen.</translation>
++<translation id="5164977714490026579">Wert muss grösser oder gleich <ph name="MINIMUM"/> sein.</translation>
+ <translation id="5944544982112848342">2048 (High Grade)</translation>
+ <translation id="3040011195152428237">Link</translation>
+ <translation id="2745343197843472802">Plug-in abrufen</translation>
+-<translation id="8451268428117625855">Wählen Sie eine Datei aus.</translation>
++<translation id="8451268428117625855">Bitte wählen Sie eine Datei aus.</translation>
+ <translation id="5776402066334188252">Bitte bestätigen Sie, dass Sie dieses Plug-in installieren möchten. Installieren Sie nur Plug-ins, denen Sie vertrauen.</translation>
+ <translation id="3018094406922859308">Plug-in wird heruntergeladen...</translation>
+ <translation id="7364796246159120393">Datei auswählen</translation>
+-<translation id="2761667185364618470">Aktivieren Sie dieses Kontrollkästchen, wenn Sie fortfahren möchten.</translation>
++<translation id="2761667185364618470">Dieses Feld muss zum Fortfahren ausgewählt sein.</translation>
+ <translation id="8964020114565522021">Datei hier ablegen</translation>
+ <translation id="838869780401515933">auswählen</translation>
+-<translation id="2846343701378493991">1024 (mittlere Stufe)</translation>
++<translation id="2846343701378493991">1024 (mittlere Schlüsselgröße)</translation>
+ <translation id="5476505524087279545">Auswahl aufheben</translation>
+ <translation id="3789841737615482174">Installieren</translation>
+-<translation id="2507943997699731163">Füllen Sie dieses Feld aus.</translation>
++<translation id="2507943997699731163">Bitte dieses Feld ausfüllen.</translation>
+ <translation id="5253117816378681419">Bitte bestätigen Sie, dass Sie das Plug-in <ph name="PLUGIN"/> installieren möchten. Installieren Sie nur Plug-ins, denen Sie vertrauen.</translation>
+ <translation id="6663448176199120256">Vor kurzem durchgeführte Suchanfragen</translation>
+-<translation id="2597378329261239068">Dieses Dokument ist passwortgeschützt. Geben Sie ein Passwort ein.</translation>
+-<translation id="5466621249238537318">Wählen Sie eine oder mehrere Dateien aus.</translation>
+-<translation id="8750798805984357768">Wählen Sie eine dieser Optionen aus.</translation>
+-<translation id="7740050170769002709">HTML-Inhalte</translation>
+-<translation id="2226276347425096477">Kürzen Sie diesen Text auf max. <ph name="MAX_CHARACTERS"/> Zeichen. Derzeit verwenden Sie <ph name="CURRENT_LENGTH"/> Zeichen.</translation>
+-<translation id="2908441821576996758">Geben Sie eine durch Kommas getrennte Liste der E-Mail-Adressen ein.</translation>
++<translation id="2597378329261239068">Dieses Dokument ist passwortgeschützt. Bitte geben Sie ein Passwort ein.</translation>
++<translation id="5466621249238537318">Bitte eine oder mehrere Dateien auswählen.</translation>
++<translation id="8750798805984357768">Bitte eine dieser Optionen auswählen.</translation>
++<translation id="7740050170769002709">HTML-Inhalt</translation>
++<translation id="2226276347425096477">Bitte diesen Text auf maximal <ph name="MAX_CHARACTERS"/> oder weniger Zeichen kürzen (aktuell <ph name="CURRENT_LENGTH"/> Zeichen).</translation>
++<translation id="2908441821576996758">Bitte eine Komma-getrennte Liste von E-Mail-Adressen eingeben.</translation>
+ <translation id="5939518447894949180">Zurücksetzen</translation>
+ <translation id="835897206747267392">Ungültiger Wert.</translation>
+-<translation id="1842960171412779397">auswählen</translation>
+-<translation id="3450233048674729344">Wert muss kleiner als oder gleich <ph name="MAXIMUM"/> sein.</translation>
++<translation id="1842960171412779397">ausgewählt</translation>
++<translation id="3450233048674729344">Wert muss kleiner oder gleich <ph name="MAXIMUM"/> sein.</translation>
+ <translation id="7638452146404718955">Hier klicken, um das Plug-in herunterzuladen</translation>
+ <translation id="6119846243427417423">aktivieren</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> Dateien</translation>
+-<translation id="3934680773876859118">Fehler beim Laden des PDF-Dokuments</translation>
++<translation id="3934680773876859118">PDF-Dokument konnte nicht geladen werden</translation>
+ <translation id="8597182159515967513">Kopfzeile</translation>
+ <translation id="2653659639078652383">Senden</translation>
+ <translation id="8475551193147984329">Plug-in <ph name="PLUGIN"/> ist erforderlich</translation>
++<translation id="1639239467298939599">Wird geladen</translation>
++<translation id="3358049263351449631">Dies ist ein durchsuchbarer Index. Geben Sie Suchwörter ein: '''</translation>
++<translation id="3851140433852960970">Es ist keine Erweiterung zum Anzeigen dieses Inhalts verfügbar.</translation>
++<translation id="5129723458012748440">Die Erweiterung <ph name="PLUGIN"/> ist nicht installiert.</translation>
++<translation id="7335060848622232389">Die Installation von neuen Erweiterungen wurde deaktiviert.</translation>
++<translation id="9198010615634362518">Die benötigte Erweiterung ist nicht installiert.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_es.xtb new/webkit/glue/resources/webkit_strings_es.xtb
+--- old/webkit/glue/resources/webkit_strings_es.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_es.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -4,55 +4,61 @@
+ <translation id="4519964825805946997">Se ha producido un error al descargar el complemento de la página <ph name="URL"/>.</translation>
+ <translation id="9186171386827445984">Cargando documento: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> páginas...</translation>
+ <translation id="1235745349614807883">Eliminar búsquedas recientes</translation>
+-<translation id="1171774979989969504">Introduce una dirección de correo electrónico</translation>
+-<translation id="709897737746224366">Utiliza un formato que coincida con el solicitado</translation>
++<translation id="1171774979989969504">Introduzca una dirección de correo electrónico.</translation>
++<translation id="709897737746224366">Mantenga el formato adecuado.</translation>
+ <translation id="5048533449481078685">marcador de listas</translation>
+ <translation id="372362261556059955">Se necesita un complemento adicional</translation>
+ <translation id="4202807286478387388">saltar</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Cancelar</translation>
+-<translation id="795667975304826397">No se ha seleccionado ningun archivo</translation>
++<translation id="795667975304826397">No se ha seleccionado ningún archivo</translation>
+ <translation id="1416462845279468967">Se ha producido un error al instalar el complemento.</translation>
+ <translation id="8141602879876242471">Se trata de un índice que admite búsquedas. Introduce las palabras clave de búsqueda:</translation>
+-<translation id="5650795167354946011">Una vez que hayas instalado el complemento, haz clic aquí para actualizar la ventana.</translation>
++<translation id="5650795167354946011">Una vez que haya instalado el complemento, pulse aquí para actualizar la ventana.</translation>
+ <translation id="370665806235115550">Cargando...</translation>
+ <translation id="6845533974506654842">pulsar</translation>
+ <translation id="8244226242650769279">mapa de imágenes</translation>
+-<translation id="310520048233152454">Introduce una URL</translation>
++<translation id="310520048233152454">Introduzca un URL.</translation>
+ <translation id="2548326553472216322">No hay búsquedas recientes</translation>
+-<translation id="7263440858009898357">Selecciona un elemento de la lista</translation>
+-<translation id="5164977714490026579">El valor debe superior o igual a <ph name="MINIMUM"/></translation>
++<translation id="7263440858009898357">Seleccione un elemento de la lista.</translation>
++<translation id="5164977714490026579">El valor ha de ser mayor o igual a <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Grado elevado)</translation>
+-<translation id="3040011195152428237">enlace</translation>
++<translation id="3040011195152428237">vínculo</translation>
+ <translation id="2745343197843472802">Obtener complemento</translation>
+-<translation id="8451268428117625855">Selecciona un archivo</translation>
+-<translation id="5776402066334188252">Confirma que quieres instalar este complemento. Solo debes instalar complementos en los que confíes.</translation>
+-<translation id="3018094406922859308">Cargando complemento...</translation>
+-<translation id="7364796246159120393">Seleccionar archivo</translation>
+-<translation id="2761667185364618470">Selecciona esta casilla de verificación si quieres continuar</translation>
++<translation id="8451268428117625855">Seleccione un archivo.</translation>
++<translation id="5776402066334188252">Confirme que quiere instalar este complemento. Solo debe instalar complementos en los que confíe.</translation>
++<translation id="3018094406922859308">Descargando complemento...</translation>
++<translation id="7364796246159120393">Elegir un archivo</translation>
++<translation id="2761667185364618470">Marque la casilla si quiere continuar.</translation>
+ <translation id="8964020114565522021">Arrastrar archivo hasta aquí</translation>
+ <translation id="838869780401515933">marcar</translation>
+ <translation id="2846343701378493991">1024 (Mediano)</translation>
+ <translation id="5476505524087279545">desmarcar</translation>
+ <translation id="3789841737615482174">Instalar</translation>
+-<translation id="2507943997699731163">Completa este campo</translation>
+-<translation id="5253117816378681419">Confirma que quieres instalar el complemento <ph name="PLUGIN"/>. Solo debes instalar complementos en los que confíes.</translation>
++<translation id="2507943997699731163">Complete este campo.</translation>
++<translation id="5253117816378681419">Confirme que quiere instala el complemento <ph name="PLUGIN"/>. Solo debe instalar complementos en los que confíe.</translation>
+ <translation id="6663448176199120256">Búsquedas recientes</translation>
+-<translation id="2597378329261239068">Este documento está protegido por contraseña. Introduce una contraseña.</translation>
+-<translation id="5466621249238537318">Selecciona uno o varios archivos</translation>
+-<translation id="8750798805984357768">Selecciona una de estas opciones</translation>
++<translation id="2597378329261239068">Este documento está protegido por contraseña. Introduzca una contraseña.</translation>
++<translation id="5466621249238537318">Seleccione uno o más archivos.</translation>
++<translation id="8750798805984357768">Seleccione una de estas opciones.</translation>
+ <translation id="7740050170769002709">Contenido HTML</translation>
+-<translation id="2226276347425096477">Reduce la longitud de este texto a <ph name="MAX_CHARACTERS"/> caracteres o menos (actualmente, el texto tiene <ph name="CURRENT_LENGTH"/> caracteres)</translation>
+-<translation id="2908441821576996758">Introduce una lista de direcciones de correo electrónico separada por comas</translation>
++<translation id="2226276347425096477">Acorte el texto para que tenga como máximo <ph name="MAX_CHARACTERS"/> caracteres. Actualmente tiene <ph name="CURRENT_LENGTH"/> caracteres.</translation>
++<translation id="2908441821576996758">Introduzca una lista de direcciones de correo electrónico separadas por comas.</translation>
+ <translation id="5939518447894949180">Restablecer</translation>
+-<translation id="835897206747267392">Valor no válido</translation>
++<translation id="835897206747267392">Valor no válido.</translation>
+ <translation id="1842960171412779397">seleccionar</translation>
+-<translation id="3450233048674729344">El valor debe inferior o igual a <ph name="MAXIMUM"/></translation>
+-<translation id="7638452146404718955">Haz clic aquí para descargar el complemento.</translation>
++<translation id="3450233048674729344">El valor ha de ser menor o igual a <ph name="MAXIMUM"/>.</translation>
++<translation id="7638452146404718955">Pulse aquí para descargar el complemento.</translation>
+ <translation id="6119846243427417423">activar</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> archivos</translation>
+-<translation id="3934680773876859118">Se ha producido un error al cargar el documento PDF.</translation>
++<translation id="3934680773876859118">No se pudo cargar el documento PDF</translation>
+ <translation id="8597182159515967513">cabecera</translation>
+ <translation id="2653659639078652383">Enviar</translation>
+ <translation id="8475551193147984329">Es necesario el complemento <ph name="PLUGIN"/></translation>
++<translation id="1639239467298939599">Cargando</translation>
++<translation id="3358049263351449631">Esto es un índice de búsqueda. Introduzca los términos de búsqueda: '''</translation>
++<translation id="3851140433852960970">No hay un complemento disponible para mostrar este contenido.</translation>
++<translation id="5129723458012748440">el complemento <ph name="PLUGIN"/> no está instalado.</translation>
++<translation id="7335060848622232389">La instalación de complementos se ha desactivado.</translation>
++<translation id="9198010615634362518">El complemento necesario no está instalado.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_et.xtb new/webkit/glue/resources/webkit_strings_et.xtb
+--- old/webkit/glue/resources/webkit_strings_et.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_et.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,7 +2,7 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="et">
+ <translation id="4519964825805946997">Pistikprogrammi installimine asukohast <ph name="URL"/> ebaõnnestus.</translation>
+-<translation id="9186171386827445984">Dokumendi laadimine: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> lehte ...</translation>
++<translation id="9186171386827445984">Dokumendi laadimine: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> lehekülgi...</translation>
+ <translation id="1235745349614807883">Kustuta viimased otsingud</translation>
+ <translation id="1171774979989969504">Sisestage meiliaadress.</translation>
+ <translation id="709897737746224366">Vastendage nõutav vorming.</translation>
+@@ -41,7 +41,7 @@
+ <translation id="2597378329261239068">Dokument on parooliga kaitstud. Sisestage parool.</translation>
+ <translation id="5466621249238537318">Valige üks või mitu faili.</translation>
+ <translation id="8750798805984357768">Tehke üks nendest valikutest.</translation>
+-<translation id="7740050170769002709">HTML-sisu</translation>
++<translation id="7740050170769002709">HTML sisu</translation>
+ <translation id="2226276347425096477">Lühendage seda teksti <ph name="MAX_CHARACTERS"/> tähemärgini või rohkem (praegu kasutate <ph name="CURRENT_LENGTH"/> tähemärki).</translation>
+ <translation id="2908441821576996758">Sisestage meiliaadresside loend komadega eraldatult.</translation>
+ <translation id="5939518447894949180">Lähtesta</translation>
+@@ -55,4 +55,6 @@
+ <translation id="8597182159515967513">pealkiri</translation>
+ <translation id="2653659639078652383">Esita</translation>
+ <translation id="8475551193147984329">Vajalik on pistikprogramm <ph name="PLUGIN"/></translation>
++<translation id="1639239467298939599">Laadimine</translation>
++<translation id="3358049263351449631">See on otsitav indeks. Sisestage otsisõnad: '''</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_fi.xtb new/webkit/glue/resources/webkit_strings_fi.xtb
+--- old/webkit/glue/resources/webkit_strings_fi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_fi.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -4,7 +4,7 @@
+ <translation id="4519964825805946997">Laajennuksen asennus osoitteesta <ph name="URL"/> epäonnistui</translation>
+ <translation id="9186171386827445984">Ladataan asiakirjaa: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> sivua...</translation>
+ <translation id="1235745349614807883">Poista viimeisimmät haut</translation>
+-<translation id="1171774979989969504">Anna sähköpostiosoite.</translation>
++<translation id="1171774979989969504">Anna kelvollinen sähköpostiosoite.</translation>
+ <translation id="709897737746224366">Käytä pyydettyä muotoilua.</translation>
+ <translation id="5048533449481078685">luettelon merkitsijä</translation>
+ <translation id="372362261556059955">Toinen laajennus vaaditaan</translation>
+@@ -18,10 +18,10 @@
+ <translation id="370665806235115550">Ladataan...</translation>
+ <translation id="6845533974506654842">paina</translation>
+ <translation id="8244226242650769279">kuvakartta</translation>
+-<translation id="310520048233152454">Anna URL-osoite.</translation>
++<translation id="310520048233152454">Anna verkko-osoite.</translation>
+ <translation id="2548326553472216322">Ei viimeisimpiä hakuja</translation>
+-<translation id="7263440858009898357">Valitse kohde luettelosta.</translation>
+-<translation id="5164977714490026579">Arvon tulee olla suurempi tai yhtä suuri kuin <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Valitse kohta sivulla olevasta listasta.</translation>
++<translation id="5164977714490026579">Arvo pitää olla vähintään <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (korkea taso)</translation>
+ <translation id="3040011195152428237">linkki</translation>
+ <translation id="2745343197843472802">Hanki laajennus</translation>
+@@ -29,7 +29,7 @@
+ <translation id="5776402066334188252">Vahvista, että haluat asentaa tämän laajennuksen. Suosittelemme asentamaan vain laajennuksia, joihin luotat.</translation>
+ <translation id="3018094406922859308">Laajennusta ladataan...</translation>
+ <translation id="7364796246159120393">Valitse tiedosto</translation>
+-<translation id="2761667185364618470">Valitse tämä ruutu jatkaaksesi.</translation>
++<translation id="2761667185364618470">Valitse tämä jatkaaksesi.</translation>
+ <translation id="8964020114565522021">Vedä tiedosto tähän</translation>
+ <translation id="838869780401515933">valitse</translation>
+ <translation id="2846343701378493991">1024 (keskitaso)</translation>
+@@ -39,20 +39,26 @@
+ <translation id="5253117816378681419">Vahvista, että haluat asentaa laajennuksen <ph name="PLUGIN"/>. Suosittelemme asentamaan vain laajennuksia, joihin luotat.</translation>
+ <translation id="6663448176199120256">Viimeisimmät haut</translation>
+ <translation id="2597378329261239068">Tämä asiakirja on suojattu salasanalla. Anna salasana.</translation>
+-<translation id="5466621249238537318">Valitse vähintään yksi tiedosto.</translation>
+-<translation id="8750798805984357768">Valitse yksi vaihtoehdoista.</translation>
++<translation id="5466621249238537318">Valitse yksi tai useampi tiedosto.</translation>
++<translation id="8750798805984357768">Valitse yksi kohta sivulla olevista vaihtoehdoista.</translation>
+ <translation id="7740050170769002709">HTML-sisältö</translation>
+-<translation id="2226276347425096477">Lyhennä tämä teksti alle <ph name="MAX_CHARACTERS"/> merkkiin (tällä hetkellä käytössä <ph name="CURRENT_LENGTH"/> merkkiä).</translation>
+-<translation id="2908441821576996758">Anna pilkuilla erotettu sähköpostiosoitteiden luettelo.</translation>
++<translation id="2226276347425096477">Lyhennä tämä teksti korkeintaan <ph name="MAX_CHARACTERS"/> merkkiin (tällä hetkellä merkkejä on <ph name="CURRENT_LENGTH"/>).</translation>
++<translation id="2908441821576996758">Anna sähköpostiosoitteet pilkuin eroteltuina.</translation>
+ <translation id="5939518447894949180">Tyhjennä</translation>
+ <translation id="835897206747267392">Virheellinen arvo.</translation>
+ <translation id="1842960171412779397">Valitse</translation>
+-<translation id="3450233048674729344">Arvon tulee olla pienempi tai yhtä suuri kuin <ph name="MAXIMUM"/>.</translation>
++<translation id="3450233048674729344">Arvo saa olla korkeintaan <ph name="MAXIMUM"/>.</translation>
+ <translation id="7638452146404718955">Lataa laajennus napsauttamalla tätä</translation>
+ <translation id="6119846243427417423">aktivoi</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> tiedostoa</translation>
+-<translation id="3934680773876859118">PDF-asiakirjan lataaminen epäonnistui</translation>
++<translation id="3934680773876859118">PDF-asiakirjan lataus epäonnistui.</translation>
+ <translation id="8597182159515967513">otsikko</translation>
+ <translation id="2653659639078652383">Lähetä</translation>
+ <translation id="8475551193147984329"><ph name="PLUGIN"/>-laajennus vaaditaan</translation>
++<translation id="1639239467298939599">Ladataan</translation>
++<translation id="3358049263351449631">Tämä luettelo mahdollistaa etsimisen. Kirjoita hakusanat: '''</translation>
++<translation id="3851140433852960970">Tämän sisällön esittämiseen tarvittava liittännäinen ei ole käytettävissä.</translation>
++<translation id="5129723458012748440">Liitännäistä <ph name="PLUGIN"/> ei ole asennettu.</translation>
++<translation id="7335060848622232389">Liitännäisten asennus on poistettu käytöstä.</translation>
++<translation id="9198010615634362518">Vaadittu liitännäinen ei ole asennettu.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_fr.xtb new/webkit/glue/resources/webkit_strings_fr.xtb
+--- old/webkit/glue/resources/webkit_strings_fr.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_fr.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,10 +2,10 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="fr">
+ <translation id="4519964825805946997">Échec de l'installation du plug-in depuis <ph name="URL"/></translation>
+-<translation id="9186171386827445984">Chargement du document : <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pages...</translation>
++<translation id="9186171386827445984">Document en cours de chargement :  <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pages...</translation>
+ <translation id="1235745349614807883">Effacer les recherches récentes</translation>
+-<translation id="1171774979989969504">Veuillez saisir une adresse e-mail.</translation>
+-<translation id="709897737746224366">Veuillez respecter le format requis.</translation>
++<translation id="1171774979989969504">Veuillez saisir une adresse de courriel.</translation>
++<translation id="709897737746224366">Veuillez utiliser le format requis.</translation>
+ <translation id="5048533449481078685">marqueur de liste</translation>
+ <translation id="372362261556059955">Plug-in supplémentaire requis</translation>
+ <translation id="4202807286478387388">accéder</translation>
+@@ -15,13 +15,13 @@
+ <translation id="1416462845279468967">Échec de l'installation du plug-in</translation>
+ <translation id="8141602879876242471">Vous pouvez lancer des recherches dans cet index. Pour cela, entrez des mots clés de recherche :</translation>
+ <translation id="5650795167354946011">Après l'installation du plug-in, cliquez ici pour actualiser.</translation>
+-<translation id="370665806235115550">Chargement...</translation>
++<translation id="370665806235115550">Chargement en cours...</translation>
+ <translation id="6845533974506654842">appuyer</translation>
+ <translation id="8244226242650769279">image map</translation>
+ <translation id="310520048233152454">Veuillez saisir une URL.</translation>
+ <translation id="2548326553472216322">Aucune recherche récente</translation>
+-<translation id="7263440858009898357">Sélectionnez un élément dans la liste.</translation>
+-<translation id="5164977714490026579">Cette valeur doit être supérieure ou égale à <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Veuillez sélectionner un élément de la liste.</translation>
++<translation id="5164977714490026579">La valeur doit être supérieure ou égale à <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (haute sécurité)</translation>
+ <translation id="3040011195152428237">Lien</translation>
+ <translation id="2745343197843472802">Télécharger le plug-in</translation>
+@@ -29,30 +29,36 @@
+ <translation id="5776402066334188252">Merci de confirmer que vous souhaitez installer ce plug-in. N'installez que les plug-ins que vous considérez fiables.</translation>
+ <translation id="3018094406922859308">Téléchargement du plug-in...</translation>
+ <translation id="7364796246159120393">Choisissez un fichier</translation>
+-<translation id="2761667185364618470">Veuillez cocher cette case si vous souhaitez continuer.</translation>
+-<translation id="8964020114565522021">Placer le fichier ici</translation>
++<translation id="2761667185364618470">Veuillez cocher cette case pour continuer.</translation>
++<translation id="8964020114565522021">Glissez le fichier ici</translation>
+ <translation id="838869780401515933">cocher</translation>
+ <translation id="2846343701378493991">1024 (sécurité moyenne)</translation>
+ <translation id="5476505524087279545">décocher</translation>
+ <translation id="3789841737615482174">Installer</translation>
+-<translation id="2507943997699731163">Veuillez renseigner ce champ.</translation>
++<translation id="2507943997699731163">Veuillez remplir ce champ.</translation>
+ <translation id="5253117816378681419">Merci de confirmer que vous souhaitez installer le plug-in <ph name="PLUGIN"/>. N'installez que les plug-ins que vous considérez fiables.</translation>
+ <translation id="6663448176199120256">Recherches récentes</translation>
+ <translation id="2597378329261239068">Ce document est protégé par mot de passe. Veuillez saisir ce dernier.</translation>
+ <translation id="5466621249238537318">Veuillez sélectionner un ou plusieurs fichiers.</translation>
+-<translation id="8750798805984357768">Veuillez sélectionner l'une de ces options.</translation>
++<translation id="8750798805984357768">Veuillez sélectionner une de ces options.</translation>
+ <translation id="7740050170769002709">Contenu HTML</translation>
+-<translation id="2226276347425096477">Veuillez réduire ce texte à <ph name="MAX_CHARACTERS"/> caractères maximum (il compte actuellement <ph name="CURRENT_LENGTH"/> caractères).</translation>
+-<translation id="2908441821576996758">Veuillez saisir une liste d'adresses e-mail séparées par une virgule.</translation>
+-<translation id="5939518447894949180">Réinitialiser</translation>
+-<translation id="835897206747267392">Valeur incorrecte</translation>
++<translation id="2226276347425096477">Veuillez raccourcir le texte à <ph name="MAX_CHARACTERS"/> caractères ou moins (vous utilisez actuellement <ph name="CURRENT_LENGTH"/> caractères).</translation>
++<translation id="2908441821576996758">Veuillez saisir une liste d'adresses de courriel séparées par des virgules.</translation>
++<translation id="5939518447894949180">Effacer</translation>
++<translation id="835897206747267392">Valeur incorrecte.</translation>
+ <translation id="1842960171412779397">sélectionner</translation>
+-<translation id="3450233048674729344">Cette valeur doit être inférieure ou égale à <ph name="MAXIMUM"/>.</translation>
++<translation id="3450233048674729344">La valeur doit être inférieure ou égale à <ph name="MAXIMUM"/>.</translation>
+ <translation id="7638452146404718955">Cliquer ici pour télécharger le plug-in</translation>
+ <translation id="6119846243427417423">activer</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> fichiers</translation>
+-<translation id="3934680773876859118">Échec du chargement du document PDF</translation>
++<translation id="3934680773876859118">Le chargement du document PDF a échoué.</translation>
+ <translation id="8597182159515967513">en-tête</translation>
+ <translation id="2653659639078652383">Valider</translation>
+ <translation id="8475551193147984329">Le plug-in <ph name="PLUGIN"/> est requis.</translation>
++<translation id="1639239467298939599">Chargement en cours</translation>
++<translation id="3358049263351449631">Ceci est un index de recherche. Saisissez les mots clés de votre recherche : '''</translation>
++<translation id="3851140433852960970">Aucun plug-in disponible pour afficher ce contenu.</translation>
++<translation id="5129723458012748440">Le plug-in <ph name="PLUGIN"/> n'est pas installé.</translation>
++<translation id="7335060848622232389">L'installation de plug-ins a été désactivée.</translation>
++<translation id="9198010615634362518">Le plug-in requis n'est pas installé.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_iw.xtb new/webkit/glue/resources/webkit_strings_iw.xtb
+--- old/webkit/glue/resources/webkit_strings_iw.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_iw.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -55,4 +55,10 @@
+ <translation id="8597182159515967513">כותרת</translation>
+ <translation id="2653659639078652383">שלח</translation>
+ <translation id="8475551193147984329">הפלאגין <ph name="PLUGIN"/> דרוש</translation>
++<translation id="1639239467298939599">בטעינה</translation>
++<translation id="3358049263351449631">זהו מפתח שניתן לחפש בו. נא להזין את מילות המפתח לחיפוש: '''</translation>
++<translation id="3851140433852960970">אין תוסף הזמין להצגת תוכן זה.</translation>
++<translation id="5129723458012748440">התוסף <ph name="PLUGIN"/> לא מותקן.</translation>
++<translation id="7335060848622232389">האפשרות להתקנת תוספים נוטרלה.</translation>
++<translation id="9198010615634362518">התוסף הנדרש אינו מותקן.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_hi.xtb new/webkit/glue/resources/webkit_strings_hi.xtb
+--- old/webkit/glue/resources/webkit_strings_hi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_hi.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,36 +1,36 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="hi">
+-<translation id="4519964825805946997"><ph name="URL"/> से प्लग-इन स्थापित करने में विफल</translation>
++<translation id="4519964825805946997"><ph name="URL"/> से प्लग-इन स्थापित करने में विफल हुआ</translation>
+ <translation id="9186171386827445984">दस्तावेज़ लोड कर रहा है: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> पृष्ठ...</translation>
+ <translation id="1235745349614807883">हाल ही की खोजें साफ़ करें</translation>
+ <translation id="1171774979989969504">कृपया ई-मेल पता दर्ज करें.</translation>
+ <translation id="709897737746224366">कृपया अनुरोधित प्रारूप का मिलान करें.</translation>
+ <translation id="5048533449481078685">सूची चिन्हक</translation>
+ <translation id="372362261556059955">अतिरिक्त प्‍लग-इन की आवश्यकता है</translation>
+-<translation id="4202807286478387388">जाएं</translation>
++<translation id="4202807286478387388">जाएँ</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">रद्द करें</translation>
+ <translation id="795667975304826397">कोई फाइल नहीं चुनी गई</translation>
+-<translation id="1416462845279468967">प्लग-इन स्थापना विफल</translation>
++<translation id="1416462845279468967">प्लग-इन स्थापना विफल हुई</translation>
+ <translation id="8141602879876242471">इस अनुक्रमणिका को खोजा जा सकता है. खोज कुंजीशब्द प्रविष्ट करें:</translation>
+ <translation id="5650795167354946011">प्लग-इन स्थापित करने के बाद, रीफ़्रेश करने के लिए यहां क्लिक करें</translation>
+-<translation id="370665806235115550">लोड हो रहा है...</translation>
+-<translation id="6845533974506654842">दबाएं</translation>
+-<translation id="8244226242650769279">छवि मानचित्र</translation>
++<translation id="370665806235115550">लोड हो रहा है ...</translation>
++<translation id="6845533974506654842">दबाएँ</translation>
++<translation id="8244226242650769279">चित्र मैप</translation>
+ <translation id="310520048233152454">कृपया URL लिखें.</translation>
+-<translation id="2548326553472216322">हाल ही कोई खोज नहीं</translation>
++<translation id="2548326553472216322">हाल ही में कोई खोज नहीं</translation>
+ <translation id="7263440858009898357">कृपया सूची में किसी आइटम का चयन करें.</translation>
+ <translation id="5164977714490026579">मान <ph name="MINIMUM"/> से कम या इसके बराबर होना चाहिए.</translation>
+ <translation id="5944544982112848342">2048 (उच्च ग्रेड)</translation>
+-<translation id="3040011195152428237">संपर्क</translation>
++<translation id="3040011195152428237">लिंक</translation>
+ <translation id="2745343197843472802">प्‍लग-इन प्राप्त करें</translation>
+ <translation id="8451268428117625855">कृपया किसी फ़ाइल का चयन करें.</translation>
+ <translation id="5776402066334188252">कृपया पुष्टि करें कि आप यह प्लग-इन स्थापित करना चाहेंगे. आपको केवल वे प्लग-इन स्थापित करने चाहिए जिन पर आप विश्वास करते हैं.</translation>
+-<translation id="3018094406922859308">प्लग-इन डाउनलोड कर रहा है...</translation>
++<translation id="3018094406922859308">प्लग-इन डाउनलोड किया जा रहा है...</translation>
+ <translation id="7364796246159120393">फ़ाइल चुनें</translation>
+ <translation id="2761667185364618470">यदि आप आगे बढ़ना चाहते हैं तो इस बॉक्‍स को चेक करें.</translation>
+-<translation id="8964020114565522021">यहां फाइल खींचकर लाएं</translation>
++<translation id="8964020114565522021">फाइल खींचकर यहाँ लाएं</translation>
+ <translation id="838869780401515933">चेक करें</translation>
+ <translation id="2846343701378493991">1024 (मध्यम ग्रेड)</translation>
+ <translation id="5476505524087279545">अनचेक करें</translation>
+@@ -38,21 +38,21 @@
+ <translation id="2507943997699731163">कृपया इस फ़ील्ड को भरें.</translation>
+ <translation id="5253117816378681419">कृपया पुष्टि करें कि आप <ph name="PLUGIN"/> प्लग-इन स्थापित करना चाहेंगे. आपको केवल वे प्लग-इन स्थापित करने चाहिए जिन पर आप विश्वास करते हैं.</translation>
+ <translation id="6663448176199120256">हाल ही में की गई खोजें</translation>
+-<translation id="2597378329261239068">यह दस्तावेज़ पासवर्ड सुरक्षित है.  कृपया पासवर्ड दर्ज करें.</translation>
++<translation id="2597378329261239068">यह दस्तावेज़ पासवर्ड सुरक्षित है.  कृपया एक पासवर्ड दर्ज करें.</translation>
+ <translation id="5466621249238537318">कृपया एक या अधिक फ़ाइल का चयन करें.</translation>
+ <translation id="8750798805984357768">कृपया इनमें से कोई विकल्प चुनें.</translation>
+ <translation id="7740050170769002709">HTML सामग्री</translation>
+ <translation id="2226276347425096477">कृपया इस टेक्स्ट को <ph name="MAX_CHARACTERS"/> वर्णों या कम तक छोटा करें (वर्तमान में आप <ph name="CURRENT_LENGTH"/> वर्णों का उपयोग कर रहे हैं).</translation>
+ <translation id="2908441821576996758">कृपया ईमेल पतों की अल्पविराम द्वारा विभाजित सूची दर्ज करें.</translation>
+-<translation id="5939518447894949180">रीसेट करें</translation>
++<translation id="5939518447894949180">पुन: सेट करें</translation>
+ <translation id="835897206747267392">अमान्य मान.</translation>
+-<translation id="1842960171412779397">चयन करें</translation>
++<translation id="1842960171412779397">चुनें</translation>
+ <translation id="3450233048674729344">मान <ph name="MAXIMUM"/> से कम या इसके बराबर होना चाहिए.</translation>
+ <translation id="7638452146404718955">प्लग-इन डाउनलोड करने के लिए यहां क्लिक करें</translation>
+ <translation id="6119846243427417423">सक्रिय करें</translation>
+-<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> फ़ाइल</translation>
++<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> फ़ाइलें</translation>
+ <translation id="3934680773876859118">PDF दस्तावेज़ लोड करने में विफल</translation>
+ <translation id="8597182159515967513">हेडिंग</translation>
+-<translation id="2653659639078652383">सबमिट करें</translation>
++<translation id="2653659639078652383">जमा करें</translation>
+ <translation id="8475551193147984329"><ph name="PLUGIN"/> प्लग-इन की आवश्यकता है</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_id.xtb new/webkit/glue/resources/webkit_strings_id.xtb
+--- old/webkit/glue/resources/webkit_strings_id.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_id.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,48 +1,48 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="id">
+-<translation id="4519964825805946997">Gagal memasang pengaya dari <ph name="URL"/></translation>
++<translation id="4519964825805946997">Gagal menginstal plug-in dari <ph name="URL"/></translation>
+ <translation id="9186171386827445984">Memuat dokumen: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> halaman...</translation>
+-<translation id="1235745349614807883">Hapus Penelusuran Barusan</translation>
++<translation id="1235745349614807883">Hapus Penelusuran Terakhir</translation>
+ <translation id="1171774979989969504">Masukkan alamat email.</translation>
+ <translation id="709897737746224366">Sesuaikan dengan format yang diminta.</translation>
+ <translation id="5048533449481078685">penanda daftar</translation>
+-<translation id="372362261556059955">Diperlukan pengaya tambahan</translation>
++<translation id="372362261556059955">Diperlukan plug-in tambahan</translation>
+ <translation id="4202807286478387388">lompati</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/> - <ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Batal</translation>
+-<translation id="795667975304826397">Tidak ada file yang dipilih</translation>
+-<translation id="1416462845279468967">Pemasangan pengaya gagal</translation>
++<translation id="795667975304826397">Tidak ada berkas yang dipilih</translation>
++<translation id="1416462845279468967">Instalasi plug-in gagal</translation>
+ <translation id="8141602879876242471">Terdapat indeks yang dapat dicari. Masukkan kata kunci penelusuran:</translation>
+-<translation id="5650795167354946011">Setelah memasang pengaya, klik di sini untuk menyegarkan</translation>
+-<translation id="370665806235115550">Membuka...</translation>
++<translation id="5650795167354946011">Setelah memasang plug-in, klik di sini untuk memuat ulang</translation>
++<translation id="370665806235115550">Memuat...</translation>
+ <translation id="6845533974506654842">tekan</translation>
+ <translation id="8244226242650769279">gambar peta</translation>
+-<translation id="310520048233152454">Masukkan URL.</translation>
++<translation id="310520048233152454">Harap masukkan URL.</translation>
+ <translation id="2548326553472216322">Tidak ada penelusuran terkini</translation>
+-<translation id="7263440858009898357">Pilih item pada daftar.</translation>
+-<translation id="5164977714490026579">Nilai harus lebih besar daripada atau sama dengan <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Pilih satu artikel dari daftar.</translation>
++<translation id="5164977714490026579">Nilai harus lebih besar atau sama dengan <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Tingkat Tinggi)</translation>
+ <translation id="3040011195152428237">tautan</translation>
+-<translation id="2745343197843472802">Dapatkan Pengaya</translation>
+-<translation id="8451268428117625855">Pilih berkas.</translation>
+-<translation id="5776402066334188252">Konfirmasikan bahwa Anda ingin memasang pengaya ini. Anda harus memasang pengaya yang dipercayai saja.</translation>
+-<translation id="3018094406922859308">Mengunduh pengaya...</translation>
++<translation id="2745343197843472802">Dapatkan Plug-in</translation>
++<translation id="8451268428117625855">Harap pilih sebuah berkas.</translation>
++<translation id="5776402066334188252">Konfirmasikan bahwa Anda ingin memasang plug-in ini. Anda harus memasang plug-in yang dipercayai saja.</translation>
++<translation id="3018094406922859308">Mengunduh plug-in...</translation>
+ <translation id="7364796246159120393">Pilih Berkas</translation>
+-<translation id="2761667185364618470">Centang kotak ini jika Anda ingin melanjutkan.</translation>
+-<translation id="8964020114565522021">Tarik file ke sini</translation>
++<translation id="2761667185364618470">Centang kotak ini jika ingin melanjutkan.</translation>
++<translation id="8964020114565522021">Tarik berkas ke sini</translation>
+ <translation id="838869780401515933">centangi</translation>
+ <translation id="2846343701378493991">1024 (Tingkat Menengah)</translation>
+ <translation id="5476505524087279545">batalkan centang</translation>
+ <translation id="3789841737615482174">Instal</translation>
+-<translation id="2507943997699731163">Harap isi bidang ini.</translation>
+-<translation id="5253117816378681419">Konfirmasikan bahwa Anda ingin memasang pengaya <ph name="PLUGIN"/>. Anda harus memasang pengaya yang Anda percayai saja.</translation>
+-<translation id="6663448176199120256">Penelusuran Barusan</translation>
+-<translation id="2597378329261239068">Dokumen ini dilindungi sandi. Masukkan sandi.</translation>
+-<translation id="5466621249238537318">Pilih salah satu atau beberapa berkas.</translation>
+-<translation id="8750798805984357768">Pilih salah satu opsi berikut.</translation>
++<translation id="2507943997699731163">Isi kolom ini.</translation>
++<translation id="5253117816378681419">Konfirmasikan bahwa Anda ingin memasang plug-in <ph name="PLUGIN"/>. Anda harus memasang plug-in yang Anda percayai saja.</translation>
++<translation id="6663448176199120256">Penelusuran Sebelumnya</translation>
++<translation id="2597378329261239068">Dokumen ini dilindungi sandi. Masukkan kata sandi.</translation>
++<translation id="5466621249238537318">Harap pilih minimal satu berkas.</translation>
++<translation id="8750798805984357768">Harap pilih salah satu dari pilihan berikut.</translation>
+ <translation id="7740050170769002709">Konten HTML</translation>
+-<translation id="2226276347425096477">Pendekkan teks ini menjadi <ph name="MAX_CHARACTERS"/> karakter atau kurang (saat ini Anda menggunakan <ph name="CURRENT_LENGTH"/> karakter).</translation>
++<translation id="2226276347425096477">Harap perpendek tulisan ini menjadi <ph name="MAX_CHARACTERS"/> huruf atau kurang (saat ini Anda menggunakan <ph name="CURRENT_LENGTH"/> huruf)</translation>
+ <translation id="2908441821576996758">Masukkan daftar alamat email yang dipisahkan dengan koma.</translation>
+ <translation id="5939518447894949180">Atur ulang</translation>
+ <translation id="835897206747267392">Nilai tidak valid.</translation>
+@@ -51,8 +51,9 @@
+ <translation id="7638452146404718955">Klik di sini untuk mengunduh pengaya</translation>
+ <translation id="6119846243427417423">aktifkan</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> berkas</translation>
+-<translation id="3934680773876859118">Gagal memuat dokumen PDF</translation>
++<translation id="3934680773876859118">Gagal membuka berkas PDF</translation>
+ <translation id="8597182159515967513">kepala</translation>
+ <translation id="2653659639078652383">Kirim</translation>
+-<translation id="8475551193147984329">Pengaya <ph name="PLUGIN"/> diperlukan</translation>
++<translation id="8475551193147984329">Plug-in <ph name="PLUGIN"/> diperlukan</translation>
++<translation id="3358049263351449631">Indeks ini dapat ditelusuri. Masukkan kata kunci pencarian: '''</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_it.xtb new/webkit/glue/resources/webkit_strings_it.xtb
+--- old/webkit/glue/resources/webkit_strings_it.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_it.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,58 +1,59 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="it">
+-<translation id="4519964825805946997">Installazione del plug-in da <ph name="URL"/> non riuscita</translation>
+-<translation id="9186171386827445984">Caricamento del documento in corso: pagine <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/>...</translation>
++<translation id="4519964825805946997">Installazione del plugin da <ph name="URL"/> non riuscita</translation>
++<translation id="9186171386827445984">Caricamento documento: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pagine...</translation>
+ <translation id="1235745349614807883">Cancella ricerche recenti</translation>
+-<translation id="1171774979989969504">Inserisci un indirizzo email.</translation>
+-<translation id="709897737746224366">Rispetta il formato richiesto.</translation>
++<translation id="1171774979989969504">Inserire un indirizzo email.</translation>
++<translation id="709897737746224366">Utilizzare il formato richiesto.</translation>
+ <translation id="5048533449481078685">indicatore elenco</translation>
+-<translation id="372362261556059955">È necessario un plug-in aggiuntivo</translation>
++<translation id="372362261556059955">È necessario un plugin aggiuntivo</translation>
+ <translation id="4202807286478387388">vai</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Annulla</translation>
+ <translation id="795667975304826397">Nessun file selezionato</translation>
+-<translation id="1416462845279468967">Installazione del plug-in non riuscita</translation>
++<translation id="1416462845279468967">Installazione del plugin non riuscita</translation>
+ <translation id="8141602879876242471">Questo è un indice di ricerca. Inserisci le parole chiave di ricerca:</translation>
+-<translation id="5650795167354946011">Dopo aver installato il plug-in, fai clic qui per aggiornare</translation>
+-<translation id="370665806235115550">Caricamento in corso...</translation>
++<translation id="5650795167354946011">Dopo aver installato il plugin, fare clic qui per aggiornare</translation>
++<translation id="370665806235115550">Caricamento...</translation>
+ <translation id="6845533974506654842">premi</translation>
+ <translation id="8244226242650769279">image map</translation>
+-<translation id="310520048233152454">Inserisci un URL.</translation>
++<translation id="310520048233152454">Inserire un URL valido.</translation>
+ <translation id="2548326553472216322">Nessuna ricerca recente</translation>
+-<translation id="7263440858009898357">Seleziona un elemento nell'elenco.</translation>
+-<translation id="5164977714490026579">Il valore deve essere superiore o uguale a <ph name="MINIMUM"/>.</translation>
+-<translation id="5944544982112848342">2048 (alta qualità)</translation>
+-<translation id="3040011195152428237">link</translation>
+-<translation id="2745343197843472802">Scarica plug-in</translation>
+-<translation id="8451268428117625855">Seleziona un file.</translation>
+-<translation id="5776402066334188252">Conferma l'installazione del plug-in. Dovresti installare soltanto plug-in attendibili.</translation>
+-<translation id="3018094406922859308">Download del plug-in in corso...</translation>
++<translation id="7263440858009898357">Selezionare un elemento nell'elenco.</translation>
++<translation id="5164977714490026579">Il valore deve essere maggiore o uguale a <ph name="MINIMUM"/>.</translation>
++<translation id="5944544982112848342">2048 (High Grade)</translation>
++<translation id="3040011195152428237">collegamento</translation>
++<translation id="2745343197843472802">Scarica plugin</translation>
++<translation id="8451268428117625855">Selezionare un file.</translation>
++<translation id="5776402066334188252">Confermare l'installazione del plugin. Installare solo plugin attendibili.</translation>
++<translation id="3018094406922859308">Scaricamento del plugin...</translation>
+ <translation id="7364796246159120393">Scegli file</translation>
+-<translation id="2761667185364618470">Seleziona questa casella se intendi procedere.</translation>
+-<translation id="8964020114565522021">Trascina il file qui</translation>
++<translation id="2761667185364618470">Selezionare questa casella per continuare.</translation>
++<translation id="8964020114565522021">Trascinare il file qui</translation>
+ <translation id="838869780401515933">seleziona</translation>
+ <translation id="2846343701378493991">1024 (Medium Grade)</translation>
+ <translation id="5476505524087279545">deseleziona</translation>
+ <translation id="3789841737615482174">Installa</translation>
+-<translation id="2507943997699731163">Compila questo campo.</translation>
+-<translation id="5253117816378681419">Conferma che desideri installare il plug-in <ph name="PLUGIN"/>. Dovresti installare soltanto plug-in attendibili.</translation>
++<translation id="2507943997699731163">Compilare questo campo.</translation>
++<translation id="5253117816378681419">Confermare l'installazione del plugin <ph name="PLUGIN"/>. Installare solo plugin attendibili.</translation>
+ <translation id="6663448176199120256">Ricerche recenti</translation>
+-<translation id="2597378329261239068">Questo documento è protetto da password. Inserisci una password.</translation>
+-<translation id="5466621249238537318">Seleziona uno o più file.</translation>
+-<translation id="8750798805984357768">Seleziona una di queste opzioni.</translation>
+-<translation id="7740050170769002709">Contenuti HTML</translation>
+-<translation id="2226276347425096477">Riduci questo testo a <ph name="MAX_CHARACTERS"/> caratteri o meno (attualmente stai utilizzando <ph name="CURRENT_LENGTH"/> caratteri).</translation>
+-<translation id="2908441821576996758">Inserisci un elenco di indirizzi email separati da virgola.</translation>
++<translation id="2597378329261239068">Questo documento è protetto da password. Inserire la password.</translation>
++<translation id="5466621249238537318">Selezionare uno o più file.</translation>
++<translation id="8750798805984357768">Selezionare una delle seguenti opzioni.</translation>
++<translation id="7740050170769002709">Contenuto HTML</translation>
++<translation id="2226276347425096477">Abbreviare questo testo a <ph name="MAX_CHARACTERS"/> caratteri o meno (attualmente sono usati <ph name="CURRENT_LENGTH"/> caratteri).</translation>
++<translation id="2908441821576996758">Inserire un elenco di indirizzi email separati da una virgola.</translation>
+ <translation id="5939518447894949180">Ripristina</translation>
+ <translation id="835897206747267392">Valore non valido.</translation>
+ <translation id="1842960171412779397">seleziona</translation>
+ <translation id="3450233048674729344">Il valore deve essere inferiore o uguale a <ph name="MAXIMUM"/>.</translation>
+-<translation id="7638452146404718955">Fai clic qui per scaricare il plug-in</translation>
++<translation id="7638452146404718955">Fare clic qui per scaricare il plugin</translation>
+ <translation id="6119846243427417423">attiva</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> file</translation>
+ <translation id="3934680773876859118">Caricamento del documento PDF non riuscito</translation>
+ <translation id="8597182159515967513">intestazione</translation>
+ <translation id="2653659639078652383">Invia</translation>
+-<translation id="8475551193147984329">È necessario il plug-in <ph name="PLUGIN"/></translation>
++<translation id="8475551193147984329">È necessario il plugin <ph name="PLUGIN"/></translation>
++<translation id="3358049263351449631">Questo è un indice consultabile. Immettere i termini per la ricerca: &quot;&quot;</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/third_party/launchpad_translations/webkit_strings_ku.xtb new/third_party/launchpad_translations/webkit_strings_ku.xtb
+--- old/third_party/launchpad_translations/webkit_strings_ku.xtb	2011-03-10 17:03:15.000000000 +0000
++++ new/third_party/launchpad_translations/webkit_strings_ku.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -57,4 +57,5 @@
+ <translation id="8750798805984357768">Tika ye yek ji van vebijêrkan hilbijêre.</translation>
+ <translation id="8964020114565522021">Pelî bikişîne vê derê</translation>
+ <translation id="9186171386827445984">Dokuman tê barkirin: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> rûpel...</translation>
++<translation id="5776402066334188252">Tika ye erê bike ku tu dixwazî vê pêvekê saz bikî. Divê tenê pêvekên pêbawer saz bikî.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_nl.xtb new/webkit/glue/resources/webkit_strings_nl.xtb
+--- old/webkit/glue/resources/webkit_strings_nl.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_nl.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,10 +2,10 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="nl">
+ <translation id="4519964825805946997">Het installeren van de invoegtoepassing van <ph name="URL"/> is mislukt</translation>
+-<translation id="9186171386827445984">Document wordt geladen: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pagina's...</translation>
++<translation id="9186171386827445984">Document laden: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pagina's…</translation>
+ <translation id="1235745349614807883">Recente zoekopdrachten wissen</translation>
+-<translation id="1171774979989969504">Geef een e-mailadres op.</translation>
+-<translation id="709897737746224366">Zorg dat de indeling voldoet aan de gevraagde indeling.</translation>
++<translation id="1171774979989969504">Voer een e-mailadres in.</translation>
++<translation id="709897737746224366">Voldoe aan het gevraagde formaat.</translation>
+ <translation id="5048533449481078685">lijstmarkering</translation>
+ <translation id="372362261556059955">Aanvullende invoegtoepassing vereist</translation>
+ <translation id="4202807286478387388">Gaan naar</translation>
+@@ -15,13 +15,13 @@
+ <translation id="1416462845279468967">De installatie van de invoegtoepassing is mislukt</translation>
+ <translation id="8141602879876242471">Dit is een doorzoekbare index. Geef zoekwoorden op:</translation>
+ <translation id="5650795167354946011">Klik hier na het installeren van de invoegtoepassing om te vernieuwen</translation>
+-<translation id="370665806235115550">Laden...</translation>
++<translation id="370665806235115550">Laden…</translation>
+ <translation id="6845533974506654842">Indrukken</translation>
+ <translation id="8244226242650769279">image map</translation>
+-<translation id="310520048233152454">Geef een URL op.</translation>
++<translation id="310520048233152454">Voer een URL in.</translation>
+ <translation id="2548326553472216322">Geen recente zoekopdrachten</translation>
+-<translation id="7263440858009898357">Selecteer een item in de lijst.</translation>
+-<translation id="5164977714490026579">Waarde moet groter dan of gelijk zijn aan <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Selecteer een item uit de lijst.</translation>
++<translation id="5164977714490026579">De waarde moet kleiner dan of gelijk aan <ph name="MINIMUM"/> zijn.</translation>
+ <translation id="5944544982112848342">2048 (hoog niveau)</translation>
+ <translation id="3040011195152428237">link</translation>
+ <translation id="2745343197843472802">Invoegtoepassing downloaden</translation>
+@@ -29,7 +29,7 @@
+ <translation id="5776402066334188252">Bevestig dat u deze invoegtoepassing wilt installeren. U moet alleen invoegtoepassingen installeren die u vertrouwt.</translation>
+ <translation id="3018094406922859308">Invoegtoepassing downloaden...</translation>
+ <translation id="7364796246159120393">Bestand kiezen</translation>
+-<translation id="2761667185364618470">Vink dit selectievakje aan als u wilt doorgaan.</translation>
++<translation id="2761667185364618470">Gelieve dit vakje aan te vinken als u wilt doorgaan.</translation>
+ <translation id="8964020114565522021">Sleep bestand hier naartoe</translation>
+ <translation id="838869780401515933">Selecteren</translation>
+ <translation id="2846343701378493991">1024 (gemiddeld niveau)</translation>
+@@ -39,11 +39,11 @@
+ <translation id="5253117816378681419">Bevestig dat u de invoegtoepassing van <ph name="PLUGIN"/> wilt installeren. U moet alleen invoegtoepassingen installeren die u vertrouwt.</translation>
+ <translation id="6663448176199120256">Recente zoekopdrachten</translation>
+ <translation id="2597378329261239068">Dit document is beveiligd met een wachtwoord. Geef een wachtwoord op.</translation>
+-<translation id="5466621249238537318">Selecteer een of meer bestanden.</translation>
+-<translation id="8750798805984357768">Selecteer een van deze opties.</translation>
++<translation id="5466621249238537318">Selecteer één of meer bestanden.</translation>
++<translation id="8750798805984357768">Selecteer één van deze opties.</translation>
+ <translation id="7740050170769002709">HTML-inhoud</translation>
+-<translation id="2226276347425096477">Kort deze tekst in tot <ph name="MAX_CHARACTERS"/> tekens of minder (u gebruikt momenteel <ph name="CURRENT_LENGTH"/> tekens).</translation>
+-<translation id="2908441821576996758">Voer een door komma's gescheiden lijst met e-mailadressen in.</translation>
++<translation id="2226276347425096477">Verkort deze tekst tot <ph name="MAX_CHARACTERS"/> tekens of minder (u gebruikt op dit moment <ph name="CURRENT_LENGTH"/> tekens).</translation>
++<translation id="2908441821576996758">Voer een door komma's gescheiden lijst van e-mailadressen in.</translation>
+ <translation id="5939518447894949180">Herstellen</translation>
+ <translation id="835897206747267392">Ongeldige waarde.</translation>
+ <translation id="1842960171412779397">Selecteren</translation>
+@@ -51,8 +51,14 @@
+ <translation id="7638452146404718955">Klik hier om de invoegtoepassing te downloaden</translation>
+ <translation id="6119846243427417423">Activeren</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> bestanden</translation>
+-<translation id="3934680773876859118">PDF-document kan niet worden geladen</translation>
++<translation id="3934680773876859118">Fout bij het laden van PDF-document</translation>
+ <translation id="8597182159515967513">kop</translation>
+ <translation id="2653659639078652383">Verzenden</translation>
+ <translation id="8475551193147984329"><ph name="PLUGIN"/>-invoegtoepassing vereist</translation>
++<translation id="1639239467298939599">Bezig met laden…</translation>
++<translation id="3358049263351449631">Dit is een doorzoekbare index. Voer zoekwoorden in: '''</translation>
++<translation id="3851140433852960970">Er is geen plug-in beschikbaar om deze inhoud weer te geven.</translation>
++<translation id="5129723458012748440"><ph name="PLUGIN"/> plug-in is niet geïnstalleerd.</translation>
++<translation id="7335060848622232389">Het installeren van plug-ins is uitgeschakeld.</translation>
++<translation id="9198010615634362518">De vereiste plug-in is niet geïnstalleerd.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_no.xtb new/webkit/glue/resources/webkit_strings_no.xtb
+--- old/webkit/glue/resources/webkit_strings_no.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_no.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,10 +2,10 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="no">
+ <translation id="4519964825805946997">Kunne ikke installere programtillegget fra <ph name="URL"/></translation>
+-<translation id="9186171386827445984">Laster inn dokument: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> sider</translation>
++<translation id="9186171386827445984">Laster inn dokument: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> sider...</translation>
+ <translation id="1235745349614807883">Fjern nylige søk</translation>
+ <translation id="1171774979989969504">Skriv inn en e-postadresse.</translation>
+-<translation id="709897737746224366">Sørg for samsvar med det forespurte formatet.</translation>
++<translation id="709897737746224366">Samsvar med angitt format.</translation>
+ <translation id="5048533449481078685">listemarkør</translation>
+ <translation id="372362261556059955">Ekstra programtillegg kreves</translation>
+ <translation id="4202807286478387388">hopp</translation>
+@@ -15,21 +15,21 @@
+ <translation id="1416462845279468967">Installering av programtillegg mislyktes</translation>
+ <translation id="8141602879876242471">Dette er en søkbar indeks. Angi søkeordene:</translation>
+ <translation id="5650795167354946011">Når programtillegget er installert, klikker du her for å oppdatere</translation>
+-<translation id="370665806235115550">Laster inn...</translation>
++<translation id="370665806235115550">Laster…</translation>
+ <translation id="6845533974506654842">trykk</translation>
+ <translation id="8244226242650769279">bildekart</translation>
+ <translation id="310520048233152454">Skriv inn en nettadresse.</translation>
+ <translation id="2548326553472216322">Ingen nylige søk</translation>
+-<translation id="7263440858009898357">Velg en artikkel i listen.</translation>
+-<translation id="5164977714490026579">Verdien må være større enn eller lik <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Vennligst velg en oppføring fra listen.</translation>
++<translation id="5164977714490026579">Verdi må være større enn eller lik <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (sterk)</translation>
+ <translation id="3040011195152428237">kobling</translation>
+ <translation id="2745343197843472802">Finn programtillegg</translation>
+-<translation id="8451268428117625855">Velg en fil.</translation>
++<translation id="8451268428117625855">Vennligst velg en fil.</translation>
+ <translation id="5776402066334188252">Bekreft at du ønsker å installere programtillegget. Du bør kun installere programtillegg du stoler på.</translation>
+ <translation id="3018094406922859308">Laster ned programtillegg</translation>
+ <translation id="7364796246159120393">Velg fil</translation>
+-<translation id="2761667185364618470">Kryss av denne boksen hvis du vil fortsette.</translation>
++<translation id="2761667185364618470">Merk denne boksen for å fortsette.</translation>
+ <translation id="8964020114565522021">Dra filen hit</translation>
+ <translation id="838869780401515933">merk av</translation>
+ <translation id="2846343701378493991">1024 (middels)</translation>
+@@ -39,20 +39,26 @@
+ <translation id="5253117816378681419">Bekreft at du ønsker å installere programtillegget <ph name="PLUGIN"/>. Du bør kun installere programtillegg du stoler på.</translation>
+ <translation id="6663448176199120256">Nylige søk</translation>
+ <translation id="2597378329261239068">Dette dokumentet er passordbeskyttet. Skriv inn et passord.</translation>
+-<translation id="5466621249238537318">Velg én eller flere filer.</translation>
+-<translation id="8750798805984357768">Velg ett av følgende alternativer.</translation>
++<translation id="5466621249238537318">Vennligst velg en eller flere filer.</translation>
++<translation id="8750798805984357768">Vennligst velg ett av disse alternativene.</translation>
+ <translation id="7740050170769002709">HTML-innhold</translation>
+-<translation id="2226276347425096477">Forkort denne teksten til <ph name="MAX_CHARACTERS"/> tegn eller færre (for øyeblikket bruker du <ph name="CURRENT_LENGTH"/> tegn).</translation>
+-<translation id="2908441821576996758">Skriv inn en liste over e-postadresser atskilt med komma.</translation>
++<translation id="2226276347425096477">Forkort denne teksten til <ph name="MAX_CHARACTERS"/> bokstaver eller mindre (du bruker for øyeblikket <ph name="CURRENT_LENGTH"/> bokstaver).</translation>
++<translation id="2908441821576996758">Skriv inn e-postadresser, adskilt med komma.</translation>
+ <translation id="5939518447894949180">Tilbakestill</translation>
+-<translation id="835897206747267392">Ugyldig verdi</translation>
++<translation id="835897206747267392">Ugyldig verdi.</translation>
+ <translation id="1842960171412779397">velg</translation>
+-<translation id="3450233048674729344">Verdien må være mindre enn eller lik <ph name="MAXIMUM"/>.</translation>
++<translation id="3450233048674729344">Verdi må være mindre enn eller lik <ph name="MAXIMUM"/>.</translation>
+ <translation id="7638452146404718955">Klikk her for å laste ned programtillegget</translation>
+ <translation id="6119846243427417423">aktiver</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> filer</translation>
+-<translation id="3934680773876859118">Kan ikke laste inn PDF-dokument</translation>
++<translation id="3934680773876859118">Mislykket lasting av PDF-dokument</translation>
+ <translation id="8597182159515967513">overskrift</translation>
+ <translation id="2653659639078652383">Send</translation>
+ <translation id="8475551193147984329">Programtillegg <ph name="PLUGIN"/> påkrevd</translation>
++<translation id="1639239467298939599">Laster</translation>
++<translation id="3358049263351449631">Dette er en søkbar liste. Skriv inn søkeord: '''</translation>
++<translation id="3851140433852960970">Ingen utvidelse er tilgjengelig for å vise dette innholdet.</translation>
++<translation id="5129723458012748440"><ph name="PLUGIN"/> utvidelse er ikke installert.</translation>
++<translation id="7335060848622232389">Installasjon av utvidelser er deaktivert.</translation>
++<translation id="9198010615634362518">Nødvendig utvidelse er ikke installert.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_pt-BR.xtb new/webkit/glue/resources/webkit_strings_pt-BR.xtb
+--- old/webkit/glue/resources/webkit_strings_pt-BR.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_pt-BR.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -4,8 +4,8 @@
+ <translation id="4519964825805946997">Falha ao instalar o plug-in de <ph name="URL"/></translation>
+ <translation id="9186171386827445984">Carregando documento: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> páginas...</translation>
+ <translation id="1235745349614807883">Limpar pesquisas recentes</translation>
+-<translation id="1171774979989969504">Insira um endereço de e-mail.</translation>
+-<translation id="709897737746224366">É preciso que o formato corresponda ao exigido.</translation>
++<translation id="1171774979989969504">Por favor, digite um endereço de email</translation>
++<translation id="709897737746224366">Por favor, use o formato requisitado.</translation>
+ <translation id="5048533449481078685">marcador de lista</translation>
+ <translation id="372362261556059955">Plug-in adicional necessário</translation>
+ <translation id="4202807286478387388">pular</translation>
+@@ -18,41 +18,47 @@
+ <translation id="370665806235115550">Carregando...</translation>
+ <translation id="6845533974506654842">pressione</translation>
+ <translation id="8244226242650769279">mapa de imagens</translation>
+-<translation id="310520048233152454">Insira um URL.</translation>
++<translation id="310520048233152454">Por favor, insira uma URL.</translation>
+ <translation id="2548326553472216322">Nenhuma pesquisa recente</translation>
+-<translation id="7263440858009898357">Selecione um item da lista.</translation>
+-<translation id="5164977714490026579">O valor deve ser maior ou igual a <ph name="MINIMUM"/>.</translation>
++<translation id="7263440858009898357">Por favor, selecione um item na lista.</translation>
++<translation id="5164977714490026579">Valor deve ser maior ou igual a <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Nível alto)</translation>
+ <translation id="3040011195152428237">link</translation>
+ <translation id="2745343197843472802">Obter plug-in</translation>
+-<translation id="8451268428117625855">Selecione um arquivo.</translation>
++<translation id="8451268428117625855">Por favor, selecione um arquivo.</translation>
+ <translation id="5776402066334188252">Confirme se você deseja instalar este plug-in. Você deve instalar apenas plug-ins em que confia.</translation>
+ <translation id="3018094406922859308">Fazendo download do plug-in...</translation>
+ <translation id="7364796246159120393">Escolher arquivo</translation>
+-<translation id="2761667185364618470">Marque esta caixa se deseja continuar.</translation>
++<translation id="2761667185364618470">Por favor, marque esta caixa se você quer continuar.</translation>
+ <translation id="8964020114565522021">Arraste o arquivo até aquil</translation>
+ <translation id="838869780401515933">marcar</translation>
+ <translation id="2846343701378493991">1024 (Nível médio)</translation>
+ <translation id="5476505524087279545">desmarcar</translation>
+ <translation id="3789841737615482174">Instalar</translation>
+-<translation id="2507943997699731163">Preencha este campo.</translation>
++<translation id="2507943997699731163">Por favor, preencha este campo.</translation>
+ <translation id="5253117816378681419">Confirme se você deseja instalar o plug-in do <ph name="PLUGIN"/>. Você deve instalar apenas plug-ins em que você confia.</translation>
+ <translation id="6663448176199120256">Pesquisas recentes</translation>
+ <translation id="2597378329261239068">Este documento está protegido por senha.  Digite a senha.</translation>
+-<translation id="5466621249238537318">Selecione um ou mais arquivos.</translation>
+-<translation id="8750798805984357768">Selecione uma das opções.</translation>
++<translation id="5466621249238537318">Por favor, selecione um ou mais arquivos.</translation>
++<translation id="8750798805984357768">Por favor, selecione uma dessas opções.</translation>
+ <translation id="7740050170769002709">Conteúdo HTML</translation>
+-<translation id="2226276347425096477">Reduza este texto para <ph name="MAX_CHARACTERS"/> caracteres ou menos (você está usando <ph name="CURRENT_LENGTH"/> caracteres).</translation>
+-<translation id="2908441821576996758">Insira uma lista de endereços de e-mail separados por vírgula.</translation>
++<translation id="2226276347425096477">Por favor, diminua este texto para <ph name="MAX_CHARACTERS"/> caracteres ou menos (atualmente, você está usando <ph name="CURRENT_LENGTH"/> caracteres).</translation>
++<translation id="2908441821576996758">Por favor, insira uma lista separada por vírgulas de endereços de e-mail.</translation>
+ <translation id="5939518447894949180">Redefinir</translation>
+ <translation id="835897206747267392">Valor inválido.</translation>
+ <translation id="1842960171412779397">selecione</translation>
+-<translation id="3450233048674729344">O valor deve ser menor ou igual a <ph name="MAXIMUM"/>.</translation>
++<translation id="3450233048674729344">Valor deve ser menor ou igual a <ph name="MAXIMUM"/>.</translation>
+ <translation id="7638452146404718955">Clique aqui para fazer download do plug-in</translation>
+ <translation id="6119846243427417423">ativar</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> arquivos</translation>
+-<translation id="3934680773876859118">Falha ao carregar o documento PDF</translation>
++<translation id="3934680773876859118">Falhou ao carregar documento PDF</translation>
+ <translation id="8597182159515967513">cabeçalho</translation>
+ <translation id="2653659639078652383">Enviar</translation>
+ <translation id="8475551193147984329">Plug-in do <ph name="PLUGIN"/> necessário</translation>
++<translation id="1639239467298939599">Carregando</translation>
++<translation id="3358049263351449631">Este é um buscador de índice. Digite as palavras de busca: &quot;&quot;</translation>
++<translation id="3851140433852960970">Nenhum plugin disponível para exibir esse conteúdo.</translation>
++<translation id="5129723458012748440">O plugin <ph name="PLUGIN"/> não está instalado.</translation>
++<translation id="7335060848622232389">A instalação de plugins está desabilitada.</translation>
++<translation id="9198010615634362518">O plugin necessário não está instalado.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_ro.xtb new/webkit/glue/resources/webkit_strings_ro.xtb
+--- old/webkit/glue/resources/webkit_strings_ro.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_ro.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,58 +1,58 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="ro">
+-<translation id="4519964825805946997">Instalarea pluginului de la <ph name="URL"/> a eșuat</translation>
+-<translation id="9186171386827445984">Se încarcă documentul: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> (de) pagini...</translation>
+-<translation id="1235745349614807883">Ștergeți căutările recente</translation>
+-<translation id="1171774979989969504">Introduceţi o adresă de e-mail.</translation>
++<translation id="4519964825805946997">Instalarea modulului de extensie de la <ph name="URL"/> a eșuat</translation>
++<translation id="9186171386827445984">Se încarcă documentul: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> pagini...</translation>
++<translation id="1235745349614807883">Șterge căutările recente</translation>
++<translation id="1171774979989969504">Introduceți o adresă de e-mail.</translation>
+ <translation id="709897737746224366">Potriviţi cu formatul solicitat.</translation>
+ <translation id="5048533449481078685">marcator listă</translation>
+-<translation id="372362261556059955">Este necesar un plugin suplimentar</translation>
+-<translation id="4202807286478387388">Salt</translation>
++<translation id="372362261556059955">Este necesar un modul de extensie suplimentar</translation>
++<translation id="4202807286478387388">salt</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+-<translation id="7658239707568436148">Anulați</translation>
+-<translation id="795667975304826397">Nu s-au ales fișiere</translation>
+-<translation id="1416462845279468967">Instalarea pluginului a eșuat</translation>
++<translation id="7658239707568436148">Anulează</translation>
++<translation id="795667975304826397">Nu s-a ales niciun fișier</translation>
++<translation id="1416462845279468967">Instalarea modulului de extensie a eșuat</translation>
+ <translation id="8141602879876242471">Acesta este un index în care se poate căuta. Introduceți cuvintele cheie pentru căutare:</translation>
+-<translation id="5650795167354946011">După instalarea pluginului, faceți clic aici pentru a actualiza</translation>
++<translation id="5650795167354946011">După instalarea modulului de extensie, faceți clic aici pentru a actualiza</translation>
+ <translation id="370665806235115550">Se încarcă...</translation>
+-<translation id="6845533974506654842">Apăsați</translation>
++<translation id="6845533974506654842">apăsare</translation>
+ <translation id="8244226242650769279">hartă cu imagini</translation>
+-<translation id="310520048233152454">Introduceţi o adresă URL.</translation>
++<translation id="310520048233152454">Introduceți un URL.</translation>
+ <translation id="2548326553472216322">Nicio căutare recentă</translation>
+-<translation id="7263440858009898357">Selectaţi un articol din listă.</translation>
++<translation id="7263440858009898357">Selectați un element din listă.</translation>
+ <translation id="5164977714490026579">Valoarea trebuie să fie mai mare sau egală cu <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Grad înalt)</translation>
+ <translation id="3040011195152428237">link</translation>
+-<translation id="2745343197843472802">Descărcați pluginul</translation>
+-<translation id="8451268428117625855">Selectaţi un fişier.</translation>
+-<translation id="5776402066334188252">Confirmați că doriți să instalați acest plugin. Vă recomandăm să instalați numai pluginuri în care aveți încredere.</translation>
+-<translation id="3018094406922859308">Se descarcă pluginul...</translation>
++<translation id="2745343197843472802">Descarcă modulul de extensie</translation>
++<translation id="8451268428117625855">Alegeți un fișier.</translation>
++<translation id="5776402066334188252">Confirmați că doriți să instalați acest modul de extensie. Este recomandat să instalați numai module de extensie în care aveți încredere.</translation>
++<translation id="3018094406922859308">Se descarcă modulul de extensie...</translation>
+ <translation id="7364796246159120393">Alegeți fișierul</translation>
+-<translation id="2761667185364618470">Bifaţi caseta dacă doriţi să continuaţi.</translation>
++<translation id="2761667185364618470">Bifați această căsuță dacă doriți să continuați.</translation>
+ <translation id="8964020114565522021">Trageți fișierul aici</translation>
+-<translation id="838869780401515933">Bifați</translation>
++<translation id="838869780401515933">bifare</translation>
+ <translation id="2846343701378493991">1024 (Grad mediu)</translation>
+-<translation id="5476505524087279545">Debifați</translation>
+-<translation id="3789841737615482174">Instalați</translation>
+-<translation id="2507943997699731163">Completaţi acest câmp.</translation>
+-<translation id="5253117816378681419">Confirmați că doriți să instalați pluginul <ph name="PLUGIN"/>. Vă recomandăm să instalați numai pluginuri în care aveți încredere.</translation>
++<translation id="5476505524087279545">debifare</translation>
++<translation id="3789841737615482174">Instalează</translation>
++<translation id="2507943997699731163">Completați acest câmp.</translation>
++<translation id="5253117816378681419">Confirmați că doriți să instalați modulul de extensie <ph name="PLUGIN"/>. Este recomandat să instalați numai module de extensie în care aveți încredere.</translation>
+ <translation id="6663448176199120256">Căutări recente</translation>
+ <translation id="2597378329261239068">Acest document este protejat cu parolă. Introduceți o parolă.</translation>
+-<translation id="5466621249238537318">Selectaţi unul sau mai multe fişiere.</translation>
+-<translation id="8750798805984357768">Selectaţi una dintre aceste opţiuni.</translation>
++<translation id="5466621249238537318">Selectați unul sau mai multe fișiere.</translation>
++<translation id="8750798805984357768">Selectați una dintre aceste opțiuni.</translation>
+ <translation id="7740050170769002709">Conținut HTML</translation>
+-<translation id="2226276347425096477">Micşoraţi acest text la cel mult <ph name="MAX_CHARACTERS"/> (de) caractere (în prezent utilizaţi <ph name="CURRENT_LENGTH"/> (de) caractere).</translation>
+-<translation id="2908441821576996758">Introduceţi o listă de adrese de e-mail separate prin virgulă.</translation>
+-<translation id="5939518447894949180">Resetați</translation>
++<translation id="2226276347425096477">Scurtați acest text la <ph name="MAX_CHARACTERS"/> caractere sau mai puțin (în prezent folosiți <ph name="CURRENT_LENGTH"/> caractere).</translation>
++<translation id="2908441821576996758">Introduceți o listă de adrese de email separate prin virgule.</translation>
++<translation id="5939518447894949180">Resetează</translation>
+ <translation id="835897206747267392">Valoare nevalidă.</translation>
+-<translation id="1842960171412779397">Selectați</translation>
++<translation id="1842960171412779397">selectare</translation>
+ <translation id="3450233048674729344">Valoarea trebuie să fie mai mică sau egală cu <ph name="MAXIMUM"/>.</translation>
+-<translation id="7638452146404718955">Faceți clic aici pentru a descărca pluginul</translation>
+-<translation id="6119846243427417423">Activați</translation>
++<translation id="7638452146404718955">Clic aici pentru a descărca modulul de extensie</translation>
++<translation id="6119846243427417423">activare</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> fișiere</translation>
+-<translation id="3934680773876859118">Încărcarea documentului PDF nu a reuşit</translation>
+-<translation id="8597182159515967513">titlu</translation>
++<translation id="3934680773876859118">Nu s-a putut încărca documentul PDF</translation>
++<translation id="8597182159515967513">antet</translation>
+ <translation id="2653659639078652383">Trimiteți</translation>
+-<translation id="8475551193147984329">Este necesar pluginul <ph name="PLUGIN"/></translation>
++<translation id="8475551193147984329">Este necesar modulul de extensie <ph name="PLUGIN"/></translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_ru.xtb new/webkit/glue/resources/webkit_strings_ru.xtb
+--- old/webkit/glue/resources/webkit_strings_ru.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_ru.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,10 +2,10 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="ru">
+ <translation id="4519964825805946997">Не удалось установить подключаемый модуль с адреса <ph name="URL"/></translation>
+-<translation id="9186171386827445984">Загрузка документа: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> стр.</translation>
+-<translation id="1235745349614807883">Очистить недавние поиски</translation>
++<translation id="9186171386827445984">Загружается документ: страница <ph name="PAGE_NUMBER"/> из <ph name="NUMBER_OF_PAGES"/>...</translation>
++<translation id="1235745349614807883">Очистить историю поиска</translation>
+ <translation id="1171774979989969504">Введите адрес электронной почты.</translation>
+-<translation id="709897737746224366">Введите данные в указанном формате.</translation>
++<translation id="709897737746224366">Проверьте выбранный формат.</translation>
+ <translation id="5048533449481078685">маркер списка</translation>
+ <translation id="372362261556059955">Необходим дополнительный подключаемый модуль</translation>
+ <translation id="4202807286478387388">перейти</translation>
+@@ -15,12 +15,12 @@
+ <translation id="1416462845279468967">Не удалось установить подключаемый модуль</translation>
+ <translation id="8141602879876242471">Это индекс с возможностью поиска. Введите ключевые слова для поиска:</translation>
+ <translation id="5650795167354946011">После установки подключаемого модуля нажмите здесь, чтобы обновить страницу</translation>
+-<translation id="370665806235115550">Загрузка...</translation>
++<translation id="370665806235115550">Загрузка…</translation>
+ <translation id="6845533974506654842">нажать</translation>
+ <translation id="8244226242650769279">графическая карта</translation>
+ <translation id="310520048233152454">Введите URL.</translation>
+ <translation id="2548326553472216322">Нет недавних поисков</translation>
+-<translation id="7263440858009898357">Выберите один из пунктов списка.</translation>
++<translation id="7263440858009898357">Выберите элемент в списке.</translation>
+ <translation id="5164977714490026579">Значение должно быть больше или равно <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Крупный размер)</translation>
+ <translation id="3040011195152428237">ссылка</translation>
+@@ -29,7 +29,7 @@
+ <translation id="5776402066334188252">Подтвердите, что вы хотите установить этот подключаемый модуль. Вы доверяете ему?</translation>
+ <translation id="3018094406922859308">Загрузка подключаемого модуля...</translation>
+ <translation id="7364796246159120393">Выберите файл</translation>
+-<translation id="2761667185364618470">Чтобы продолжить, установите этот флажок.</translation>
++<translation id="2761667185364618470">Поставьте галочку, если хотите продолжить.</translation>
+ <translation id="8964020114565522021">Перетащите файл сюда</translation>
+ <translation id="838869780401515933">поставить галочку</translation>
+ <translation id="2846343701378493991">1024 (Средний размер)</translation>
+@@ -40,19 +40,20 @@
+ <translation id="6663448176199120256">Недавние поиски</translation>
+ <translation id="2597378329261239068">Документ защищен паролем. Введите пароль.</translation>
+ <translation id="5466621249238537318">Выберите один или несколько файлов.</translation>
+-<translation id="8750798805984357768">Выберите один из вариантов.</translation>
+-<translation id="7740050170769002709">HTML-содержание</translation>
+-<translation id="2226276347425096477">Длина текста не должна превышать <ph name="MAX_CHARACTERS"/> симв. (сейчас <ph name="CURRENT_LENGTH"/> симв.).</translation>
+-<translation id="2908441821576996758">Введите адреса электронной почты через запятую.</translation>
++<translation id="8750798805984357768">Выберите один из следующих вариантов.</translation>
++<translation id="7740050170769002709">HTML содержимое</translation>
++<translation id="2226276347425096477">Пожалуйста, сократите этот текст до <ph name="MAX_CHARACTERS"/> символов или менее (в данный момент, вы используете <ph name="CURRENT_LENGTH"/> символов).</translation>
++<translation id="2908441821576996758">Введите через запятую список адресов электронной почты.</translation>
+ <translation id="5939518447894949180">Изменить</translation>
+-<translation id="835897206747267392">Недопустимые данные.</translation>
++<translation id="835897206747267392">Недопустимое значение.</translation>
+ <translation id="1842960171412779397">выбрать</translation>
+ <translation id="3450233048674729344">Значение должно быть меньше или равно <ph name="MAXIMUM"/>.</translation>
+ <translation id="7638452146404718955">Нажмите здесь, чтобы загрузить подключаемый модуль</translation>
+ <translation id="6119846243427417423">активировать</translation>
+ <translation id="8444882422881193423">Число файлов: <ph name="NUMBER_OF_FILES"/></translation>
+-<translation id="3934680773876859118">Не удалось загрузить документ PDF</translation>
++<translation id="3934680773876859118">Не удалось загрузить PDF документ</translation>
+ <translation id="8597182159515967513">заголовок</translation>
+ <translation id="2653659639078652383">Отправить</translation>
+ <translation id="8475551193147984329">Необходим подключаемый модуль <ph name="PLUGIN"/></translation>
++<translation id="3358049263351449631">Это поисковый индекс. Введите ключевые слова для поиска: '''</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_sl.xtb new/webkit/glue/resources/webkit_strings_sl.xtb
+--- old/webkit/glue/resources/webkit_strings_sl.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_sl.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,58 +1,64 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="sl">
+-<translation id="4519964825805946997">Namestitev vtičnika z naslova <ph name="URL"/> ni bila uspešna</translation>
++<translation id="4519964825805946997">Namestitev vstavka z naslova <ph name="URL"/> ni bila uspešna</translation>
+ <translation id="9186171386827445984">Nalaganje dokumenta: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> strani ...</translation>
+-<translation id="1235745349614807883">Počisti zadnja iskanja</translation>
+-<translation id="1171774979989969504">Vnesite e-poštni naslov</translation>
+-<translation id="709897737746224366">Poskrbite za ujemanje z zahtevano obliko.</translation>
++<translation id="1235745349614807883">Počisti nedavna iskanja</translation>
++<translation id="1171774979989969504">Vnesite svoj e-poštni naslov</translation>
++<translation id="709897737746224366">Vnesite zahtevano vrsto datoteke.</translation>
+ <translation id="5048533449481078685">označevalnik seznama</translation>
+-<translation id="372362261556059955">Potreben je dodaten vtičnik</translation>
++<translation id="372362261556059955">Zahtevan je dodaten vstavek</translation>
+ <translation id="4202807286478387388">skoči</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Prekliči</translation>
+ <translation id="795667975304826397">Nobena datoteka ni izbrana</translation>
+-<translation id="1416462845279468967">Namestitev vtičnika ni bila uspešna</translation>
++<translation id="1416462845279468967">Namestitev vstavka ni bila uspešna</translation>
+ <translation id="8141602879876242471">To je kazalo, ki omogoča iskanje. Vnesite ključne besede za iskanje:</translation>
+-<translation id="5650795167354946011">Po namestitvi vtičnika, kliknite tu, da osvežite</translation>
++<translation id="5650795167354946011">Po namestitvi vstavka, kliknite sem za osvežitev</translation>
+ <translation id="370665806235115550">Nalagam ...</translation>
+ <translation id="6845533974506654842">pritisni</translation>
+ <translation id="8244226242650769279">slikovni zemljevid</translation>
+-<translation id="310520048233152454">Vnesite URL.</translation>
+-<translation id="2548326553472216322">Ni zadnjih iskanj</translation>
+-<translation id="7263440858009898357">Izberite element s seznama.</translation>
+-<translation id="5164977714490026579">Vrednost mora biti večja od <ph name="MINIMUM"/> ali enaka.</translation>
++<translation id="310520048233152454">Vnesite URL naslov.</translation>
++<translation id="2548326553472216322">Ni nedavnih nizov iskanja</translation>
++<translation id="7263440858009898357">Izberite predmet iz seznama.</translation>
++<translation id="5164977714490026579">Vrednost mora biti večja ali enaka <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (visoka stopnja)</translation>
+ <translation id="3040011195152428237">povezava</translation>
+-<translation id="2745343197843472802">Prenesite vtičnik</translation>
++<translation id="2745343197843472802">Prenesite vstavek</translation>
+ <translation id="8451268428117625855">Izberite datoteko.</translation>
+-<translation id="5776402066334188252">Potrdite, da želite namestiti ta vtičnik. Nameščajte le vtičnike, ki jim zaupate.</translation>
+-<translation id="3018094406922859308">Prenašanje vtičnika ...</translation>
+-<translation id="7364796246159120393">Izberi datoteko</translation>
+-<translation id="2761667185364618470">Potrdite to polje, če želite nadaljevati.</translation>
+-<translation id="8964020114565522021">Datoteko povleci sem</translation>
+-<translation id="838869780401515933">potrdi</translation>
++<translation id="5776402066334188252">Potrdite, da želite namestiti ta vstavek. Nameščajte le vstavke, ki jim zaupate.</translation>
++<translation id="3018094406922859308">Prejemanje vstavka ...</translation>
++<translation id="7364796246159120393">Izbor datoteke</translation>
++<translation id="2761667185364618470">Označite to polje, če želite nadaljevati.</translation>
++<translation id="8964020114565522021">Datoteko povlecite sem</translation>
++<translation id="838869780401515933">označi</translation>
+ <translation id="2846343701378493991">1024 (srednja stopnja)</translation>
+ <translation id="5476505524087279545">počisti izbor</translation>
+ <translation id="3789841737615482174">Namesti</translation>
+-<translation id="2507943997699731163">Izpolnite to polje</translation>
+-<translation id="5253117816378681419">Potrdite, da želite namestiti ta <ph name="PLUGIN"/> vtičnik. Nameščajte le vtičnike, ki jim zaupate.</translation>
+-<translation id="6663448176199120256">Zadnja iskanja</translation>
+-<translation id="2597378329261239068">Dokument je zaščiten z geslom. Vnesite geslo.</translation>
++<translation id="2507943997699731163">Prosim, izpolnite to polje.</translation>
++<translation id="5253117816378681419">Potrdite, da želite namestiti vstavek <ph name="PLUGIN"/> . Nameščajte le vstavke, ki jim zaupate.</translation>
++<translation id="6663448176199120256">Nedavna iskanja</translation>
++<translation id="2597378329261239068">Dokument je zaščiten z geslom. Prosim, vnesite geslo.</translation>
+ <translation id="5466621249238537318">Izberite eno ali več datotek.</translation>
+-<translation id="8750798805984357768">Izberite eno od teh možnosti.</translation>
++<translation id="8750798805984357768">Izberite eno izmed možnosti.</translation>
+ <translation id="7740050170769002709">Vsebina HTML</translation>
+-<translation id="2226276347425096477">Skrajšajte to besedilo na <ph name="MAX_CHARACTERS"/> znakov ali manj (trenutno uporabljate <ph name="CURRENT_LENGTH"/> znakov).</translation>
+-<translation id="2908441821576996758">Vnesite seznam e-poštnih naslovov, ločenih z vejicami</translation>
++<translation id="2226276347425096477">Skrajšajte to besedilo na <ph name="MAX_CHARACTERS"/> znakov ali manj (trenutno je v besedilu <ph name="CURRENT_LENGTH"/> znakov).</translation>
++<translation id="2908441821576996758">Vnesite seznam e-poštnih naslovov ločenih z vejico.</translation>
+ <translation id="5939518447894949180">Ponastavi</translation>
+-<translation id="835897206747267392">Neveljavna vrednost.</translation>
++<translation id="835897206747267392">Neveljavna vrednost</translation>
+ <translation id="1842960171412779397">izberi</translation>
+-<translation id="3450233048674729344">Vrednost mora biti manjša od <ph name="MAXIMUM"/> ali enaka.</translation>
+-<translation id="7638452146404718955">Če želite prenesti vtičnik, kliknite tukaj</translation>
++<translation id="3450233048674729344">Vrednost mora bit manjša ali enaka <ph name="MAXIMUM"/>.</translation>
++<translation id="7638452146404718955">Če želite prejeti vstavek, kliknite sem</translation>
+ <translation id="6119846243427417423">aktiviraj</translation>
+-<translation id="8444882422881193423">Število datotek: <ph name="NUMBER_OF_FILES"/></translation>
+-<translation id="3934680773876859118">Dokumenta PDF ni bilo mogoče naložiti</translation>
++<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> datotek</translation>
++<translation id="3934680773876859118">Nalaganje dokumenta PDF je spodletelo</translation>
+ <translation id="8597182159515967513">naslov</translation>
+ <translation id="2653659639078652383">Pošlji</translation>
+-<translation id="8475551193147984329">Potreben je vtičnik <ph name="PLUGIN"/></translation>
++<translation id="8475551193147984329">Zahtevan je vstavek <ph name="PLUGIN"/></translation>
++<translation id="1639239467298939599">Nalaganje</translation>
++<translation id="3358049263351449631">To je iskalni seznam. Vnesite besede za iskanje: '''</translation>
++<translation id="3851140433852960970">Ni vstavka za prikaz te vsebine.</translation>
++<translation id="5129723458012748440">Vstavek <ph name="PLUGIN"/> ni nameščen.</translation>
++<translation id="7335060848622232389">Nameščanje vstavkov je bilo onemogočeno.</translation>
++<translation id="9198010615634362518">Zahtevani vstavek ni nameščen.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_sr.xtb new/webkit/glue/resources/webkit_strings_sr.xtb
+--- old/webkit/glue/resources/webkit_strings_sr.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_sr.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,58 +1,59 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="sr">
+-<translation id="4519964825805946997">Инсталирање додатне компоненте са <ph name="URL"/> није успело</translation>
+-<translation id="9186171386827445984">Учитавање документа: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> странице(а)...</translation>
++<translation id="4519964825805946997">Нисам успео да инсталирам додатак са „<ph name="URL"/>“</translation>
++<translation id="9186171386827445984">Учитавам документ: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> странице(а)...</translation>
+ <translation id="1235745349614807883">Обриши недавне претраге</translation>
+-<translation id="1171774979989969504">Унесите адресу е-поште.</translation>
+-<translation id="709897737746224366">Изаберите захтевани формат.</translation>
++<translation id="1171774979989969504">Молим унесите адресу е-поште.</translation>
++<translation id="709897737746224366">Молим упоредите затражени формат.</translation>
+ <translation id="5048533449481078685">означивач листе</translation>
+-<translation id="372362261556059955">Потребна је још једна додатна компонента</translation>
++<translation id="372362261556059955">Потребан је још један додатак</translation>
+ <translation id="4202807286478387388">прескочи</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">Откажи</translation>
+-<translation id="795667975304826397">Није одабрано</translation>
+-<translation id="1416462845279468967">Инсталација додатне компоненте није успела</translation>
++<translation id="795667975304826397">Није изабрана ниједна датотека</translation>
++<translation id="1416462845279468967">Инсталација додатка није успела</translation>
+ <translation id="8141602879876242471">Ово је индекс који може да се претражује. Унесите кључне речи за претрагу:</translation>
+-<translation id="5650795167354946011">Након инсталирања додатне компоненте, кликните овде да бисте освежили</translation>
+-<translation id="370665806235115550">Учитавање...</translation>
++<translation id="5650795167354946011">Након инсталирања додатка, кликните овде да освежите</translation>
++<translation id="370665806235115550">Учитавам...</translation>
+ <translation id="6845533974506654842">притисни</translation>
+ <translation id="8244226242650769279">мапа слике</translation>
+-<translation id="310520048233152454">Унесите URL адресу.</translation>
++<translation id="310520048233152454">Молим унесите адресу.</translation>
+ <translation id="2548326553472216322">Нема недавних претрага</translation>
+-<translation id="7263440858009898357">Изаберите ставку са листе.</translation>
++<translation id="7263440858009898357">Молим изаберите ставку са списка.</translation>
+ <translation id="5164977714490026579">Вредност сме да буде најмање <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (високи степен)</translation>
+ <translation id="3040011195152428237">веза</translation>
+-<translation id="2745343197843472802">Преузми додатну компоненту</translation>
+-<translation id="8451268428117625855">Изаберите датотеку.</translation>
+-<translation id="5776402066334188252">Потврдите да желите да инсталирате ову додатну компоненту. Инсталирајте само додатне компоненте у које имате поверења.</translation>
+-<translation id="3018094406922859308">Преузимање додатних компоненти...</translation>
+-<translation id="7364796246159120393">Одабери датотеку</translation>
+-<translation id="2761667185364618470">Потврдите избор у овом пољу за потврду уколико желите да наставите.</translation>
++<translation id="2745343197843472802">Преузми додатак</translation>
++<translation id="8451268428117625855">Молим изаберите датотеку.</translation>
++<translation id="5776402066334188252">Потврдите да желите да инсталирате овај додатак. Инсталирајте само додатке у које имате поверења.</translation>
++<translation id="3018094406922859308">Преузимам додатак...</translation>
++<translation id="7364796246159120393">Изабери датотеку</translation>
++<translation id="2761667185364618470">Молим означите овај квадратић ако желите да наставите.</translation>
+ <translation id="8964020114565522021">Превуците датотеку овде</translation>
+ <translation id="838869780401515933">изабери</translation>
+ <translation id="2846343701378493991">1024 (средњи степен)</translation>
+ <translation id="5476505524087279545">опозови избор</translation>
+ <translation id="3789841737615482174">Инсталирај</translation>
+-<translation id="2507943997699731163">Попуните ово поље.</translation>
+-<translation id="5253117816378681419">Потврдите да желите да инсталирате <ph name="PLUGIN"/> додатну компоненту. Инсталирајте само додатне компоненте у које имате поверења.</translation>
++<translation id="2507943997699731163">Молим попуните ово поље.</translation>
++<translation id="5253117816378681419">Потврдите да желите да инсталирате „<ph name="PLUGIN"/>“ додатак. Инсталирајте само додатке у које имате поверења.</translation>
+ <translation id="6663448176199120256">Недавне претраге</translation>
+ <translation id="2597378329261239068">Овај документ је заштићен лозинком. Унесите лозинку.</translation>
+-<translation id="5466621249238537318">Изаберите једну или више датотека.</translation>
+-<translation id="8750798805984357768">Изаберите неку од ових опција.</translation>
+-<translation id="7740050170769002709">HTML садржај</translation>
+-<translation id="2226276347425096477">Скратите овај текст на <ph name="MAX_CHARACTERS"/> знак(ов)а или мање (тренутно користите <ph name="CURRENT_LENGTH"/> знак(ов)а).</translation>
+-<translation id="2908441821576996758">Унесите листу адреса е-поште раздвојених зарезима.</translation>
++<translation id="5466621249238537318">Молим изаберите једну или више датотека.</translation>
++<translation id="8750798805984357768">Молим изаберите једну од ових опција.</translation>
++<translation id="7740050170769002709">ХТМЛ садржај</translation>
++<translation id="2226276347425096477">Молим скратите текст на <ph name="MAX_CHARACTERS"/> знака или мање (тренутно користите <ph name="CURRENT_LENGTH"/> знака).</translation>
++<translation id="2908441821576996758">Молим унесите списак адреса е-поште одвојених зарезом.</translation>
+ <translation id="5939518447894949180">Ресетуј</translation>
+-<translation id="835897206747267392">Неважећа вредност.</translation>
++<translation id="835897206747267392">Неисправна вредност.</translation>
+ <translation id="1842960171412779397">изабери</translation>
+-<translation id="3450233048674729344">Вредност сме да буде највише <ph name="MAXIMUM"/>.</translation>
+-<translation id="7638452146404718955">Кликните овде да бисте преузели додатну компоненту</translation>
++<translation id="3450233048674729344">Вредност мора бити мања или једнака <ph name="MAXIMUM"/>.</translation>
++<translation id="7638452146404718955">Кликните овде да преузмете додатак</translation>
+ <translation id="6119846243427417423">активирај</translation>
+-<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> датотеке(а)</translation>
+-<translation id="3934680773876859118">Учитавање PDF документа није успело</translation>
++<translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> датотека(е)</translation>
++<translation id="3934680773876859118">Нисам успео да учитам ПДФ документ</translation>
+ <translation id="8597182159515967513">наслов</translation>
+ <translation id="2653659639078652383">Пошаљи</translation>
+-<translation id="8475551193147984329">Потребна је <ph name="PLUGIN"/> додатна компонента</translation>
++<translation id="8475551193147984329">Потребан је „<ph name="PLUGIN"/>“ додатак</translation>
++<translation id="3358049263351449631">Ово је претражив индекс. Унесите кључне речи претраге: '''</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_sv.xtb new/webkit/glue/resources/webkit_strings_sv.xtb
+--- old/webkit/glue/resources/webkit_strings_sv.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_sv.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -5,7 +5,7 @@
+ <translation id="9186171386827445984">Läser in dokument: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> sidor...</translation>
+ <translation id="1235745349614807883">Rensa senaste sökningar</translation>
+ <translation id="1171774979989969504">Ange en e-postadress.</translation>
+-<translation id="709897737746224366">Matcha det format som anges.</translation>
++<translation id="709897737746224366">Matcha det begärda formatet.</translation>
+ <translation id="5048533449481078685">listmarkör</translation>
+ <translation id="372362261556059955">Ett ytterligare plugin-program krävs</translation>
+ <translation id="4202807286478387388">fortsätta</translation>
+@@ -15,12 +15,12 @@
+ <translation id="1416462845279468967">Installationen av plugin-programmet misslyckades</translation>
+ <translation id="8141602879876242471">Det här är ett sökbart index. Skriv sökord:</translation>
+ <translation id="5650795167354946011">Klicka här för att uppdatera när du har installerat plugin-programmet</translation>
+-<translation id="370665806235115550">Laddar...</translation>
++<translation id="370665806235115550">Läser in...</translation>
+ <translation id="6845533974506654842">tryck</translation>
+ <translation id="8244226242650769279">bildkarta</translation>
+-<translation id="310520048233152454">Ange en webbadress.</translation>
++<translation id="310520048233152454">Ange en URL.</translation>
+ <translation id="2548326553472216322">Inga nya sökningar</translation>
+-<translation id="7263440858009898357">Välj ett alternativ i listan.</translation>
++<translation id="7263440858009898357">Välj ett objekt i listan.</translation>
+ <translation id="5164977714490026579">Värdet måste vara större än eller lika med <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (hög)</translation>
+ <translation id="3040011195152428237">länk</translation>
+@@ -29,21 +29,21 @@
+ <translation id="5776402066334188252">Bekräfta att du vill installera detta plugin-program. Installera bara plugin-program från tillförlitliga källor.</translation>
+ <translation id="3018094406922859308">Hämtar plugin-programmet...</translation>
+ <translation id="7364796246159120393">Välj fil</translation>
+-<translation id="2761667185364618470">Markera den här kryssrutan om du vill fortsätta.</translation>
++<translation id="2761667185364618470">Kryssa denna ruta om du vill fortsätta.</translation>
+ <translation id="8964020114565522021">Dra filen hit</translation>
+ <translation id="838869780401515933">kryssa för</translation>
+ <translation id="2846343701378493991">1024 (medel)</translation>
+ <translation id="5476505524087279545">kryssa av</translation>
+ <translation id="3789841737615482174">Installera</translation>
+-<translation id="2507943997699731163">Fyll i det här fältet.</translation>
++<translation id="2507943997699731163">Fyll i detta fält.</translation>
+ <translation id="5253117816378681419">Bekräfta att du vill installera plugin-programmet <ph name="PLUGIN"/>. Installera bara plugin-program från tillförlitliga källor.</translation>
+ <translation id="6663448176199120256">Senaste sökningar</translation>
+ <translation id="2597378329261239068">Dokumentet är lösenordsskyddat. Ange ett lösenord.</translation>
+ <translation id="5466621249238537318">Välj en eller flera filer.</translation>
+-<translation id="8750798805984357768">Välj ett av följande alternativ.</translation>
++<translation id="8750798805984357768">Välj ett av dessa alternativ.</translation>
+ <translation id="7740050170769002709">HTML-innehåll</translation>
+-<translation id="2226276347425096477">Förkorta texten till <ph name="MAX_CHARACTERS"/> tecken eller mindre (nu är texten <ph name="CURRENT_LENGTH"/> tecken).</translation>
+-<translation id="2908441821576996758">Ange en kommaavgränsad lista med e-postadresser.</translation>
++<translation id="2226276347425096477">Korta ner denna text till <ph name="MAX_CHARACTERS"/> tecken eller mindre (du använder just nu <ph name="CURRENT_LENGTH"/> tecken).</translation>
++<translation id="2908441821576996758">Ange en kommaseparerad lista med e-postadresser.</translation>
+ <translation id="5939518447894949180">Återställ</translation>
+ <translation id="835897206747267392">Ogiltigt värde.</translation>
+ <translation id="1842960171412779397">välj</translation>
+@@ -51,8 +51,14 @@
+ <translation id="7638452146404718955">Klicka här för att hämta plugin-programmet</translation>
+ <translation id="6119846243427417423">aktivera</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> filer</translation>
+-<translation id="3934680773876859118">Det gick inte att läsa in PDF-dokumentet</translation>
++<translation id="3934680773876859118">Misslyckades med att läsa in PDF-dokumentet</translation>
+ <translation id="8597182159515967513">rubrik</translation>
+ <translation id="2653659639078652383">Skicka</translation>
+ <translation id="8475551193147984329">Plugin-programmet <ph name="PLUGIN"/> krävs</translation>
++<translation id="1639239467298939599">Läser in</translation>
++<translation id="3358049263351449631">Detta är ett sökbart index. Ange sökord: '''</translation>
++<translation id="3851140433852960970">Det finns inget tilläggsprogram tillgängligt som kan visa innehållet.</translation>
++<translation id="5129723458012748440">Tilläggsprogrammet <ph name="PLUGIN"/> är inte installerat.</translation>
++<translation id="7335060848622232389">Installation av tilläggsprogram har inaktiverats.</translation>
++<translation id="9198010615634362518">Det nödvändiga tilläggsprogrammet är inte installerat.</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_vi.xtb new/webkit/glue/resources/webkit_strings_vi.xtb
+--- old/webkit/glue/resources/webkit_strings_vi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_vi.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -4,8 +4,8 @@
+ <translation id="4519964825805946997">Cài đặt trình cắm từ <ph name="URL"/> không thành công</translation>
+ <translation id="9186171386827445984">Đang tải tài liệu: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> trang...</translation>
+ <translation id="1235745349614807883">Xoá Tìm kiếm Gần đây</translation>
+-<translation id="1171774979989969504">Vui lòng nhập địa chỉ email.</translation>
+-<translation id="709897737746224366">Vui lòng khớp với định dạng được yêu cầu.</translation>
++<translation id="1171774979989969504">Vui lòng nhập một địa chỉ email</translation>
++<translation id="709897737746224366">Vui lòng cung cấp đúng định dạng được yêu cầu.</translation>
+ <translation id="5048533449481078685">đánh dấu danh sách</translation>
+ <translation id="372362261556059955">Cần trình cắm bổ sung</translation>
+ <translation id="4202807286478387388">chuyển</translation>
+@@ -18,46 +18,47 @@
+ <translation id="370665806235115550">Đang tải...</translation>
+ <translation id="6845533974506654842">nhấn</translation>
+ <translation id="8244226242650769279">bản đồ hình ảnh</translation>
+-<translation id="310520048233152454">Vui lòng nhập URL.</translation>
++<translation id="310520048233152454">Vui lòng nhập địa chỉ URL.</translation>
+ <translation id="2548326553472216322">Không có tìm kiếm nào gần đây</translation>
+ <translation id="7263440858009898357">Vui lòng chọn một mục trong danh sách.</translation>
+ <translation id="5164977714490026579">Giá trị phải lớn hơn hoặc bằng <ph name="MINIMUM"/>.</translation>
+ <translation id="5944544982112848342">2048 (Cấp độ cao)</translation>
+ <translation id="3040011195152428237">liên kết</translation>
+ <translation id="2745343197843472802">Tải Trình cắm</translation>
+-<translation id="8451268428117625855">Vui lòng chọn một tệp.</translation>
++<translation id="8451268428117625855">Vui lòng chọn một tập tin.</translation>
+ <translation id="5776402066334188252">Vui lòng xác nhận rằng bạn muốn cài đặt trình cắm này. Bạn chỉ nên cài đặt trình cắm mà bạn tin tưởng.</translation>
+ <translation id="3018094406922859308">Đang tải xuống trình cắm...</translation>
+ <translation id="7364796246159120393">Chọn Tệp tin</translation>
+-<translation id="2761667185364618470">Vui lòng chọn hộp kiểm này nếu bạn muốn tiếp tục.</translation>
++<translation id="2761667185364618470">Vui lòng chọn ô này nếu bạn muốn tiếp tục.</translation>
+ <translation id="8964020114565522021">Kéo tệp tại đây</translation>
+ <translation id="5129723458012748440">Plugin <ph name="PLUGIN"/> chưa được cài đặt.</translation>
+ <translation id="838869780401515933">chọn</translation>
+ <translation id="2846343701378493991">1024 (Loại Trung bình)</translation>
+ <translation id="5476505524087279545">bỏ chọn</translation>
+ <translation id="3789841737615482174">Cài đặt</translation>
+-<translation id="2507943997699731163">Vui lòng điền vào trường này.</translation>
++<translation id="2507943997699731163">Vui lòng điền vào ô này.</translation>
+ <translation id="5253117816378681419">Vui lòng xác nhận rằng bạn muốn cài đặt trình cắm <ph name="PLUGIN"/>. Bạn chỉ nên cài đặt những trình cắm mà bạn tin tưởng.</translation>
+ <translation id="6663448176199120256">Tìm kiếm Gần đây</translation>
+ <translation id="7335060848622232389">Cài đặt plug-in đã bị vô hiệu.</translation>
+ <translation id="2597378329261239068">Tài liệu này được bảo vệ bằng mật khẩu. Vui lòng nhập mật khẩu.</translation>
+-<translation id="5466621249238537318">Vui lòng chọn một hoặc nhiều tệp.</translation>
+-<translation id="8750798805984357768">Vui lòng chọn một trong các tùy chọn sau.</translation>
++<translation id="5466621249238537318">Vui lòng chọn một hoặc nhiều tập tin.</translation>
++<translation id="8750798805984357768">Vui lòng chọn một trong những tùy chọn này.</translation>
+ <translation id="7740050170769002709">Nội dung HTML</translation>
+-<translation id="2226276347425096477">Hãy cắt ngắn văn bản này thành <ph name="MAX_CHARACTERS"/> ký tự hoặc ít hơn (bạn hiện đang sử dụng <ph name="CURRENT_LENGTH"/> ký tự).</translation>
++<translation id="2226276347425096477">Vui lòng cắt giảm đoạn văn này xuống còn <ph name="MAX_CHARACTERS"/> ký tự hoặc ít hơn (bạn đang sử dụng <ph name="CURRENT_LENGTH"/> ký tự).</translation>
+ <translation id="1639239467298939599">Đang tải</translation>
+-<translation id="2908441821576996758">Vui lòng nhập danh sách địa chỉ email được phân cách bằng dấu phẩy.</translation>
++<translation id="2908441821576996758">Vui lòng nhập dấu phẩy để ngăn cách giữa các địa chỉ email.</translation>
+ <translation id="5939518447894949180">Đặt lại</translation>
+ <translation id="835897206747267392">Giá trị không hợp lệ.</translation>
+ <translation id="3851140433852960970">Không có plugin nào để hiển thị nội dung này.</translation>
+ <translation id="1842960171412779397">chọn</translation>
+-<translation id="3450233048674729344">Giá trị phải nhỏ hơn hoặc bằng <ph name="MAXIMUM"/>.</translation>
++<translation id="3450233048674729344">Giá trị phải ít hơn hoặc bằng <ph name="MAXIMUM"/>.</translation>
+ <translation id="9198010615634362518">Plugin được yêu cầu chưa được cài đặt.</translation>
+ <translation id="7638452146404718955">Nhấp vào đây để tải xuống trình cắm</translation>
+ <translation id="6119846243427417423">kích hoạt</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> tệp</translation>
+-<translation id="3934680773876859118">Không thể tải tài liệu PDF</translation>
++<translation id="3934680773876859118">Không thể nạp tài liệu PDF.</translation>
+ <translation id="8597182159515967513">đầu đề</translation>
+ <translation id="2653659639078652383">Gửi</translation>
+ <translation id="8475551193147984329">Cần trình cắm <ph name="PLUGIN"/></translation>
++<translation id="3358049263351449631">Đây là mục lục có thể tìm kiếm. Hãy nhập từ khóa để tìm kiếm: '''</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_zh-CN.xtb new/webkit/glue/resources/webkit_strings_zh-CN.xtb
+--- old/webkit/glue/resources/webkit_strings_zh-CN.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_zh-CN.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -1,58 +1,64 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="zh-CN">
+-<translation id="4519964825805946997">无法从 <ph name="URL"/> 安装插件</translation>
+-<translation id="9186171386827445984">正在载入文档：已载入 <ph name="PAGE_NUMBER"/> 页，共 <ph name="NUMBER_OF_PAGES"/> 页...</translation>
++<translation id="4519964825805946997">从 <ph name="URL"/> 安装插件失败</translation>
++<translation id="9186171386827445984">正在载入文档: <ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> 页...</translation>
+ <translation id="1235745349614807883">清除最近的搜索</translation>
+-<translation id="1171774979989969504">请输入电子邮件地址。</translation>
+-<translation id="709897737746224366">请与所请求的格式保持一致。</translation>
++<translation id="1171774979989969504">请输入一个电子邮件地址。</translation>
++<translation id="709897737746224366">请确保符合所要求的格式。</translation>
+ <translation id="5048533449481078685">列表标记</translation>
+ <translation id="372362261556059955">需要其他插件</translation>
+-<translation id="4202807286478387388">略过</translation>
++<translation id="4202807286478387388">跳转</translation>
+ <translation id="4611115858363067980"><ph name="FILENAME"/><ph name="WIDTH"/>×<ph name="HEIGHT"/></translation>
+ <translation id="7658239707568436148">取消</translation>
+ <translation id="795667975304826397">未选择文件</translation>
+ <translation id="1416462845279468967">插件安装失败</translation>
+ <translation id="8141602879876242471">这是一个可搜索的索引。请输入搜索关键字：</translation>
+-<translation id="5650795167354946011">安装插件后，点击此处可刷新</translation>
++<translation id="5650795167354946011">安装插件后请点击此处刷新</translation>
+ <translation id="370665806235115550">正在载入...</translation>
+-<translation id="6845533974506654842">按</translation>
+-<translation id="8244226242650769279">图片映射</translation>
+-<translation id="310520048233152454">请输入网址。</translation>
++<translation id="6845533974506654842">按下</translation>
++<translation id="8244226242650769279">图像映射</translation>
++<translation id="310520048233152454">请输入一个 URL。</translation>
+ <translation id="2548326553472216322">最近未执行搜索</translation>
+ <translation id="7263440858009898357">请在列表中选择一项。</translation>
+-<translation id="5164977714490026579">值必须大于或等于 <ph name="MINIMUM"/>。</translation>
++<translation id="5164977714490026579">数值必须大于或等于 <ph name="MINIMUM"/>。</translation>
+ <translation id="5944544982112848342">2048（高强度）</translation>
+ <translation id="3040011195152428237">链接</translation>
+ <translation id="2745343197843472802">获取插件</translation>
+ <translation id="8451268428117625855">请选择一个文件。</translation>
+-<translation id="5776402066334188252">请确认您要安装此插件。您应该只安装自己信任的插件。</translation>
++<translation id="5776402066334188252">请确认您打算安装此插件。您应该只安装自己信任的插件。</translation>
+ <translation id="3018094406922859308">正在下载插件...</translation>
+ <translation id="7364796246159120393">选择文件</translation>
+-<translation id="2761667185364618470">如果要继续，请选中此框。</translation>
++<translation id="2761667185364618470">若要继续，请选中本复选框。</translation>
+ <translation id="8964020114565522021">将文件拖到此处</translation>
+ <translation id="838869780401515933">选中</translation>
+ <translation id="2846343701378493991">1024（中等强度）</translation>
+ <translation id="5476505524087279545">取消选中</translation>
+ <translation id="3789841737615482174">安装</translation>
+-<translation id="2507943997699731163">请填写此字段。</translation>
+-<translation id="5253117816378681419">请确认您要安装 <ph name="PLUGIN"/> 插件。您应该只安装自己信任的插件。</translation>
++<translation id="2507943997699731163">请填写该字段。</translation>
++<translation id="5253117816378681419">请确认您打算安装 <ph name="PLUGIN"/> 插件。您应该只安装自己信任的插件。</translation>
+ <translation id="6663448176199120256">近期搜索</translation>
+-<translation id="2597378329261239068">本文档设置了密码保护，请输入密码。</translation>
++<translation id="2597378329261239068">本文档受密码保护，请输入密码。</translation>
+ <translation id="5466621249238537318">请选择一个或多个文件。</translation>
+-<translation id="8750798805984357768">请从这些选项中选择一个。</translation>
++<translation id="8750798805984357768">请在这些选项中选择一项。</translation>
+ <translation id="7740050170769002709">HTML 内容</translation>
+-<translation id="2226276347425096477">请将该文本减少为 <ph name="MAX_CHARACTERS"/> 个字符或更少（您当前使用了 <ph name="CURRENT_LENGTH"/> 个字符）。</translation>
+-<translation id="2908441821576996758">请输入用逗号分隔的电子邮件地址的列表。</translation>
++<translation id="2226276347425096477">请将该文本缩短至 <ph name="MAX_CHARACTERS"/> 字符或更短（您当前已使用 <ph name="CURRENT_LENGTH"/> 字符）。</translation>
++<translation id="2908441821576996758">请输入逗号分隔的电子邮件地址列表。</translation>
+ <translation id="5939518447894949180">重置</translation>
+-<translation id="835897206747267392">值无效。</translation>
+-<translation id="1842960171412779397">选中</translation>
+-<translation id="3450233048674729344">值必须小于或等于 <ph name="MAXIMUM"/>。</translation>
+-<translation id="7638452146404718955">点击此处可下载插件</translation>
++<translation id="835897206747267392">无效值。</translation>
++<translation id="1842960171412779397">选择</translation>
++<translation id="3450233048674729344">数值必须小于或等于 <ph name="MAXIMUM"/>。</translation>
++<translation id="7638452146404718955">点击此处下载插件</translation>
+ <translation id="6119846243427417423">激活</translation>
+ <translation id="8444882422881193423"><ph name="NUMBER_OF_FILES"/> 个文件</translation>
+-<translation id="3934680773876859118">无法载入 PDF 文档</translation>
++<translation id="3934680773876859118">载入 PDF 文档失败</translation>
+ <translation id="8597182159515967513">标题</translation>
+ <translation id="2653659639078652383">提交</translation>
+ <translation id="8475551193147984329">需要 <ph name="PLUGIN"/> 插件</translation>
++<translation id="1639239467298939599">正在加载</translation>
++<translation id="3358049263351449631">这是个可搜索的索引。输入搜索关键词：'''</translation>
++<translation id="3851140433852960970">没有可用于显示该内容的插件。</translation>
++<translation id="5129723458012748440"><ph name="PLUGIN"/> 插件未安装。</translation>
++<translation id="7335060848622232389">插件安装已被禁用。</translation>
++<translation id="9198010615634362518">未能安装所需插件。</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/webkit/glue/resources/webkit_strings_zh-TW.xtb new/webkit/glue/resources/webkit_strings_zh-TW.xtb
+--- old/webkit/glue/resources/webkit_strings_zh-TW.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/webkit/glue/resources/webkit_strings_zh-TW.xtb	2011-03-18 13:24:37.000000000 +0000
+@@ -2,9 +2,9 @@
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="zh-TW">
+ <translation id="4519964825805946997">無法從 <ph name="URL"/> 安裝外掛程式</translation>
+-<translation id="9186171386827445984">正在載入文件：第 <ph name="PAGE_NUMBER"/> 頁，共 <ph name="NUMBER_OF_PAGES"/> 頁...</translation>
++<translation id="9186171386827445984">正在載入文件：<ph name="PAGE_NUMBER"/>/<ph name="NUMBER_OF_PAGES"/> 頁...</translation>
+ <translation id="1235745349614807883">清除最近的搜尋記錄</translation>
+-<translation id="1171774979989969504">請輸入電子郵件地址。</translation>
++<translation id="1171774979989969504">請輸入電子郵件位址。</translation>
+ <translation id="709897737746224366">請符合要求的格式。</translation>
+ <translation id="5048533449481078685">清單標記</translation>
+ <translation id="372362261556059955">需要其他外掛程式</translation>
+@@ -18,14 +18,14 @@
+ <translation id="370665806235115550">載入中...</translation>
+ <translation id="6845533974506654842">按下</translation>
+ <translation id="8244226242650769279">影像地圖</translation>
+-<translation id="310520048233152454">請輸入網址。</translation>
++<translation id="310520048233152454">請輸入 URL。</translation>
+ <translation id="2548326553472216322">沒有近期的搜尋</translation>
+ <translation id="7263440858009898357">請選取一個清單中的項目。</translation>
+ <translation id="5164977714490026579">值必須大於或等於 <ph name="MINIMUM"/>。</translation>
+ <translation id="5944544982112848342">2048 (高級)</translation>
+ <translation id="3040011195152428237">連結</translation>
+ <translation id="2745343197843472802">取得外掛程式</translation>
+-<translation id="8451268428117625855">請選取檔案。</translation>
++<translation id="8451268428117625855">請選取一份檔案。</translation>
+ <translation id="5776402066334188252">請確認您要安裝此外掛程式，建議您僅安裝您所信任的外掛程式。</translation>
+ <translation id="3018094406922859308">正在下載外掛程式...</translation>
+ <translation id="7364796246159120393">選擇檔案</translation>
+@@ -39,7 +39,7 @@
+ <translation id="5253117816378681419">請確認您要安裝 <ph name="PLUGIN"/> 外掛程式，建議您僅安裝您所信任的外掛程式。</translation>
+ <translation id="6663448176199120256">最近的搜尋</translation>
+ <translation id="2597378329261239068">此文件受到密碼保護，請輸入密碼。</translation>
+-<translation id="5466621249238537318">請選取一或多個檔案。</translation>
++<translation id="5466621249238537318">請選取一份或多份檔案。</translation>
+ <translation id="8750798805984357768">請選取其中一個選項。</translation>
+ <translation id="7740050170769002709">HTML 內容</translation>
+ <translation id="2226276347425096477">請將這段文字刪減至 <ph name="MAX_CHARACTERS"/> 個字元以下 (目前的字元數為 <ph name="CURRENT_LENGTH"/> 個)。</translation>

@@ -1,0 +1,11 @@
+*.pyc
+/git_cl_repo
+/tests/pymox
+/tests/_trial
+/python
+/python.bat
+/python_bin
+/svn
+/svn.bat
+/svn_bin
+/svnversion.bat

@@ -1,0 +1,243 @@
+# Copyright (c) 2010 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+#
+# This file lists the pyauto tests that run as a part of the functional test
+# suite.
+#
+# Tests can be enabled on a per-platform basis. Tests not listed here will
+# not be run.
+#
+# Test names can be specified in any of the following ways:
+# 1. as a module, in which case all tests in that module will be run
+#      example: 'test_basic'
+# 2. or as a test case, in which case all tess in that test case will be run
+#      example: 'test_basic.SimpleTest'
+# 3. or as an individual test
+#      example: 'test_basic.SimpleTest.testCanOpenGoogle'
+#
+# Tests beginning with '-' will be excluded.  This can be used to enforce
+# exclusions for a particular platform.
+# Names beginning with '@' will be treated as suite names and will be
+# recursively expanded.
+
+{
+  # The CONTINUOUS suite includes tests that we expect to pass on a
+  # continuous builder.
+  'CONTINUOUS': {
+    'all': [
+      'autofill',
+      # crbug.com/73439
+      '-autofill.AutoFillTest.testFilterMalformedEmailAddresses',
+      'bookmark_bar',
+      'bookmarks',
+      'browser',
+      'browsing_data',
+      'codesign',
+      'content',
+      '-content.ContentTest.testTopSitesContent',  # crbug.com/71824
+      'cookies',
+      'crash_reporter',
+      'databases',
+      # crbug.com/66714
+      '-databases.DatabasesTest.testIncognitoDBPersistentAcrossTabs',
+      'downloads',
+      # crbug.com/67233
+      '-downloads.DownloadsTest.testDownloadIncognitoAndRegular',
+      'find_in_page',
+      # Turkish I problem. crbug.com/60638
+      '-find_in_page.FindMatchTests.testLocalizationAndCaseOrder',
+      'execute_javascript',
+      'history',
+      'https',
+      'imports',
+      'infobars',
+      # crbug.com/72664
+      '-infobars.InfobarTest.testPluginCrashForMultiTabs',
+      'instant',
+      'navigation',
+      'notifications',
+      # crbug.com/66072
+      '-notifications.NotificationsTest.testNotificationOrderAfterClosingOne',
+      '-notifications.NotificationsTest.testKillNotificationProcess',
+      'ntp',
+      'omnibox',
+      '-omnibox.OmniboxTest.testHistoryResult',  # crbug.com/71715
+      # crbug.com/73078
+      '-passwords',
+      'pdf',
+      'plugins',
+      'plugins_check',
+      'popups',
+      '-popups',  # Flaky. crbug.com/70659
+      'prefs',
+      'search_engines',
+      # crbug.com/67628
+      '-search_engines.SearchEnginesTest.testTabToSearch',
+      # crbug.com/70439
+      '-search_engines.SearchEnginesTest.testAddSearchEngine',
+      '-search_engines.SearchEnginesTest.testEditSearchEngine',
+      '-search_engines.SearchEnginesTest.testSearchEngineSpecialChars',
+      'shortcuts',
+      'special_tabs',
+      # crbug.com/67851
+      '-special_tabs.SpecialTabsTest.testAboutDNSTab',
+      # 'sync',  crbug.com/60970
+      'test_basic',
+      'themes',
+    ],
+
+    'win': [
+      # testBookmarkBarVisible fails on windows. crbug.com/42823
+      '-bookmark_bar.BookmarkBarTest.testBookmarkBarVisible',
+      # testPopupSharesProcess fails on Windows Vista. crbug.com/70659
+      '-browser.BrowserTest.testPopupSharesProcess',
+      # crbug.com/64664
+      '-databases.DatabasesTest.testReloadActiveTab',
+      '-databases.DatabasesTest.testModificationsPersistAfterRendererCrash',
+      # Some download test fails on win official builder, only thru buildbot
+      # when downloading the small zip file.
+      # crbug.com/50481, crbug.com/54942
+      '-downloads.DownloadsTest.testZip',
+      '-downloads.DownloadsTest.testRemoveDownload',
+      '-prefs.PrefsTest.testDownloadDirPref',
+      # crbug.com/70694
+      '-passwords.PasswordTest.testInfoBarDisappearByReload',
+      '-passwords.PasswordTest.testNeverSavePasswords',
+      # crbug.com/67588
+      '-passwords.PasswordTest.testSavedPasswordInTabsAndWindows',
+    ],
+
+    'mac': [
+      # Keychain popups make password & autofill tests difficult.
+      # crbug.com/49378
+      '-passwords',
+      '-autofill',
+      # codesign tests should run *after* signing. crbug.com/50481
+      '-codesign',
+      '-content.ContentTest.testThreeWindows',  # crbug.com/47457
+      '-instant.InstantTest.testInstantNavigation',  # crbug.com/69090
+      '-crash_reporter.CrashReporterTest.testRendererCrash',  # crbug.com/69464
+      # crbug.com/70437
+      '-omnibox.OmniboxTest.testHistoryResult',
+      # crbug.com/71158
+      '-databases.DatabasesTest.testModificationsPersistAfterRendererCrash',
+    ],
+
+    'linux': [  # linux != chromeos
+      '-browser.BrowserTest.testWindowResize',  # crbug.com/44963
+      '-browser.BrowserTest.testFlashLoadsAfterKill',  # crbug.com/63039
+      '-content.ContentTest.testThreeWindows',  # crbug.com/47457
+      # crbug.com/64664
+      '-databases.DatabasesTest.testReloadActiveTab',
+      '-databases.DatabasesTest.testModificationsPersistAfterRendererCrash',
+      # crbug.com/70694
+      '-passwords.PasswordTest.testInfoBarDisappearByReload',
+      '-passwords.PasswordTest.testNeverSavePasswords',
+    ],
+
+    # ChromeOS is linux, but note that this section does not include the
+    # entries in the linux section above.
+    # These tests use the named automation interface to control the
+    # primary chrome on ChromeOS.
+    'chromeos': [
+      'chromeos_basic',
+
+      # crbug.com/42823
+      '-bookmark_bar.BookmarkBarTest.testBookmarkBarVisible',
+      # you cannot resize browser window on chromeos
+      '-browser.BrowserTest.testWindowResize',
+      # crosbug.com/9499
+      '-crash_reporter.CrashReporterTest.testRendererCrash',
+      # crbug.com/64664
+      '-databases.DatabasesTest.testReloadActiveTab',
+      '-databases.DatabasesTest.testModificationsPersistAfterRendererCrash',
+      # Need internal data dirs in autotest package. crosbug.com/6855
+      '-find_in_page.FindMatchTests.testSearchInPDF',
+      # Importer tests are invalid on chromeos since chrome is the only browser
+      '-imports',
+      '-infobars.InfobarTest.testPluginCrashInfobar',
+      # crbug.com/70694
+      '-passwords.PasswordTest.testInfoBarDisappearByReload',
+      '-passwords.PasswordTest.testNeverSavePasswords',
+      # MakeSearchEngineDefault() automation broken
+      '-search_engines.SearchEnginesTest.testDefaultSearchEngines',
+
+      # Needs internal data files.  crosbug.com/6855
+      '-browser.BrowserTest.testCanLoadFlash',
+      '-browser.BrowserTest.testFlashLoadsAfterKill',
+      '-browser.BrowserTest.testSingleFlashPluginProcess',
+      '-ntp.NTPTest.testGetAppsWhenInstallApp',
+      '-ntp.NTPTest.testGetAppsWhenInstallNonApps',
+      '-pdf',
+      '-plugins',
+
+      # Local http server not working on chromeos.  crosbug.com/12641
+      '-test_basic.SimpleTest.testHTTP',
+
+      # Deal with i18n chars.  crosbug.com/12639
+      '-downloads.DownloadsTest.testCrazyFilenames',
+      '-omnibox.OmniboxTest.testCrazyFilenames',
+
+      # GetBrowserInfo() not working on chromeos.  crosbug.com/12642
+      '-browser',
+      '-codesign',
+      '-infobars',
+      '-notifications',
+      '-prefs.PrefsTest.testGeolocationPref',
+
+      # Download shelf visibility automation broken on ChromeOS.
+      # crosbug.com/12644
+      '-downloads.DownloadsTest.testZip',
+      '-downloads.DownloadsTest.testZipInIncognito',
+
+      # Setting theme automation broken.  crosbug.com/12655
+      '-downloads.DownloadsTest.testDownloadTheme',
+      '-themes',
+
+      # Session restore not working with PyAuto.  crosbug.com/12648
+      '-prefs.PrefsTest.testNavigationStateOnSessionRestore',
+      '-prefs.PrefsTest.testSessionRestoreURLs',
+      '-prefs.PrefsTest.testSessionRestore',
+
+      # Exclusions that have not been narrowed to other categories yet.
+      # crosbug.com/12653
+      '-autofill',
+      '-bookmark_bar',
+      '-crash_reporter',
+      '-instant',
+      '-omnibox.OmniboxTest.testContentHistory',
+      '-plugins_check',
+    ],
+  },
+
+  # The FULL suite includes CONTINUOUS, and more.
+  'FULL': {
+    'all': [
+      '@CONTINUOUS',
+      'translate',
+      # This test fails due to crbug.com/35485
+      '-translate.TranslateTest.testBarNotVisibleOnSSLErrorPage',
+      # This test fails due to crbug.com/50706
+      '-translate.TranslateTest.testToggleTranslateOption',
+      # crbug.com/70280
+      '-translate.TranslateTest.testSeveralLanguages',
+    ],
+
+    'win': [
+    ],
+
+    'mac': [
+    ],
+
+    'linux': [
+    ],
+
+    'chromeos': [
+      # Exclusions that have not been narrowed to other categories yet.
+      # crosbug.com/12653
+      '-translate',
+    ],
+  },
+
+}

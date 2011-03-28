@@ -1,0 +1,85 @@
+<!--
+Copyright (c) 2011 The Chromium Authors. All rights reserved.
+Use of this source code is governed by a BSD-style license that can be
+found in the LICENSE file.
+-->
+
+<html>
+  <head>
+    <script type="text/javascript" src="static_files/base.js"></script>
+    <script type="text/javascript" src="static_files/client.js"></script>
+    <link rel="stylesheet" type="text/css" href="static_files/main.css" />
+    <title>Remote Access Host List</title>
+  </head>
+  <body onload="init();">
+    <div class="header">
+    </div>
+    <div id="main-content">
+      <div id="navbar-container">
+        <h1 id="settings-title">Chromoting</h1>
+        <ul id="navbar">
+        </ul>
+      </div>
+      <div id="mainview">
+        <div id="mainview-content">
+          <div class="page">
+            <section>
+              <h3>Host List</h3>
+                <div class="hostlist">
+                  <list id="hostlist-div">
+                    <p class='message'>Initializing...</p>
+                  </list>
+                  <div id="host-options">
+                    <button class="float-left" onclick="populateHostList();">
+                      Reload Host List
+                    </button>
+                    <span class="float-right">
+                      <input type=checkbox id="show_offline"
+                          onClick="updateShowOfflineHosts(this);" />
+                      Show offline hosts
+                    </span>
+                  </div>
+                </div>
+            </section>
+            <section>
+              <h3>Chromoting Token</h3>
+              <div>
+{% ifnotequal chromoting_token None %}
+                <div>Token Authenticated</div>
+                <button id="subitem"
+                   onclick="window.location='/auth/clear_chromoting_token'">
+                  Clear Token
+                </button>
+{% else %}
+                <div class="error-msg">Token Not Authenticated</div>
+                <button id="subitem"
+                   onclick="window.location='/auth/chromoting_auth'">
+                  Authenticate Token
+                </button>
+{% endifnotequal %}
+              </div>
+            </section>
+            <section>
+              <h3>Xmpp Token</h3>
+              <div>
+{% ifnotequal xmpp_token None %}
+                <div>Token Authenticated</div>
+                <button id="subitem"
+                   onclick="window.location='/auth/clear_xmpp_token'">
+                   Clear Token
+                </button>
+{% else %}
+                <div class="error-msg">Token Not Authenticated</div>
+                <button id="subitem"
+                   onclick="window.location='/auth/xmpp_auth'">
+                  Authenticate Token
+                </button>
+{% endifnotequal %}
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

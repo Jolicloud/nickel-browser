@@ -1,0 +1,174 @@
+# This file contains known patterns of crash signatures. One pattern per line.
+#
+# A crash signature is the concatenation of the top N functions, delimited by
+# '___', in chrome.dll on the crash stack. All characters are lower case.
+#
+# We use crash signature patterns as our list of known crashes. A crash
+# signature pattern is a string that can be used to identify a known crash. We
+# use the notion of patterns because crashes with the same root cause can often
+# differ somewhat in their crash stacks. A pattern is intended to be a
+# generalized, yet still identifying, form of a particular crash. Usually a
+# pattern will contain part of a crash signature, for example a prefix, but it
+# can be more sophisticated, such as a regular expression. See below for more
+# details.
+#
+# The format of known crashes in this file is as follows:
+#   TYPE : PATTERN
+#
+# PATTERN: A crash signature pattern is a potentially identifying string that
+#          can be used to match a crash signature.
+# TYPE: The type of the pattern, indicates how the pattern should be matched
+#       against crash signatures. Possible options are:
+#           PREFIX: Match any signature beginning with this pattern.
+#           SUBSTRING: Match any signature containing this pattern.
+#           REGEX: Use this pattern as a regex to match against signatures.
+#       If the type is not listed, it defaults to PREFIX.
+
+# about:crash is a test page.
+PREFIX : abouthandler::aboutcrash
+
+# Any crash due to out of memory is ignored.
+PREFIX : `anonymous namespace'::onnomemory
+
+# It is too broad to exclude all purecall related crashes. Thus here we filter
+# any purecall crash immediately after runtask.
+SUBSTRING : purecall___messageloop::runtask
+REGEX : purecall___[^_]*___messageloop::runtask
+REGEX : `anonymous namespace'::purecall$
+
+# Ditto for InvalidParameter.  Unfortunately, we see a crash where that call
+# is the only one on the stack, so ignore that instance
+REGEX : `anonymous namespace'::invalidparameter$
+
+# 47207
+PREFIX : messageloop::runtask___messageloop::deferorrunpendingtask___messageloop::dodelayedwork___base::messagepumpforio::dorunloop___base::messagepumpwin::run___messageloop::runinternal___messageloop::run___base::thread::run___base::thread::threadmain___`anonymous namespace'::threadfunc
+PREFIX : messageloop::runtask___messageloop::dodelayedwork___base::messagepumpforio::dorunloop___base::messagepumpwin::run___messageloop::runinternal___messageloop::run___base::thread::run___base::thread::threadmain___`anonymous namespace'::threadfunc
+
+# 48712
+PREFIX : npapi::plugininstance::npp_newstream
+
+# 49271
+PREFIX : messageloop::posttask_helper___messageloop::posttask___disk_cache::inflightio::oniocomplete___disk_cache::backendio::executebackendoperation___messageloop::runtask___messageloop::dowork___base::messagepumpforio::dorunloop___base::messagepumpwin::run___messageloop::runinternal___messageloop::run___base::thread::run___base::thread::threadmain___`anonymous namespace'::threadfunc
+
+# 49384
+PREFIX : anonymous namespace'::cachecreator::docallback___`anonymous namespace'::cachecreator::oniocomplete___disk_cache::inflightbackendio::onoperationcomplete___disk_cache::inflightio::invokecallback___disk_cache::backgroundio::oniosignalled___messageloop::runtask___messageloop::dowork___base::messagepumpforio::dorunloop___base::messagepumpwin::run___messageloop::runinternal___messageloop::run___base::thread::run___base::thread::threadmain___`anonymous namespace'::threadfunc
+
+# 49409
+PREFIX : std::basic_string<char,std::char_traits<char>,std::allocator<char> >::assign___fieldtriallist::statestostring___browserrenderprocesshost::appendrenderercommandline___browserrenderprocesshost::init___renderviewhost::createrenderview___tabcontents::createrenderviewforrendermanager___renderviewhostmanager::initrenderview___renderviewhostmanager::creatependingrenderview___renderviewhostmanager::updaterendererstatefornavigate___renderviewhostmanager::navigate___tabcontents::navigatetopendingentry___navigationcontroller::navigatetopendingentry___navigationcontroller::loadentry___navigationcontroller::loadurl___browser::openurlatindex___browser::openurlfromtab___browser::openurl___automationprovider::navigatetourlblockuntilnavigationscomplete___automationprovider::navigatetourl___ipc
+
+# 39356
+PREFIX : renderwidgethost::onmsgupdaterect___ipc::messagewithtuple<tuple1<viewhostmsg_updaterect_params> >::dispatch<renderwidgethost,void (__thiscall renderwidgethost::*)(viewhostmsg_updaterect_params const &)>___renderwidgethost::onmessagereceived___renderviewhost::onmessagereceived___browserrenderprocesshost::onmessagereceived___renderwidgethelper::updatemsgproxy::run___messageloop::runtask___messageloop::dowork___base::messagepumpforui::dorunloop___base::messagepumpwin::runwithdispatcher___messageloop::runinternal___messageloopforui::run___`anonymous namespace'::runuimessageloop___browsermain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 52346
+PREFIX : tabcontentsview::deactivate___renderwidgethost::onmessagereceived___renderviewhost::onmessagereceived___browserrenderprocesshost::onmessagereceived
+
+# 53076
+PREFIX : tabcontentsview::activate___renderwidgethost::onmessagereceived___renderviewhost::onmessagereceived___browserrenderprocesshost::onmessagereceived
+
+# 54115
+PREFIX : ipc::sendtask::run___messageloop::runtask___messageloop::dowork___base::messagepumpforio::dorunloop___base::messagepumpwin::run___messageloop::runinternal___messageloop::run___base::thread::run___base::thread::threadmain___`anonymous namespace'::threadfunc
+
+# 56749
+PREFIX : executebrowsercommandobserver::observe___notificationservice::notify
+PREFIX : `anonymous namespace'::purecall____purecall___executebrowsercommandobserver::observe___notificationservice::notify
+PREFIX : `anonymous namespace'::invalidparameter____purecall___executebrowsercommandobserver::observe___notificationservice::notify
+
+# 56750
+PREFIX : browserclosednotificationobserver::observe___notificationservice::notify
+PREFIX : `anonymous namespace'::purecall____purecall___browserclosednotificationobserver::observe___notificationservice::notify
+PREFIX : `anonymous namespace'::invalidparameter____purecall___browserclosednotificationobserver::observe___notificationservice::notify
+
+# 57041
+PREFIX : `anonymous namespace'::purecall____purecall___`anonymous namespace'::do_malloc___base::internal::threadlocalplatform::getvaluefromslot___notificationservice::currentPREFIX: `anonymous namespace'::invalidparameter____purecall___`anonymous namespace'::do_malloc___base::internal::threadlocalplatform::getvaluefromslot___notificationservice::current
+PREFIX : `anonymous namespace'::purecall____purecall___`anonymous namespace'::do_free_with_callback___notificationservice::notify___browserlist::removebrowser___browser::~browser
+PREFIX : `anonymous namespace'::invalidparameter____purecall___`anonymous namespace'::do_free_with_callback___notificationservice::notify___browserlist::removebrowser___browser::~browser
+PREFIX : `anonymous namespace'::invalidparameter____purecall___notificationservice::notify___browserlist::removebrowser___browser::~browser___browse
+PREFIX : `anonymous namespace'::invalidparameter____purecall___notificationservice::current___views::widgetwin::onwndproc___gfx::windowimpl::wndproc___renderviewhost::onmessagereceived
+
+# 57185
+PREFIX : `anonymous namespace'::purecall____purecall___lockimpl::unlock___`anonymous namespace'::rolloverprotectednow___lockimpl::lock___conditionvariable::signal___watchdog::armsometimedeltaago___`anonymous namespace'::jankobserverhelper::startprocessingtimers___`anonymous namespace'::uijankobserver::willprocesstask
+PREFIX : `anonymous namespace'::invalidparameter____purecall___lockimpl::unlock___`anonymous namespace'::rolloverprotectednow___lockimpl::lock___conditionvariable::signal___watchdog::armsometimedeltaago___`anonymous namespace'::jankobserverhelper::startprocessingtimers___`anonymous namespace'::uijankobserver::willprocesstask
+
+# 57368
+PREFIX : appmodaldialog::closemodaldialog___javascriptappmodaldialog::observe___notificationservice::notify___tabcontents::~tabcontents
+
+# 57157
+PREFIX : browserview::gettoolbarview___webcore::videolayerchromium::~videolayerchromium
+
+# 58097
+PREFIX : `anonymous namespace'::purecall____purecall___notificationservice::notify___browserlist::removebrowser___browser::~browser___browser::`scalar deleting destructor'___browserview::~browserview
+
+# 59329
+# (SUBSTRING rather than PREFIX since sometimes dies in purecall).
+SUBSTRING : pluginprocesshost::replytorenderer___pluginprocesshost::onchannelcreated___ipc::messagewithtuple<tuple1<ipc::channelhandle> >::dispatch<pluginprocesshost,void (__thiscall pluginprocesshost::*)(ipc::channelhandle const &)>
+
+# 59345
+PREFIX : windowdragresponsetask::run___messageloop::runtask
+
+# 31936
+PREFIX : webcore::uniscribehelpertextrun::uniscribehelpertextrun___webcore::font::floatwidthforcomplextext___webcore::font::floatwidth___webcore::renderimage::setimagesizeforalttext
+
+# 61593
+PREFIX : webcore::font::glyphdataforcharacter___webcore::widthiterator::advance___webcore::font::floatwidthforsimpletext___webcore::font::floatwidth___webcore::renderimage::setimagesizeforalttext___webcore::renderimage::imagechanged
+
+# 61800
+PREFIX : icu_4_2::unicodestring::toutf8___normalizetext___detectlanguageofunicodetext___determinetextlanguage___renderview::capturepageinfo
+
+# 63009
+SUBSTRING : chromemain___relaunchchromebrowserwithnewcommandlineifneeded___delayedlowertoken___delayedlowertoken___relaunchchromebrowserwithnewcommandlineifneeded___delayedlowertoken___delayedlowertoken___delayedlowertoken___delayedlowertoken
+
+# 63644
+PREFIX : resourcemessagefilter::ongotplugininfo
+
+# 63659
+PREFIX : hungwindowdetector::checkchildwindow___hungwindowdetector::childwndenumproc___hungwindowdetector::ontick___workerthreadticker::timertask::run
+
+# 66741
+# (SUBSTRING rather than PREFIX to catch known variants of this issue)
+SUBSTRING : url_canon::canonicalizeipaddress___url_canon::`anonymous namespace'::dohost<wchar_t,wchar_t>___url_canon::canonicalizehost___url_canon::`anonymous namespace'::docanonicalizestandardurl<wchar_t,wchar_t>___url_canon::canonicalizestandardurl___url_util::`anonymous namespace'::docanonicalize<wchar_t>___url_util::`anonymous namespace'::doresolverelative<wchar_t>
+
+# 66795
+PREFIX : webkit_glue::resourcefetcher::didfail___webkit_glue::weburlloaderimpl::context::oncompletedrequest___resourcedispatcher::onrequestcomplete___ipc::messagewithtuple<tuple4<int,urlrequeststatus,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,base::time> >::dispatch<resourcedispatcher,void (__thiscall resourcedispatcher::*)(int,urlrequeststatus const &,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &,base::time const &)>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<selectfiledialogimpl,void (__thiscall selectfiledialogimpl::*)(selectfiledialogimpl::executeselectparams const &),tuple1<selectfiledialogimpl::executeselectparams> >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain
+PREFIX : webkit_glue::resourcefetcher::didfail___webkit_glue::weburlloaderimpl::context::oncompletedrequest___resourcedispatcher::onrequestcomplete___ipc::messagewithtuple<tuple4<int,urlrequeststatus,std::basic_string<char,std::char_traits<char>,std::allocator<char> >,base::time> >::dispatch<resourcedispatcher,resourcedispatcher,void (__thiscall resourcedispatcher::*)(int,urlrequeststatus const &,std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &,base::time const &)>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<profilewriter,void (__thiscall profilewriter::*)(gurl const &),tuple1<gurl> >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain
+
+# 68516
+REGEX : tcmalloc.+webcore.+
+REGEX : `anonymous namespace'::do_free_with_callback.+webcore.+
+PREFIX : webcore::cssproperty::cssproperty___webcore::cssmutablestyledeclaration::cssmutablestyledeclaration___webcore::cssparser::createstylerule
+PREFIX : webcore::cssstyleselector::applyproperty___webcore::cssstyleselector::applydeclarations
+PREFIX : webcore::cssstylesheet::isloading___webcore::cssstylesheet::checkloaded___webcore::styleelement::createsheet___webcore::styleelement::process___webcore::svgstyleelement::childrenchanged
+PREFIX : webcore::renderlayer::stackingcontext___webcore::renderlayer::addchild___webcore::addlayers___webcore::renderobject::addlayers___webcore::renderobjectchildlist::appendchildnode
+PREFIX : webcore::renderstyle::create___webcore::cssstyleselector::styleforelement
+
+# 70031
+SUBSTRING : webcore::shadowdata::`scalar deleting destructor'___webcore::shadowdata::`scalar deleting destructor'___webcore::shadowdata::`scalar deleting destructor'___webcore::shadowdata::`scalar deleting destructor'
+
+# 72337
+PREFIX : webcore::qualifiedname::~qualifiedname___webcore::cssmappedattributedeclaration::setmappedstate___webcore::htmltableelement::addsharedcellpaddingdecl___webcore::htmltableelement::addsharedcelldecls___webcore::cssstyleselector::styleforelement___webcore::node::styleforrenderer___webcore::node::createrendererifneeded___webcore::element::attach___webcore::htmlconstructionsite::attach<webcore::element>___webcore::htmlconstructionsite::inserthtmlelement___webcore::htmltreebuilder::processstarttag___webcore::htmltreebuilder::constructtreefromatomictoken___webcore::htmltreebuilder::constructtreefromtoken___webcore::htmldocumentparser::pumptokenizer___webcore::htmldocumentparser::append___webcore::decodeddatadocumentparser::appendbytes___webcore::documentwriter::adddata___webcore::documentloader::commitdata___webkit::frameloaderclientimpl::committedload___webcore::documentloader::commitload___webcore::documentloader::receiveddata___webcore::mainresourceloader::adddata___webcore::resourceloader::didreceivedata___webcore::mainresourceloader::didreceivedata___webcore::resourceloader::didreceivedata___webcore::resourcehandleinternal::didreceivedata___webkit_glue::weburlloaderimpl::context::onreceiveddata___resourcedispatcher::onreceiveddata___ipc::messagewithtuple<tuple3<int,void *,int> >::dispatch<resourcedispatcher,resourcedispatcher,int,void *,int>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<browsingdataappcachehelper,void (__thiscall browsingdataappcachehelper::*)(gurl const &),tuple1<gurl> >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 72796
+PREFIX : webcore::timerbase::timerbase___webcore::suspendabletimer::suspendabletimer___webcore::domtimer::domtimer___webcore::domtimer::install___webcore::windowsettimeoutimpl___webcore::v8domwindow::settimeoutcallback___v8::internal::handleapicallhelper<0>___v8::internal::builtin_handleapicall___v8::internal::invoke___v8::internal::execution::call___v8::function::call___webcore::v8proxy::callfunction___webcore::scheduledaction::execute___webcore::scheduledaction::execute___webcore::domtimer::fired___webcore::threadtimers::sharedtimerfiredinternal___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 72832
+PREFIX : webcore::renderblock::marginbeforeforchild___webcore::renderblock::addoverflowfromfloats___webcore::renderblock::computeoverflow___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutpositionedobjects___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::frameview::layout___webcore::document::updatelayout___webcore::document::updatelayoutignorependingstylesheets___webcore::element::offsetwidth___webcore::elementinternal::offsetwidthattrgetter
+
+# 73575
+PREFIX: webkit::webnode::document___autofill::formmanager::resetframe___renderview::willclose___webkit::frameloaderclientimpl::dispatchwillclose___webcore::frameloader::closeolddatasources___webcore::frameloader::commitprovisionalload___webcore::documentloader::commitload___webcore::documentloader::receiveddata___webcore::mainresourceloader::adddata___webcore::resourceloader::didreceivedata___webcore::mainresourceloader::didreceivedata___webcore::resourceloader::didreceivedata___webcore::resourcehandleinternal::didreceivedata___webkit_glue::weburlloaderimpl::context::onreceiveddata___resourcedispatcher::onreceiveddata___ipc::messagewithtuple<tuple3<int,void *,int> >::dispatch<resourcedispatcher,resourcedispatcher,int,void *,int>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<spellcheckhost,void (__thiscall spellcheckhost::*)(std::basic_string<char,std::char_traits<char>,std::allocator<char> > const &),tuple1<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 74462
+PREFIX: webcore::shadowdata::shadowdata___webcore::stylerareinheriteddata::stylerareinheriteddata___webcore::dataref<webcore::stylerareinheriteddata>::access___webcore::renderstyle::clearcursorlist___webcore::cssstyleselector::applyproperty___webcore::cssstyleselector::applydeclarations<0>___webcore::cssstyleselector::styleforelement___webcore::node::styleforrenderer___webcore::node::createrendererifneeded___webcore::element::attach___webcore::htmlconstructionsite::attach<webcore::documenttype>___webcore::htmlconstructionsite::inserthtmlelement___webcore::htmlconstructionsite::insertformattingelement___webcore::htmltreebuilder::processstarttagforinbody___webcore::htmltreebuilder::processstarttag___webcore::htmltreebuilder::constructtreefromatomictoken___webcore::htmltreebuilder::constructtreefromtoken___webcore::htmldocumentparser::pumptokenizer___webcore::htmldocumentparser::append___webcore::decodeddatadocumentparser::appendbytes___webcore::documentwriter::adddata___webcore::documentloader::commitdata___webkit::frameloaderclientimpl::committedload___webcore::documentloader::commitload___webcore::documentloader::receiveddata___webcore::mainresourceloader::adddata___webcore::resourceloader::didreceivedata___webcore::mainresourceloader::didreceivedata___webcore::resourceloader::didreceivedata___webcore::resourcehandleinternal::didreceivedata___webkit_glue::weburlloaderimpl::context::onreceiveddata___resourcedispatcher::onreceiveddata___ipc::messagewithtuple<tuple3<int,void *,int> >::dispatch<resourcedispatcher,resourcedispatcher,int,void *,int>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<notifier::pushnotificationsthread,void (__thiscall notifier::pushnotificationsthread::*)(std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > const &),tuple1<std::vector<std::basic_string<char,std::char_traits<char>,std::allocator<char> >,std::allocator<std::basic_string<char,std::char_traits<char>,std::allocator<char> > > > > >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 74545
+PREFIX: webcore::containernode::containernode___webcore::htmlformcontrolelement::htmlformcontrolelement___webcore::htmlformcontrolelementwithstate::htmlformcontrolelementwithstate___webcore::htmltextformcontrolelement::htmltextformcontrolelement___webcore::htmlinputelement::htmlinputelement___webcore::htmlinputelement::create___webcore::inputconstructor___webcore::htmlelementfactory::createhtmlelement___webcore::htmldocument::createelement___webcore::documentinternal::createelementcallback___v8::internal::invoke___v8::internal::execution::call___v8::script::run___webcore::v8proxy::runscript___webcore::v8proxy::evaluate___webcore::scriptcontroller::evaluate___webcore::scriptelement::executescript___webcore::scriptelement::execute___webcore::asyncscriptrunner::timerfired
+
+# 74609
+PREFIX: webcore::filllayer::filllayer___webcore::filllayer::filllayer___webcore::stylebackgrounddata::stylebackgrounddata___webcore::dataref<webcore::stylebackgrounddata>::access___webcore::cssstyleselector::adjustrenderstyle___webcore::cssstyleselector::styleforelement___webcore::element::recalcstyle___webcore::element::recalcstyle___webcore::element::recalcstyle___webcore::document::recalcstyle___webcore::document::updatestyleifneeded___webcore::document::updatestyleforalldocuments___webcore::scheduledaction::execute___webcore::scheduledaction::execute___webcore::domtimer::fired___webcore::threadtimers::sharedtimerfiredinternal___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 74607
+PREFIX: webcore::renderstyle::getshadowverticalextent___webcore::inlineflowbox::addtextboxvisualoverflow___webcore::inlineflowbox::computeoverflow___webcore::renderblock::layoutinlinechildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutpositionedobjects___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::rendertablecell::layout___webcore::rendertablerow::layout___webcore::rendertablesection::layout___webcore::rendertable::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderblock::layoutblockchild___webcore::renderblock::layoutblockchildren___webcore::renderblock::layoutblock___webcore::renderblock::layout___webcore::renderview::layout___webcore::frameview::layout___webcore::frameview::updatelayoutandstyleifneededrecursive___renderwidget::dodeferredupdate___renderwidget::onupdaterectack___ipc::message::dispatch<renderview,renderview>___renderwidget::onmessagereceived___renderview::onmessagereceived___messagerouter::routemessage___messagerouter::onmessagereceived___childthread::onmessagereceived___runnablemethod<cancelablerequest<callbackrunner<tuple3<int,scoped_refptr<history::mostvisitedthumbnails>,bool> > >,void (__thiscall cancelablerequest<callbackrunner<tuple3<int,scoped_refptr<history::mostvisitedthumbnails>,bool> > >::*)(tuple3<int,scoped_refptr<history::mostvisitedthumbnails>,bool> const &),tuple1<tuple3<int,scoped_refptr<history::mostvisitedthumbnails>,bool> > >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 74796
+PREFIX: wtf::stringimpl::createuninitialized___wtf::stringimpl::create___wtf::stringimpl::create___wtf::string::string___webcore::htmldocument::setcompatibilitymodefromdoctype___webcore::htmlconstructionsite::insertdoctype___webcore::htmltreebuilder::processdoctypetoken___webcore::htmltreebuilder::constructtreefromatomictoken___webcore::htmltreebuilder::constructtreefromtoken___webcore::htmldocumentparser::pumptokenizer___webcore::htmldocumentparser::append___webcore::decodeddatadocumentparser::appendbytes___webcore::documentwriter::adddata___webcore::documentloader::commitdata___webkit::frameloaderclientimpl::committedload___webcore::documentloader::commitload___webcore::documentloader::receiveddata___webcore::mainresourceloader::adddata___webcore::resourceloader::didreceivedata___webcore::mainresourceloader::didreceivedata___webcore::resourceloader::didreceivedata___webcore::resourcehandleinternal::didreceivedata___webkit_glue::weburlloaderimpl::context::onreceiveddata___resourcedispatcher::onreceiveddata___ipc::messagewithtuple<tuple3<int,void *,int> >::dispatch<resourcedispatcher,resourcedispatcher,int,void *,int>___resourcedispatcher::dispatchmessagew___resourcedispatcher::onmessagereceived___childthread::onmessagereceived___runnablemethod<history::historybackend,void (__thiscall history::historybackend::*)(gurl const &),tuple1<gurl> >::run___messageloop::runtask___messageloop::dowork___base::messagepumpdefault::run___messageloop::runinternal___messageloop::run___renderermain___`anonymous namespace'::runnamedprocesstypemain___chromemain___maindllloader::launch___wwinmain_____tmaincrtstartup
+
+# 74926
+PREFIX: webcore::htmltreebuilder::constructtreefromatomictoken___webcore::htmltreebuilder::constructtreefromtoken___webcore::htmldocumentparser::pumptokenizer___webcore::htmldocumentparser::insert___webcore::htmldocumentparser::parsedocumentfragment___webcore::documentfragment::parsehtml___webcore::createfragmentfromsource___webcore::htmlelement::setinnerhtml___webcore::htmlelementinternal::innerhtmlattrsetter___v8::internal::jsobject::setpropertywithcallback___v8::internal::jsobject::setproperty___v8::internal::jsobject::setproperty___v8::internal::storeic::store___v8::internal::storeic_miss

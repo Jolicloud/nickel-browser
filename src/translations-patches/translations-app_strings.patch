@@ -1,0 +1,250 @@
+diff -Nur old/app/resources/app_strings_es.xtb new/app/resources/app_strings_es.xtb
+--- old/app/resources/app_strings_es.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_es.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -18,15 +18,15 @@
+ <translation id="3234408098842461169">Flecha abajo</translation>
+ <translation id="3087734570205094154">Inferior</translation>
+ <translation id="6364916375976753737">Desplazar hacia la izquierda</translation>
+-<translation id="8210608804940886430">Avanzar página</translation>
+-<translation id="5329858601952122676">&amp;Suprimir</translation>
+-<translation id="6659594942844771486">Pestaña</translation>
++<translation id="8210608804940886430">AvPág</translation>
++<translation id="5329858601952122676">&amp;Eliminar</translation>
++<translation id="6659594942844771486">Solapa</translation>
+ <translation id="2497284189126895209">Todos los archivos</translation>
+ <translation id="7814458197256864873">&amp;Copiar</translation>
+ <translation id="3889424535448813030">Flecha derecha</translation>
+ <translation id="1398853756734560583">Maximizar</translation>
+ <translation id="1901303067676059328">Seleccionar &amp;todo</translation>
+-<translation id="2168039046890040389">Retroceder página</translation>
++<translation id="2168039046890040389">AvPág</translation>
+ <translation id="3183922693828471536">Desplazarse hasta aquí</translation>
+ <translation id="4552416320897244156">AvPág</translation>
+ <translation id="7052633198403197513">F1</translation>
+diff -Nur old/app/resources/app_strings_fi.xtb new/app/resources/app_strings_fi.xtb
+--- old/app/resources/app_strings_fi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_fi.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -19,7 +19,7 @@
+ <translation id="3087734570205094154">Alaosa</translation>
+ <translation id="6364916375976753737">Vieritä vasemmalle</translation>
+ <translation id="8210608804940886430">Sivu alas</translation>
+-<translation id="5329858601952122676">&amp;Poista</translation>
++<translation id="5329858601952122676">P&amp;oista</translation>
+ <translation id="6659594942844771486">Välilehti</translation>
+ <translation id="2497284189126895209">Kaikki tiedostot</translation>
+ <translation id="7814458197256864873">K&amp;opioi</translation>
+diff -Nur old/app/resources/app_strings_hi.xtb new/app/resources/app_strings_hi.xtb
+--- old/app/resources/app_strings_hi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_hi.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -3,49 +3,49 @@
+ <translationbundle lang="hi">
+ <translation id="1871244248791675517">Ins</translation>
+ <translation id="6135826906199951471">Del</translation>
+-<translation id="528468243742722775">समाप्त</translation>
+-<translation id="5613020302032141669">बायां तीर</translation>
++<translation id="528468243742722775">समाप्त करें</translation>
++<translation id="5613020302032141669">बायाँ तीर</translation>
+ <translation id="8602707065186045623"><ph name="SAVEAS_EXTENSION_TYPE"/> फ़ाइल (.<ph name="SAVEAS_EXTENSION_NAME"/>)</translation>
+ <translation id="5948410903763073882">Alt+<ph name="KEY_COMBO_NAME"/></translation>
+ <translation id="7658239707568436148">रद्द करें</translation>
+ <translation id="7222373446505536781">F11</translation>
+ <translation id="3660179305079774227">ऊपर तीर</translation>
+-<translation id="3990502903496589789">दायां सिरा</translation>
+-<translation id="932327136139879170">मुखपृष्ठ</translation>
++<translation id="3990502903496589789">दायाँ कोना</translation>
++<translation id="932327136139879170">मुख्य पृष्ठ</translation>
+ <translation id="3909791450649380159">&amp;काटें</translation>
+-<translation id="5076340679995252485">&amp;चिपकाएं</translation>
++<translation id="5076340679995252485">&amp;चिपकाएँ</translation>
+ <translation id="4999762576397546063">Ctrl+<ph name="KEY_COMBO_NAME"/></translation>
+ <translation id="3234408098842461169">नीचे तीर</translation>
+-<translation id="3087734570205094154">नीचे</translation>
+-<translation id="6364916375976753737">बाएं स्क्रॉल करें</translation>
+-<translation id="8210608804940886430">Page Down</translation>
++<translation id="3087734570205094154">निचला भाग</translation>
++<translation id="6364916375976753737">बाएँ स्क्रॉल करें</translation>
++<translation id="8210608804940886430">पृष्ठ नीचे</translation>
+ <translation id="5329858601952122676">&amp;हटाएं</translation>
+ <translation id="6659594942844771486">टैब</translation>
+ <translation id="2497284189126895209">सभी फ़ाइलें</translation>
+-<translation id="7814458197256864873">&amp;प्रतिलिपि बनाएं</translation>
+-<translation id="3889424535448813030">दायां तीर</translation>
+-<translation id="1398853756734560583">बड़ा करें</translation>
+-<translation id="1901303067676059328">&amp;सभी का चयन करें</translation>
++<translation id="7814458197256864873">&amp;प्रतिलिपि बनाएँ</translation>
++<translation id="3889424535448813030">दायाँ तीर</translation>
++<translation id="1398853756734560583">बड़ा करें</translation>
++<translation id="1901303067676059328">&amp;सभी चुनें</translation>
+ <translation id="2168039046890040389">पृष्ठ ऊपर</translation>
+ <translation id="3183922693828471536">यहाँ तक स्क्रॉल करें</translation>
+ <translation id="4552416320897244156">PgDwn</translation>
+ <translation id="7052633198403197513">F1</translation>
+ <translation id="2190355936436201913">(खाली)</translation>
+ <translation id="8447116497070723931">PgUp</translation>
+-<translation id="4588090240171750605">दाएं स्क्रॉल करें</translation>
+-<translation id="2666092431469916601">शीर्ष</translation>
++<translation id="4588090240171750605">दाएँ स्क्रॉल करें</translation>
++<translation id="2666092431469916601">शीर्ष्‍ी</translation>
+ <translation id="8331626408530291785">ऊपर स्क्रॉल करें</translation>
+ <translation id="1293699935367580298">Esc</translation>
+ <translation id="815598010540052116">नीचे स्क्रॉल करें</translation>
+ <translation id="3157931365184549694">पुनर्स्थापित करें</translation>
+-<translation id="8179976553408161302">Enter</translation>
+-<translation id="9170848237812810038">&amp;पूर्ववत् करें</translation>
++<translation id="8179976553408161302">प्रविष्ट करें</translation>
++<translation id="9170848237812810038">&amp;वापिस करें</translation>
+ <translation id="5583640892426849032">Backspace</translation>
+-<translation id="436869212180315161">दबाएं</translation>
++<translation id="436869212180315161">दबाएँ</translation>
+ <translation id="6040143037577758943">बंद करें</translation>
+-<translation id="7000311294523403548">शीर्षक रहित वेब पृष्ठ</translation>
++<translation id="7000311294523403548">शीर्षक रहित वेब पेज</translation>
+ <translation id="8400147561352026160">Shift+<ph name="KEY_COMBO_NAME"/></translation>
+ <translation id="6965382102122355670">ठीक</translation>
+ <translation id="5941711191222866238">छोटा करें</translation>
+-<translation id="8328145009876646418">बायां सिरा</translation>
++<translation id="8328145009876646418">बायाँ कोना</translation>
+ </translationbundle>
+\ No newline at end of file
+diff -Nur old/app/resources/app_strings_kn.xtb new/app/resources/app_strings_kn.xtb
+--- old/app/resources/app_strings_kn.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_kn.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -11,7 +11,7 @@
+ <translation id="7222373446505536781">F11</translation>
+ <translation id="3660179305079774227">ಮೇಲಿನ ಬಾಣದ ಗುರುತು</translation>
+ <translation id="3990502903496589789">ಬಲ ತುದಿ</translation>
+-<translation id="932327136139879170">ಮುಖಪುಟ</translation>
++<translation id="932327136139879170">ಹೋಮ್</translation>
+ <translation id="3909791450649380159">ಕತ್ತರಿ&amp;ಸು</translation>
+ <translation id="5076340679995252485">&amp;ಅಂಟಿಸಿ</translation>
+ <translation id="4999762576397546063">Ctrl+<ph name="KEY_COMBO_NAME"/></translation>
+diff -Nur old/app/resources/app_strings_pt-BR.xtb new/app/resources/app_strings_pt-BR.xtb
+--- old/app/resources/app_strings_pt-BR.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_pt-BR.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -19,7 +19,7 @@
+ <translation id="3087734570205094154">Parte inferior</translation>
+ <translation id="6364916375976753737">Percorrer à esquerda</translation>
+ <translation id="8210608804940886430">Página para baixo</translation>
+-<translation id="5329858601952122676">&amp;Excluir</translation>
++<translation id="5329858601952122676">&amp;Deletar</translation>
+ <translation id="6659594942844771486">Guia</translation>
+ <translation id="2497284189126895209">Todos os arquivos</translation>
+ <translation id="7814458197256864873">Co&amp;piar</translation>
+diff -Nur old/app/resources/app_strings_ru.xtb new/app/resources/app_strings_ru.xtb
+--- old/app/resources/app_strings_ru.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_ru.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -11,7 +11,7 @@
+ <translation id="7222373446505536781">F11</translation>
+ <translation id="3660179305079774227">Стрелка вверх</translation>
+ <translation id="3990502903496589789">Правый край</translation>
+-<translation id="932327136139879170">На главную</translation>
++<translation id="932327136139879170">Home</translation>
+ <translation id="3909791450649380159">Выре&amp;зать</translation>
+ <translation id="5076340679995252485">&amp;Вставить</translation>
+ <translation id="4999762576397546063">Ctrl+<ph name="KEY_COMBO_NAME"/></translation>
+diff -Nur old/app/resources/app_strings_sw.xtb new/app/resources/app_strings_sw.xtb
+--- old/app/resources/app_strings_sw.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_sw.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -17,7 +17,7 @@
+ <translation id="4999762576397546063">Ctrl+<ph name="KEY_COMBO_NAME"/></translation>
+ <translation id="3234408098842461169">Mshale Chini</translation>
+ <translation id="3087734570205094154">Chini</translation>
+-<translation id="6364916375976753737">Vingirisha Kushoto</translation>
++<translation id="6364916375976753737">Bingiriza Kushoto</translation>
+ <translation id="8210608804940886430">Ukurasa mmoja chini</translation>
+ <translation id="5329858601952122676">&amp;Futa</translation>
+ <translation id="6659594942844771486">Kichupo</translation>
+@@ -27,16 +27,16 @@
+ <translation id="1398853756734560583">Tanua</translation>
+ <translation id="1901303067676059328">Chagua &amp;yote</translation>
+ <translation id="2168039046890040389">Ukurasa mmoja juu</translation>
+-<translation id="3183922693828471536">Vingirisha Hadi Hapa</translation>
++<translation id="3183922693828471536">Bingiriza hadi Hapa</translation>
+ <translation id="4552416320897244156">PgDwn</translation>
+ <translation id="7052633198403197513">F1</translation>
+ <translation id="2190355936436201913">(tupu)</translation>
+ <translation id="8447116497070723931">PgUp</translation>
+-<translation id="4588090240171750605">Vingirisha Kulia</translation>
++<translation id="4588090240171750605">Bingiriza Kulia</translation>
+ <translation id="2666092431469916601">Ya Juu</translation>
+-<translation id="8331626408530291785">Vingirisha Juu</translation>
++<translation id="8331626408530291785">Bingiriza Juu</translation>
+ <translation id="1293699935367580298">Esc</translation>
+-<translation id="815598010540052116">Vingirisha Chini</translation>
++<translation id="815598010540052116">Bingiriza Chini</translation>
+ <translation id="3157931365184549694">Rejesha</translation>
+ <translation id="8179976553408161302">Enter</translation>
+ <translation id="9170848237812810038">&amp;Tendua</translation>
+diff -Nur old/app/resources/app_strings_vi.xtb new/app/resources/app_strings_vi.xtb
+--- old/app/resources/app_strings_vi.xtb	2011-03-18 13:19:11.000000000 +0000
++++ new/app/resources/app_strings_vi.xtb	2011-03-18 13:24:29.000000000 +0000
+@@ -1,47 +1,47 @@
+ <?xml version="1.0" ?>
+ <!DOCTYPE translationbundle>
+ <translationbundle lang="vi">
+-<translation id="1871244248791675517">Ins</translation>
+-<translation id="6135826906199951471">Del</translation>
+-<translation id="528468243742722775">End</translation>
+-<translation id="5613020302032141669">Mũi tên Trái</translation>
++<translation id="1871244248791675517">Phím Ins</translation>
++<translation id="6135826906199951471">Phím Del</translation>
++<translation id="528468243742722775">Phím End</translation>
++<translation id="5613020302032141669">Phím Mũi tên Trái</translation>
+ <translation id="8602707065186045623">Tệp <ph name="SAVEAS_EXTENSION_TYPE"/> (.<ph name="SAVEAS_EXTENSION_NAME"/>)</translation>
+ <translation id="5948410903763073882">Alt+<ph name="KEY_COMBO_NAME"/></translation>
+-<translation id="7658239707568436148">Huỷ</translation>
+-<translation id="7222373446505536781">F11</translation>
+-<translation id="3660179305079774227">Phím mũi tên Lên</translation>
++<translation id="7658239707568436148">Hủy</translation>
++<translation id="7222373446505536781">Phím F11</translation>
++<translation id="3660179305079774227">Phím Mũi tên Lên</translation>
+ <translation id="3990502903496589789">Cạnh bên Phải</translation>
+-<translation id="932327136139879170">Trang chủ</translation>
++<translation id="932327136139879170">Phím Home</translation>
+ <translation id="3909791450649380159">Cắ&amp;t</translation>
+ <translation id="5076340679995252485">&amp;Dán</translation>
+ <translation id="4999762576397546063">Ctrl+<ph name="KEY_COMBO_NAME"/></translation>
+-<translation id="3234408098842461169">Phím mũi tên Xuống</translation>
+-<translation id="3087734570205094154">Bên dưới</translation>
++<translation id="3234408098842461169">Phím Mũi tên Xuống</translation>
++<translation id="3087734570205094154">Dưới cùng</translation>
+ <translation id="6364916375976753737">Cuộn qua Trái</translation>
+ <translation id="8210608804940886430">Trang Dưới</translation>
+ <translation id="5329858601952122676">&amp;Xoá</translation>
+-<translation id="6659594942844771486">Tab</translation>
+-<translation id="2497284189126895209">Tất cả Tệp tin</translation>
++<translation id="6659594942844771486">Phím Tab</translation>
++<translation id="2497284189126895209">Tất cả Tập tin</translation>
+ <translation id="7814458197256864873">Sao &amp;chép</translation>
+-<translation id="3889424535448813030">Phím mũi tên Phải</translation>
+-<translation id="1398853756734560583">Phóng to</translation>
++<translation id="3889424535448813030">Phím Mũi tên Phải</translation>
++<translation id="1398853756734560583">Phóng đầy màn hình</translation>
+ <translation id="1901303067676059328">Chọn &amp;tất cả</translation>
+-<translation id="2168039046890040389">Page Up</translation>
++<translation id="2168039046890040389">Lên trang</translation>
+ <translation id="3183922693828471536">Cuộn tới Đây</translation>
+-<translation id="4552416320897244156">Trang Dưới</translation>
+-<translation id="7052633198403197513">F1</translation>
++<translation id="4552416320897244156">Phím PgDwn</translation>
++<translation id="7052633198403197513">Phím F1</translation>
+ <translation id="2190355936436201913">(trống)</translation>
+-<translation id="8447116497070723931">Trang Trên</translation>
++<translation id="8447116497070723931">Phím PgUp</translation>
+ <translation id="4588090240171750605">Cuộn qua Phải</translation>
+-<translation id="2666092431469916601">Hàng đầu</translation>
++<translation id="2666092431469916601">Trên cùng</translation>
+ <translation id="8331626408530291785">Cuộn Lên</translation>
+ <translation id="1293699935367580298">Thoát</translation>
+ <translation id="815598010540052116">Cuộn Xuống</translation>
+ <translation id="3157931365184549694">Khôi phục</translation>
+-<translation id="8179976553408161302">Enter</translation>
++<translation id="8179976553408161302">Phím Enter</translation>
+ <translation id="9170848237812810038">H&amp;oàn tác</translation>
+-<translation id="5583640892426849032">Backspace</translation>
+-<translation id="436869212180315161">Nhấp vào</translation>
++<translation id="5583640892426849032">Phím Backspace</translation>
++<translation id="436869212180315161">Nhấn</translation>
+ <translation id="6040143037577758943">Đóng</translation>
+ <translation id="7000311294523403548">Trang Web Không tên</translation>
+ <translation id="8400147561352026160">Shift+<ph name="KEY_COMBO_NAME"/></translation>

@@ -1,0 +1,6 @@
+include_rules = [
+  "+google/protobuf",
+  "+remoting/jingle_glue",
+  "+net",
+  "+third_party/protobuf/src",
+]

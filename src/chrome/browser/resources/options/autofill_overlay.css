@@ -1,0 +1,30 @@
+#autofill-edit-address-overlay,
+#autofill-edit-credit-card-overlay {
+  width: 500px;
+}
+
+div.table {
+  display: table;
+}
+
+div.cell {
+  display: table-cell;
+  max-width: 151px;
+}
+
+div.row {
+  display: table-row;
+}
+
+div.input {
+  padding: 2px;
+}
+
+input.autofill-form {
+  width: 90%;
+  max-width: 151px;
+}
+
+#country {
+  max-width: 450px;
+}

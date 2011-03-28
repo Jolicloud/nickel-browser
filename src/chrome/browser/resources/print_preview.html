@@ -1,0 +1,83 @@
+<!DOCTYPE HTML>
+<html i18n-values="dir:textdirection;">
+<head>
+<meta charset="utf-8">
+<title i18n-content="title"></title>
+
+<link rel="stylesheet" href="webui.css">
+<link rel="stylesheet" href="print_preview.css">
+
+<script src="chrome://resources/js/local_strings.js"></script>
+<script src="chrome://resources/js/util.js"></script>
+<script src="print_preview.js"></script>
+</head>
+<body i18n-values=".style.fontFamily:fontfamily;.style.fontSize:fontsize">
+<div id="navbar-container">
+  <div id="destination-container">
+    <h1>Destination</h1>
+    <select id="printer-list"></select>
+    <div id="buttons">
+      <button id="print-button" i18n-content="printButton" disabled></button>
+      <button id="cancel-button" i18n-content="cancelButton"></button>
+    </div>
+  </div>
+
+  <section>
+    <h3>Pages</h3>
+    <div>
+      <input id="pages" type="text"></input>
+      <label>
+        <input id="all-pages" type="checkbox">
+        <span i18n-content="optionAllPages"></span>
+      </label>
+      <div>
+        <label>
+          <input id="two-sided" type="checkbox">
+          <span i18n-content="optionTwoSided"></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Copies</h3>
+    <div>
+      <input id="copies" type="text" value="1"></input>
+      <div>
+        <label>
+          <input id="collate" type="checkbox">
+          <span i18n-content="optionCollate"></span>
+        </label>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h3>Layout</h3>
+    <div>
+      <select id="layout">
+        <option value="0" i18n-content="optionPortrait"></option>
+        <option value="1" i18n-content="optionLandscape"></option>
+      </select>
+    </div>
+  </section>
+
+  <section>
+    <h3>Color</h3>
+    <div>
+      <select id="color">
+        <option value="0" i18n-content="optionBw"></option>
+        <option value="1" i18n-content="optionColor"></option>
+      </select>
+    </div>
+  </section>
+
+</div>
+<div id="separator"></div>
+<div id="mainview">
+  <p id="loading" i18n-content="loading"></p>
+  <p id="no-plugin" class="hidden" i18n-content="noPlugin"></p>
+</div>
+
+</body>
+</html>
