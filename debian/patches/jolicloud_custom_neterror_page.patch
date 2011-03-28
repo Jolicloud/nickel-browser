@@ -64,12 +64,12 @@
 +</style>
 +<script>
 +function show() {
-+  if (document.querySelector('#errorSummary > span > strong') == null) {
++  if (document.querySelector('#failedUrl > span') == null) {
 +    document.getElementById('cell').className = '';
 +    document.getElementById('t').className = '';
-+  } else {      
-+    var url = document.querySelector('#errorSummary > span > strong').innerHTML.trim();
-+    if (url.indexOf('//my.jolicloud.com') != -1 ||
++  } else {
++    var url = document.querySelector('#failedUrl > span').innerHTML.trim();
++    if (url.indexOf('my.jolicloud.com') != -1 ||
 +        url.indexOf('.dev.jolicloud.org') != -1) {
 +      document.addEventListener('contextmenu', function(e) {
 +        e.preventDefault();
@@ -83,8 +83,8 @@
 +  }
 +}
 +function reload() {
-+  var url = document.querySelector('#errorSummary > span > strong').innerHTML.trim();
-+  if ((url.indexOf('//my.jolicloud.com') != -1 ||
++  var url = document.querySelector('#failedUrl > span').innerHTML.trim();
++  if ((url.indexOf('my.jolicloud.com') != -1 ||
 +      url.indexOf('.dev.jolicloud.org') != -1) &&
 +      url.indexOf('?') == -1) {
 +    url = url + '?unique=' + (+new Date());
@@ -110,3 +110,14 @@
   <div id="box">
    <h1>
     <img src="../../app/theme/%DISTRIBUTION%/product_logo.png" />
+@@ -150,6 +223,10 @@
+    <span jsvalues=".innerHTML:msg"></span>
+   </div>
+ 
++  <div id="failedUrl" jsselect="summary">
++   <span class=hidden jsvalues=".innerHTML:failedUrl"></span>
++  </div>
++
+   <div id="suggestions" jsdisplay="suggestionsHeading">
+    <h2 i18n-content="suggestionsHeading"></h2>
+    <ul>
