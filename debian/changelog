@@ -1,3 +1,12 @@
+nickel-browser (11.0.696.14~r78500-1jolicloud3) robby-1.2.1; urgency=low
+
+  * Use the new v11 method of accessing preferences when retreving the
+    app_icon value
+  * Restored Jolicloud's custom neterror.html patch for v11, once again
+    prompting you to connect to the Internet.
+
+ -- Adam McDaniel <adam@jolicloud.org>  Mon, 28 Mar 2011 03:02:50 -0600
+
 nickel-browser (11.0.696.14~r78500-1jolicloud2) robby-1.2.1; urgency=low
 
   * Flag packages nickel-codecs-ffmpeg-{extra,nonfree} as restricted
