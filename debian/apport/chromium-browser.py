@@ -11,7 +11,7 @@ option) any later version.  See http://www.gnu.org/copyleft/gpl.html for
 the full text of the license.
 '''
 
-import os, sys, getopt
+import os, sys, getopt, codecs
 import time
 from stat import *
 import re
@@ -106,12 +106,18 @@ def user_prefs(report, file):
     report['ChromiumPrefs'] += "extensions/settings =\n"
     if 'settings' in entry['extensions']:
         for ext in entry['extensions']['settings'].keys():
-            report['ChromiumPrefs'] += " - '" + ext + "'"\
-                "\n     manifest/name = '" + entry['extensions']['settings'][ext]['manifest']['name'] + "'"\
-                "\n     manifest/version = '" + entry['extensions']['settings'][ext]['manifest']['version'] + "'"\
-                "\n     manifest/update_url = '" + entry['extensions']['settings'][ext]['manifest']['update_url'] + "'"\
-                "\n     state = " + str(entry['extensions']['settings'][ext]['state']) + \
-                "\n"
+            report['ChromiumPrefs'] += " - '" + ext + "'\n"
+            if 'manifest' in entry['extensions']['settings'][ext]:
+                for k in [ 'name', 'description', 'version', 'update_url' ]:
+                   report['ChromiumPrefs'] += "     manifest/%s = %s\n" % \
+                       (k, "'" + entry['extensions']['settings'][ext]['manifest'][k] + "'" \
+                            if k in entry['extensions']['settings'][ext]['manifest'] else "*undef*")
+            else:
+                report['ChromiumPrefs'] += "     manifest/* = *undef*\n"
+            for k in [ 'blacklist', 'state' ]:
+                if k in entry['extensions']['settings'][ext]:
+                  report['ChromiumPrefs'] += "     %s = %s\n" % \
+                      (k, repr(entry['extensions']['settings'][ext][k]))
     else:
         report['ChromiumPrefs'] += " (no entry found in the Preferences file)"
 
@@ -243,6 +249,7 @@ def add_info(report, userdir = None):
 
 ## DEBUGING ##
 if __name__ == '__main__':
+    sys.stdout = codecs.getwriter('utf8')(sys.stdout)
     try:
         opts, args = getopt.getopt(sys.argv[1:], "-u:", [ 'user-dir=' ])
     except getopt.GetoptError, err:

@@ -1,4 +1,57 @@
-chromium-browser (10.0.648.151~r78498-0ubuntu1~ucd~stable1~lucid) lucid; urgency=high
+chromium-browser (11.0.696.34~r80286-0ubuntu1~ucd~beta1) natty; urgency=high
+
+  * New upstream release from the Beta Channel
+  * Update the SVG logo to match the new simplified 2D logo (LP: #748881)
+    - update debian/chromium-browser.svg
+  * Ship the app icon in all the sizes provided upstream
+    - update debian/rules
+  * Add libpam0g-dev to Build-depends, needed by "Chromoting"
+    - update debian/control
+  * Enable the third_party translations at build time (they come from Launchpad)
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 05 Apr 2011 13:37:39 +0200
+
+chromium-browser (10.0.648.204~r79063-0ubuntu2) natty; urgency=high
+
+  * NaCL may be blacklisted, so only include it when it's actually been
+    built (fixes the ftbfs on arm) (LP: #745854)
+    - update debian/rules
+    - update debian/chromium-browser.install
+  * Harden the apport hooks in the extensions section
+    - update debian/apport/chromium-browser.py
+
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 30 Mar 2011 19:51:36 +0200
+
+chromium-browser (10.0.648.204~r79063-0ubuntu1) natty; urgency=high
+
+  * New upstream minor release from the Stable Channel (LP: #742118)
+    This release fixes the following security issues:
+    + Webkit bugs:
+      - [73216] High, CVE-2011-1292: Use-after-free in the frame loader. Credit
+        to Sławomir Błażek.
+      - [73595] High, CVE-2011-1293: Use-after-free in HTMLCollection. Credit
+        to Sergey Glazunov.
+      - [74562] High, CVE-2011-1294: Stale pointer in CSS handling. Credit to
+        Sergey Glazunov.
+      - [74991] High, CVE-2011-1295: DOM tree corruption with broken node
+        parentage. Credit to Sergey Glazunov.
+      - [75170] High, CVE-2011-1296: Stale pointer in SVG text handling. Credit
+        to Sergey Glazunov.
+    + Chromium bugs:
+      - [72517] High, CVE-2011-1291: Buffer error in base string handling.
+        Credit to Alex Turpin.
+  Packaging changes:
+  * Set arm_fpu=vfpv3-d16 on arm (less restrictive than the default vfpv3)
+    preventing a SIGILL crash on some boards (LP: #735877)
+    - update debian/control
+  * Install libppGoogleNaClPluginChrome.so (LP: #738331)
+    - update debian/rules
+    - update debian/chromium-browser.install
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 24 Mar 2011 23:05:14 +0100
+
+chromium-browser (10.0.648.133~r77742-0ubuntu1) natty; urgency=high
 
   * New upstream security release from the Stable Channel (LP: #733514)
     + Webkit:
@@ -6,7 +59,7 @@ chromium-browser (10.0.648.151~r78498-0ubuntu1~ucd~stable1~lucid) lucid; urgency
         to Vincenzo Iozzo, Ralf Philipp Weinmann and Willem Pinckaers reported
         through ZDI.
 
- -- Fabien Tassin <fta@ubuntu.com>  Thu, 17 Mar 2011 22:16:51 +0100
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 11 Mar 2011 22:10:11 +0100
 
 chromium-browser (10.0.648.127~r76697-0ubuntu1) natty; urgency=high
 
