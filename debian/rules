@@ -69,6 +69,7 @@ ifeq (armel,$(DEB_BUILD_ARCH))
 GYP_DEFINES += \
 	arm_thumb=1 \
 	arm_neon=0 \
+	arm_fpu=vfpv3-d16 \
 	target_arch=arm \
 	disable_nacl=1 \
 	linux_use_tcmalloc=0 \
@@ -165,7 +166,6 @@ INSTALL_EXCLUDE_FILES = \
 	product_logo_48.png \
 	libnpapi_layout_test_plugin.so \
 	libnpapi_test_plugin.so \
-	libppGoogleNaClPluginChrome.so \
 	mksnapshot \
 	ncdecode_table \
 	ncdecode_tablegen \
@@ -346,7 +346,7 @@ common-install-prehook-impl::
 binary-install/$(DEBIAN_NAME)::
 	mkdir -p $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/pixmaps
 	cp -a build-tree/src/chrome/app/theme/chromium/product_logo_48.png $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/pixmaps/$(DEBIAN_NAME).png
-	for size in 16 32 48 256 ; do \
+	for size in 16 22 24 32 48 64 128 256 ; do \
 	  mkdir -p $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/icons/hicolor/$${size}x$${size}/apps ; \
 	  cp -a build-tree/src/chrome/app/theme/chromium/product_logo_$$size.png  \
 	    $(CURDIR)/debian/$(DEBIAN_NAME)/usr/share/icons/hicolor/$${size}x$${size}/apps/$(DEBIAN_NAME).png ; \
@@ -357,6 +357,10 @@ ifeq (1,$(WANT_SANDBOXING))
 	chmod 4755 $(CURDIR)/debian/$(DEBIAN_NAME)/$(LIB_DIR)/$(DEBIAN_NAME)-sandbox
 else
 	rm -vf $(CURDIR)/debian/$(DEBIAN_NAME)/$(LIB_DIR)/$(DEBIAN_NAME)-sandbox
+endif
+	# NaCL may be blacklisted, so only include it when it's been built
+ifeq (,$(filter disable_nacl=1,$(GYP_DEFINES)))
+	cp -a debian/tmp/$(LIB_DIR)/libppGoogleNaClPluginChrome.so debian/$(DEBIAN_NAME)/$(LIB_DIR)/
 endif
 	# Locales: only keep en-US in the main deb
 	cd $(CURDIR)/debian/$(DEBIAN_NAME)/$(LIB_DIR)/locales && \
