@@ -1,28 +1,14 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -206,6 +206,7 @@
+@@ -223,6 +223,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
        last_blocked_command_disposition_(CURRENT_TAB),
 +      kill_signal_(0),
-       pending_web_app_action_(NONE) {
-   registrar_.Add(this, NotificationType::SSL_VISIBLE_STATE_CHANGED,
-                  NotificationService::AllSources());
-@@ -331,6 +332,13 @@
- }
- 
- // static
-+Browser* Browser::CreateForDesktop(Profile* profile) {
-+  Browser* browser = new Browser(TYPE_NORMAL_DESKTOP, profile);
-+  browser->CreateBrowserWindow();
-+  return browser;
-+}
-+
-+// static
- Browser* Browser::CreateForPopup(Type type,
-                                  Profile* profile,
-                                  TabContents* new_contents,
-@@ -378,6 +386,15 @@
+       pending_web_app_action_(NONE),
+       ALLOW_THIS_IN_INITIALIZER_LIST(
+           tab_restore_service_delegate_(
+@@ -410,6 +411,15 @@
  }
  
  // static
@@ -36,9 +22,9 @@
 +
 +// static
  Browser* Browser::CreateForDevTools(Profile* profile) {
-   Browser* browser = new Browser(TYPE_DEVTOOLS, profile);
-   browser->app_name_ = DevToolsWindow::kDevToolsApp;
-@@ -511,7 +528,7 @@
+   CreateParams params(TYPE_POPUP, profile);
+   params.app_name = DevToolsWindow::kDevToolsApp;
+@@ -557,7 +567,7 @@
      case extension_misc::LAUNCH_WINDOW:
      case extension_misc::LAUNCH_PANEL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
@@ -46,8 +32,8 @@
 +                                           GURL(), empty_icon, false, NULL);
        break;
      case extension_misc::LAUNCH_TAB: {
-       tab = Browser::OpenApplicationTab(profile, extension, existing_tab);
-@@ -531,6 +548,7 @@
+       tab = Browser::OpenApplicationTab(profile, extension, disposition);
+@@ -577,6 +587,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
@@ -55,23 +41,23 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -558,8 +576,12 @@
-     window_size.SetSize(extension->launch_width(),
-                         extension->launch_height());
+@@ -604,8 +615,12 @@
+     window_bounds.set_height(extension->launch_height());
+   }
  
--  Browser* browser = Browser::CreateForApp(app_name, window_size, profile,
--                                           as_panel);
+-  Browser* browser = Browser::CreateForApp(type, app_name, window_bounds,
+-                                           profile);
 +  Browser* browser;
 +  if (as_desktop)
 +    browser = Browser::CreateForAppDesktop(app_name, profile);
 +  else
-+    browser = Browser::CreateForApp(app_name, window_size, profile, as_panel);
++    browser = Browser::CreateForApp(type, app_name, window_bounds, profile);
 +
+ 
    if (app_browser)
      *app_browser = browser;
- 
-@@ -571,6 +593,9 @@
-       prefs->SetFilePath(icon_pref_key.c_str(), icon_id);
+@@ -616,6 +631,9 @@
+       profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
    }
  
 +  if (browser->type_ & TYPE_DESKTOP)
@@ -80,7 +66,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -587,6 +612,7 @@
+@@ -632,6 +650,7 @@
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -88,7 +74,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -595,6 +621,7 @@
+@@ -640,6 +659,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -96,7 +82,7 @@
        &app_browser);
  
    if (!tab)
-@@ -881,7 +908,9 @@
+@@ -952,7 +972,9 @@
  }
  
  bool Browser::ShouldCloseWindow() {
@@ -107,39 +93,19 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1242,22 +1271,27 @@
-   features |= FEATURE_DOWNLOADSHELF;
- #endif  // !defined(OS_CHROMEOS)
+@@ -1353,6 +1375,11 @@
  
--  if (type() == TYPE_NORMAL) {
-+  if (type() & TYPE_NORMAL) {
-     features |= FEATURE_BOOKMARKBAR;
-   }
- 
-   if (!hide_ui_for_fullscreen) {
--    if (type() != TYPE_NORMAL)
-+    if (! (type() & TYPE_NORMAL))
-       features |= FEATURE_TITLEBAR;
- 
--    if (type() == TYPE_NORMAL)
-+    if (type() & TYPE_NORMAL)
-       features |= FEATURE_TABSTRIP;
- 
--    if (type() == TYPE_NORMAL)
-+    if (type() & TYPE_NORMAL)
-       features |= FEATURE_TOOLBAR;
- 
-     if ((type() & Browser::TYPE_APP) == 0)
+     if (!is_app())
        features |= FEATURE_LOCATIONBAR;
 +
-+    if (type() & TYPE_DESKTOP) {
++    if (is_type_desktop()) {
 +      features &= ~FEATURE_TITLEBAR;
 +      features &= ~FEATURE_DOWNLOADSHELF;
 +    }
    }
    return !!(features & feature);
  }
-@@ -1578,7 +1612,7 @@
+@@ -1676,7 +1703,7 @@
      }
    }
  #endif
@@ -148,16 +114,7 @@
  }
  
  void Browser::BookmarkCurrentPage() {
-@@ -2662,7 +2696,7 @@
-   // in-progress downloads.
-   // Note that the next call when it returns false will ask the user for
-   // confirmation before closing the browser if the user decides so.
--  return CanCloseWithInProgressDownloads();
-+  return !((this->type() & TYPE_DESKTOP) && !kill_signal_) && CanCloseWithInProgressDownloads();
- }
- 
- bool Browser::CanBookmarkAllTabs() const {
-@@ -3118,6 +3152,10 @@
+@@ -3311,6 +3338,10 @@
      return;
    }
  
@@ -170,27 +127,15 @@
      *proceed_to_fire_unload = false;
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -79,14 +79,17 @@
-     // Shortcuts to a URL and shortcuts to an installed application
-     // both have this type.
-     TYPE_APP = 4,
+@@ -85,6 +85,7 @@
+     TYPE_TABBED = 1,
+     TYPE_POPUP = 2,
+     TYPE_PANEL = 3,
 +    TYPE_DESKTOP = 8,
-+    TYPE_NORMAL_DESKTOP = TYPE_DESKTOP | TYPE_NORMAL,
-+    TYPE_APP_DESKTOP = TYPE_DESKTOP | TYPE_APP,
-     TYPE_APP_POPUP = TYPE_APP | TYPE_POPUP,
--    TYPE_DEVTOOLS = TYPE_APP | 8,
-+    TYPE_DEVTOOLS = TYPE_APP | 16,
+   };
  
-     // TODO(skerner): crbug/56776: Until the panel UI is complete on all
-     // platforms, apps that set app.launch.container = "panel" have type
-     // APP_POPUP. (see Browser::CreateForApp)
-     // NOTE: TYPE_APP_PANEL is a superset of TYPE_APP_POPUP.
--    TYPE_APP_PANEL = TYPE_APP | TYPE_POPUP | 16,
-+    TYPE_APP_PANEL = TYPE_APP | TYPE_POPUP | 32,
-     TYPE_ANY = TYPE_NORMAL |
-                TYPE_POPUP |
-                TYPE_APP |
-@@ -134,6 +137,11 @@
+   // Possible elements of the Browser window.
+@@ -146,6 +147,11 @@
    // window is created by this function call.
    static Browser* Create(Profile* profile);
  
@@ -199,12 +144,12 @@
 +  // call.
 +  static Browser* CreateForDesktop(Profile* profile);
 +
-   // Like Create, but creates a browser of the specified (popup) type, with the
-   // specified contents, in a popup window of the specified size/position.
-   static Browser* CreateForPopup(Type type, Profile* profile,
-@@ -152,6 +160,10 @@
-                                Profile* profile,
-                                bool is_panel);
+   // Like Create, but creates a browser of the specified parameters.
+   static Browser* CreateWithParams(const CreateParams& params);
+ 
+@@ -161,6 +167,10 @@
+                                const gfx::Rect& window_bounds,
+                                Profile* profile);
  
 +  // Like Create, but creates a tabstrip-less and toolbar-less "app" window for
 +  // the specified app, as the user's desktop.
@@ -213,15 +158,15 @@
    // Like Create, but creates a tabstrip-less and toolbar-less
    // DevTools "app" window.
    static Browser* CreateForDevTools(Profile* profile);
-@@ -177,6 +189,7 @@
- 
+@@ -187,6 +197,7 @@
    Type type() const { return type_; }
+   const std::string& app_name() const { return app_name_; }
    Profile* profile() const { return profile_; }
 +  void set_kill_signal(int signal) { kill_signal_ = signal; };
    const std::vector<std::wstring>& user_data_dir_profiles() const;
+   gfx::Rect override_bounds() const { return override_bounds_; }
  
-   // Returns the InstantController or NULL if there is no InstantController for
-@@ -247,6 +260,7 @@
+@@ -260,6 +271,7 @@
        extension_misc::LaunchContainer container,
        const GURL& url,
        const FilePath& icon_id,
@@ -229,7 +174,7 @@
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -257,6 +271,8 @@
+@@ -270,6 +282,8 @@
    // Browser::OpenApplicationWindow().
    static TabContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
@@ -237,8 +182,22 @@
 +                                            bool as_desktop,
                                              bool update_shortcut);
  
-   // Open an application for |extension| in a new application tab, or
-@@ -1129,6 +1145,9 @@
+   // Open an application for |extension| using |disposition|.  Returns NULL if
+@@ -753,9 +767,10 @@
+   // Figure out if there are tabs that have beforeunload handlers.
+   bool TabsNeedBeforeUnloadFired();
+ 
+-  bool is_type_tabbed() const { return type_ == TYPE_TABBED; }
+-  bool is_type_popup() const { return type_ == TYPE_POPUP; }
+-  bool is_type_panel() const { return type_ == TYPE_PANEL; }
++  bool is_type_tabbed() const { return type_ & TYPE_TABBED; }
++  bool is_type_popup() const { return type_ & TYPE_POPUP; }
++  bool is_type_panel() const { return type_ & TYPE_PANEL; }
++  bool is_type_desktop() const { return type_ & TYPE_DESKTOP; }
+ 
+   bool is_app() const;
+   bool is_devtools() const;
+@@ -1202,6 +1217,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
@@ -250,7 +209,7 @@
    enum WebAppAction {
 --- a/chrome/browser/ui/browser_init.cc
 +++ b/chrome/browser/ui/browser_init.cc
-@@ -721,7 +721,8 @@
+@@ -682,7 +682,8 @@
  
      if (process_startup) {
        if (browser_defaults::kOSSupportsOtherBrowsers &&
@@ -260,7 +219,7 @@
          // Check whether we are the default browser.
          CheckDefaultBrowser(profile);
        }
-@@ -804,6 +805,13 @@
+@@ -766,6 +767,13 @@
    return (app_tab != NULL);
  }
  
@@ -274,7 +233,7 @@
  bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
    std::string url_string, app_id;
    if (!IsAppLaunch(&url_string, &app_id))
-@@ -853,6 +861,7 @@
+@@ -822,6 +830,7 @@
            profile,
            url,
            FilePath(icon_id),
@@ -294,71 +253,9 @@
      // If IsAppLaunch is true, tries to open an application window.
      // If the app is specified to start in a tab, or IsAppLaunch is false,
      // returns false to specify default processing.
---- a/chrome/browser/ui/gtk/browser_titlebar.cc
-+++ b/chrome/browser/ui/gtk/browser_titlebar.cc
-@@ -315,7 +315,7 @@
- 
-   // We use an alignment to control the titlebar height.
-   titlebar_alignment_ = gtk_alignment_new(0.0, 0.0, 1.0, 1.0);
--  if (browser_window_->browser()->type() == Browser::TYPE_NORMAL) {
-+  if (browser_window_->browser()->type() & Browser::TYPE_NORMAL) {
-     gtk_box_pack_start(GTK_BOX(container_hbox_), titlebar_alignment_, TRUE,
-                        TRUE, 0);
- 
-@@ -447,7 +447,7 @@
-   // If we are in incognito mode, add the spy guy to either the end of the left
-   // or the beginning of the right depending on which side has fewer buttons.
-   if (browser_window_->browser()->profile()->IsOffTheRecord() &&
--      browser_window_->browser()->type() == Browser::TYPE_NORMAL) {
-+      browser_window_->browser()->type() & Browser::TYPE_NORMAL) {
-     GtkWidget* spy_guy = gtk_image_new_from_pixbuf(GetOTRAvatar());
-     gtk_misc_set_alignment(GTK_MISC(spy_guy), 0.0, 1.0);
-     gtk_widget_set_size_request(spy_guy, -1, 0);
-@@ -547,8 +547,8 @@
- 
-   // Note: this isn't browser_window_->browser()->type() & Browser::TYPE_APP
-   // because we want to exclude Browser::TYPE_APP_POPUP.
--  if (browser_window_->browser()->type() == Browser::TYPE_APP ||
--      browser_window_->browser()->type() == Browser::TYPE_APP_PANEL) {
-+  if (browser_window_->browser()->type() & Browser::TYPE_APP &&
-+      browser_window_->browser()->type() != Browser::TYPE_APP_PANEL) {
-     // Update the system app icon.  We don't need to update the icon in the top
-     // left of the custom frame, that will get updated when the throbber is
-     // updated.
-@@ -588,8 +588,8 @@
- 
-     // Note: this isn't browser_window_->browser()->type() & Browser::TYPE_APP
-     // because we want to exclude Browser::TYPE_APP_POPUP.
--    if (browser_window_->browser()->type() == Browser::TYPE_APP ||
--        browser_window_->browser()->type() == Browser::TYPE_APP_PANEL) {
-+    if (browser_window_->browser()->type() & Browser::TYPE_APP &&
-+        browser_window_->browser()->type() != Browser::TYPE_APP_PANEL) {
-       SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
-       if (icon.empty()) {
-         // Fallback to the Chromium icon if the page has no icon.
---- a/chrome/browser/ui/gtk/browser_toolbar_gtk.cc
-+++ b/chrome/browser/ui/gtk/browser_toolbar_gtk.cc
-@@ -622,7 +622,7 @@
- 
- bool BrowserToolbarGtk::ShouldOnlyShowLocation() const {
-   // If we're a popup window, only show the location bar (omnibox).
--  return browser_->type() != Browser::TYPE_NORMAL;
-+  return !(browser_->type() & Browser::TYPE_NORMAL);
- }
- 
- gboolean BrowserToolbarGtk::OnWrenchMenuButtonExpose(GtkWidget* sender,
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -700,7 +700,7 @@
- }
- 
- void BrowserWindowGtk::LoadingAnimationCallback() {
--  if (browser_->type() == Browser::TYPE_NORMAL) {
-+  if (browser_->type() & Browser::TYPE_NORMAL) {
-     // Loading animations are shown in the tab for tabbed windows.  We check the
-     // browser type instead of calling IsTabStripVisible() because the latter
-     // will return false for fullscreen windows, but we still need to update
-@@ -768,6 +768,21 @@
+@@ -833,6 +833,21 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -380,16 +277,6 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -2204,8 +2219,7 @@
- bool BrowserWindowGtk::UseCustomFrame() {
-   // We don't use the custom frame for app mode windows or app window popups.
-   return use_custom_frame_pref_.GetValue() &&
--      browser_->type() != Browser::TYPE_APP &&
--      browser_->type() != Browser::TYPE_APP_POPUP;
-+      !(browser_->type() & Browser::TYPE_APP);
- }
- 
- bool BrowserWindowGtk::BoundsMatchMonitorSize() {
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
 @@ -349,6 +349,36 @@
@@ -442,7 +329,7 @@
  XID GetParentWindow(XID window);
 --- a/chrome/browser/ui/browser_window.h
 +++ b/chrome/browser/ui/browser_window.h
-@@ -135,6 +135,9 @@
+@@ -143,6 +143,9 @@
    // Returns true if the fullscreen bubble is visible.
    virtual bool IsFullscreenBubbleVisible() const = 0;
  
@@ -454,7 +341,7 @@
  
 --- a/chrome/browser/ui/gtk/browser_window_gtk.h
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -73,6 +73,7 @@
+@@ -79,6 +79,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
@@ -464,9 +351,9 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force);
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -146,6 +146,9 @@
- // file. If not specified, device policy will be disabled.
- const char kDevicePolicyCacheDir[]          = "device-policy-cache-dir";
+@@ -162,6 +162,9 @@
+ // device management backend.
+ const char kDeviceManagementUrl[]           = "device-management-url";
  
 +// Specifies that the browser should be launched in "X Desktop" mode.
 +const char kDesktop[]                       = "desktop";
@@ -476,17 +363,17 @@
  
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -54,6 +54,7 @@
- extern const char kConflictingModulesCheck[];
- extern const char kCountry[];
+@@ -59,6 +59,7 @@
+ extern const char kDebugDevToolsFrontend[];
+ extern const char kDebugEnableFrameToggle[];
  extern const char kDebugPrint[];
 +extern const char kDesktop[];
  extern const char kDeviceManagementUrl[];
- extern const char kDevicePolicyCacheDir[];
  extern const char kDiagnostics[];
+ extern const char kDisableAcceleratedLayers[];
 --- a/chrome/browser/ui/browser_list.cc
 +++ b/chrome/browser/ui/browser_list.cc
-@@ -322,7 +322,7 @@
+@@ -342,7 +342,7 @@
  #endif
  
  // static
@@ -495,7 +382,7 @@
    bool session_ending =
        browser_shutdown::GetShutdownType() == browser_shutdown::END_SESSION;
    bool use_post = !session_ending;
-@@ -351,6 +351,7 @@
+@@ -371,6 +371,7 @@
    for (BrowserList::const_iterator i = BrowserList::begin();
         i != BrowserList::end();) {
      Browser* browser = *i;
@@ -503,7 +390,7 @@
      browser->window()->Close();
      if (use_post) {
        ++i;
-@@ -375,7 +376,7 @@
+@@ -395,7 +396,7 @@
  }
  
  // static
@@ -512,7 +399,7 @@
  #if defined(OS_CHROMEOS)
    signout_ = true;
    // Fast shutdown for ChromeOS when there's no unload processing to be done.
-@@ -386,11 +387,11 @@
+@@ -406,11 +407,11 @@
      return;
    }
  #endif
@@ -526,7 +413,7 @@
    MarkAsCleanShutdown();  // Don't notify users of crashes beyond this point.
    NotificationService::current()->Notify(
        NotificationType::APP_EXITING,
-@@ -399,7 +400,7 @@
+@@ -419,7 +420,7 @@
  
  #if !defined(OS_MACOSX)
    // On most platforms, closing all windows causes the application to exit.
@@ -535,7 +422,7 @@
  #else
    // On the Mac, the application continues to run once all windows are closed.
    // Terminate will result in a CloseAllBrowsers() call, and once (and if)
-@@ -428,7 +429,7 @@
+@@ -448,7 +449,7 @@
    // Write important data first.
    g_browser_process->EndSession();
  
@@ -544,7 +431,7 @@
  
    // Send out notification. This is used during testing so that the test harness
    // can properly shutdown before we exit.
-@@ -484,7 +485,7 @@
+@@ -504,7 +505,7 @@
      // (MessageLoop::current() == null).
      if (browsers_.empty() && !browser_shutdown::IsTryingToQuit() &&
          MessageLoop::current())
@@ -555,7 +442,7 @@
  
 --- a/chrome/browser/browser_process_impl.cc
 +++ b/chrome/browser/browser_process_impl.cc
-@@ -986,7 +986,7 @@
+@@ -1142,7 +1142,7 @@
    }
  
    DLOG(WARNING) << "Shutting down current instance of the browser.";
@@ -563,7 +450,7 @@
 +  BrowserList::CloseAllBrowsersAndExit(0);
  
    // Transfer ownership to Upgrade.
-   Upgrade::SetNewCommandLine(new_cl.release());
+   upgrade_util::SetNewCommandLine(new_cl.release());
 --- a/chrome/browser/ui/gtk/update_recommended_dialog.cc
 +++ b/chrome/browser/ui/gtk/update_recommended_dialog.cc
 @@ -60,7 +60,7 @@
@@ -577,7 +464,7 @@
    delete this;
 --- a/chrome/browser/automation/testing_automation_provider.cc
 +++ b/chrome/browser/automation/testing_automation_provider.cc
-@@ -414,7 +414,7 @@
+@@ -439,7 +439,7 @@
  void TestingAutomationProvider::OnChannelError() {
    if (!reinitialize_on_channel_error_ &&
        browser_shutdown::GetShutdownType() == browser_shutdown::NOT_VALID)
@@ -588,10 +475,10 @@
  
 --- a/chrome/browser/background_mode_manager.cc
 +++ b/chrome/browser/background_mode_manager.cc
-@@ -340,7 +340,7 @@
+@@ -71,7 +71,7 @@
        break;
      case IDC_EXIT:
-       UserMetrics::RecordAction(UserMetricsAction("Exit"), profile_);
+       UserMetrics::RecordAction(UserMetricsAction("Exit"));
 -      BrowserList::CloseAllBrowsersAndExit();
 +      BrowserList::CloseAllBrowsersAndExit(0);
        break;
@@ -599,7 +486,7 @@
        GetBrowserWindow()->OpenOptionsDialog();
 --- a/chrome/browser/ui/views/about_chrome_view.cc
 +++ b/chrome/browser/ui/views/about_chrome_view.cc
-@@ -629,7 +629,7 @@
+@@ -616,7 +616,7 @@
    // Set the flag to restore the last session on shutdown.
    PrefService* pref_service = g_browser_process->local_state();
    pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
@@ -621,7 +508,7 @@
  }
 --- a/chrome/browser/browser_main_posix.cc
 +++ b/chrome/browser/browser_main_posix.cc
-@@ -120,7 +120,7 @@
+@@ -138,7 +138,7 @@
  
    if (!BrowserThread::PostTask(
        BrowserThread::UI, FROM_HERE,
@@ -643,7 +530,7 @@
    }
 --- a/chrome/browser/ui/browser_list.h
 +++ b/chrome/browser/ui/browser_list.h
-@@ -97,18 +97,18 @@
+@@ -101,18 +101,18 @@
    static bool CanRestartForUpdate();
  
    // Called from Browser::Exit.
@@ -667,7 +554,7 @@
    static void SessionEnding();
 --- a/chrome/browser/ui/webui/flags_ui.cc
 +++ b/chrome/browser/ui/webui/flags_ui.cc
-@@ -166,7 +166,7 @@
+@@ -190,7 +190,7 @@
    // Set the flag to restore state after the restart.
    PrefService* pref_service = g_browser_process->local_state();
    pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
@@ -678,7 +565,7 @@
    // sign out. Session will be only restored is user has that setting set.
 --- a/chrome/browser/ui/webui/options/language_options_handler.cc
 +++ b/chrome/browser/ui/webui/options/language_options_handler.cc
-@@ -107,5 +107,5 @@
+@@ -112,5 +112,5 @@
    // Set the flag to restore state after the restart.
    PrefService* pref_service = g_browser_process->local_state();
    pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);

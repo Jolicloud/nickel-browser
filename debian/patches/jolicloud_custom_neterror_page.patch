@@ -1,22 +1,3 @@
---- a/chrome/renderer/render_view.cc
-+++ b/chrome/renderer/render_view.cc
-@@ -1893,6 +1893,7 @@
-                                          bool replace) {
-   GURL failed_url = error.unreachableURL;
-   std::string alt_html;
-+  static const std::string kMyJolicloudHost("my.jolicloud.com");
-   const Extension* extension = NULL;
-   if (html.empty()) {
-     // Use a local error page.
-@@ -1901,7 +1902,7 @@
- 
-     if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
-       extension = render_thread_->GetExtensions()->GetByURL(failed_url);
--    if (extension) {
-+    if (failed_url.host() != kMyJolicloudHost && extension) {
-       LocalizedError::GetAppErrorStrings(error, failed_url, extension,
-                                          &error_strings);
- 
 --- a/chrome/renderer/resources/neterror.html
 +++ b/chrome/renderer/resources/neterror.html
 @@ -106,6 +106,75 @@
@@ -121,3 +102,22 @@
    <div id="suggestions" jsdisplay="suggestionsHeading">
     <h2 i18n-content="suggestionsHeading"></h2>
     <ul>
+--- a/chrome/renderer/chrome_content_renderer_client.cc
++++ b/chrome/renderer/chrome_content_renderer_client.cc
+@@ -412,6 +412,7 @@
+     const WebURLError& error) {
+   GURL failed_url = error.unreachableURL;
+   std::string html;
++  static const std::string kMyJolicloudHost("my.jolicloud.com");
+   const Extension* extension = NULL;
+ 
+   // Use a local error page.
+@@ -419,7 +420,7 @@
+   DictionaryValue error_strings;
+   if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
+     extension = extension_dispatcher_->extensions()->GetByURL(failed_url);
+-  if (extension) {
++  if (failed_url.host() != kMyJolicloudHost && extension) {
+     LocalizedError::GetAppErrorStrings(error, failed_url, extension,
+                                        &error_strings);
+ 
