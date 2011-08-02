@@ -2,7 +2,8 @@
 ubuntu_dont_overwrite_default_download_directory.patch
 chromium_useragent.patch
 disable_dlog_and_dcheck_in_release_builds.patch
-#@DIST:11.04@ disable_gtk_resize_grip_on_natty.patch
 webkit_rev_parser.patch
 dlopen_libgnutls.patch
 dlopen_sonamed_gl.patch
+grit_language_variants.patch
+html5-codecs-fix.patch

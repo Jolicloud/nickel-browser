@@ -193,7 +193,7 @@ def get_envs(envs):
         s += env + " = " + str(os.getenv(env)) + "\n"
     return s
 
-def add_info(report, userdir = None):
+def add_info(report, ui = None, userdir = None):
     apport.hookutils.attach_related_packages(report, RELATED_PACKAGES)
     installed_version(report, RELATED_PACKAGES)
 

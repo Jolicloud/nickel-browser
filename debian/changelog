@@ -1,16 +1,311 @@
-chromium-browser (11.0.696.34~r80286-0ubuntu1~ucd~beta1) natty; urgency=high
+chromium-browser (13.0.782.107~r94237-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New upstream release from the Beta Channel
+  * Add a "Conflicts" with -inspector so that it gets removed
+    - update debian/control
+  * Disable PIE for ARM on Oneiric too
+    - update debian/rules
+  * Run the gclient hooks when creating the source tarball, as we need files
+    from the Native Client's integrated runtime (IRT) library.
+    Install the NaCL IRT files in the main deb
+    - update debian/rules
+    - update debian/chromium-browser.install
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 28 Jul 2011 09:35:47 +0200
+
+chromium-browser (12.0.742.112~r90304-0ubuntu1) oneiric; urgency=high
+
+  * New Minor upstream release from the Stable Channel (LP: #803107)
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [84355] High, CVE-2011-2346: Use-after-free in SVG font handling.
+        Credit to miaubiz.
+      - [85003] High, CVE-2011-2347: Memory corruption in CSS parsing. Credit
+        to miaubiz.
+      - [85102] High, CVE-2011-2350: Lifetime and re-entrancy issues in the
+        HTML parser. Credit to miaubiz.
+      - [85211] High, CVE-2011-2351: Use-after-free with SVG use element.
+        Credit to miaubiz.
+      - [85418] High, CVE-2011-2349: Use-after-free in text selection. Credit
+        to miaubiz.
+    + Chromium issues:
+      - [77493] Medium, CVE-2011-2345: Out-of-bounds read in NPAPI string
+        handling. Credit to Philippe Arteau.
+      - [85177] High, CVE-2011-2348: Bad bounds check in v8. Credit to Aki
+        Helin of OUSPG.
+  Packaging changes:
+  * Add Valencian (ca@valencia) to the list of supported langs for the
+    lang-packs
+    - update debian/rules
+    - update debian/control
+  * Add support for language variants in Grit, backported from trunk.
+    This is needed to support lang-codes like ca@valencia
+    - add debian/patches/grit_language_variants.patch
+    - update debian/patches/series
+  * Add a WANT_ONLY_WHITELISTED_NEW_LANGS knob to make it easier to
+    sync translations of new langs between all the branches
+    - update debian/rules
+  * Properly stop the keep-alive when the build fails
+    - update debian/rules
+  * Fix the HTML5 <video> tag regression in Oneiric by properly linking
+    libvpx so it's not being dropped from libffmpegsumo.so (LP: #795171)
+    - add debian/patches/html5-codecs-fix.patch
+    - update debian/patches/series
+  * Drop the -inspector package, its content has been merged into the main deb
+    in M12 and the deb remained empty since.
+    Also drop chromium-codecs-ffmpeg-nonfree, renamed in M5 to -extra
+    - update debian/control
+    - update debian/rules
+  * Backport of http://codereview.chromium.org/6883221 from M13 presumably
+    fixing the ARM ftbfs from the last update, and set use_cups=0 on armel
+    - add debian/patches/cups_cleanup_cr6883221.patch
+    - update debian/patches/series
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 28 Jun 2011 07:17:52 +0200
+
+chromium-browser (12.0.742.91~r87961-0ubuntu1) oneiric; urgency=high
+
+  * New upstream release from the Stable Channel (LP: #794197)
+    It includes:
+    - Hardware accelerated 3D CSS
+    - New Safe Browsing protection against downloading malicious files
+    - Ability to delete Flash cookies from inside Chrome
+    - Launch Web Apps by name from the Omnibox
+    - Integrated Sync into new settings pages
+    - Removal of support for Google Gears
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [73962] [79746] High CVE-2011-1808: Use-after-free due to integer
+        issues in float handling. Credit to miaubiz.
+      - [75496] Medium CVE-2011-1809: Use-after-free in accessibility support.
+        Credit to Google Chrome Security Team (SkyLined).
+      - [75643] Low CVE-2011-1810: Visit history information leak in CSS.
+        Credit to Jesse Mohrland of Microsoft and Microsoft Vulnerability
+        Research (MSVR).
+      - [80358] Medium CVE-2011-1816: Use-after-free in developer tools. Credit
+        to kuzzcc.
+      - [81949] High CVE-2011-1818: Use-after-free in image loader. Credit to
+        miaubiz.
+      - [83743] High CVE-2011-2342: Same origin bypass in DOM. Credit to Sergey
+        Glazunov.
+    + Chromium issues:
+      - [76034] Low CVE-2011-1811: Browser crash with lots of form submissions.
+        Credit to “DimitrisV22”.
+      - [77026] Medium CVE-2011-1812: Extensions permission bypass. Credit to
+        kuzzcc.
+      - [78516] High CVE-2011-1813: Stale pointer in extension framework.
+        Credit to Google Chrome Security Team (Inferno).
+      - [79862] Low CVE-2011-1815: Extension script injection into new tab
+        page. Credit to kuzzcc.
+      - [81916] Medium CVE-2011-1817: Browser memory corruption in history
+        deletion. Credit to Collin Payne.
+      - [83010] Medium CVE-2011-1819: Extension injection into chrome:// pages.
+        Credit to Vladislavas Jarmalis, plus subsequent independent discovery
+        by Sergey Glazunov.
+      - [83275] High CVE-2011-2332: Same origin bypass in v8. Credit to Sergey
+        Glazunov.
+  Packaging changes:
+  * Provide a batch of translations for the Unity quicklists, and update
+    the regular desktop translations
+    - update debian/chromium-browser.desktop
+  * Add a keep-alive script preventing the builders from killing the build
+    when it's not echoing anything for too long (useful when linking
+    the main binary with ld-bfd)
+    - add debian/keep-alive.sh
+    - update debian/rules
+  * Drop the gtk resize patch, now that upstream does it for us
+    - remove debian/patches/disable_gtk_resize_grip_on_natty.patch
+    - update debian/patches/series
+  * Drop the xdg-utils patch and use the system xdg tools when we
+    detect that xdg-setting is present on the system (ensuring it's a recent
+    enough xdg-utils)
+    - update debian/chromium-browser.sh.in
+    - remove debian/patches/xdg-utils_gnome3_lp670128_for_natty.patch
+    - update debian/patches/series
+  * Drop the stored passwords patch
+    - remove debian/patches/stored_passwords_lp743494.patch
+    - update debian/patches/series
+  * Drop the dedicated webapp WMClass patch
+    - remove debian/patches/webapps-wm-class-lp692462.patch
+    - update debian/patches/series
+  * When building with a non-default g++, also link with the same version
+    - update debian/rules
+  * Empty the -inspector package now that it has been merged into the main
+    resources.pak file (so that the Inspector remains usable after an upgrade
+    until the next browser restart). Also remove the resources directory,
+    now empty
+    - remove debian/chromium-browser-inspector.install
+    - update debian/chromium-browser.dirs
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 26 May 2011 17:16:41 +0200
+
+chromium-browser (11.0.696.71~r86024-0ubuntu1) oneiric; urgency=low
+
+  * New Minor upstream release from the Stable Channel (LP: #787846)
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [72189] Low, CVE-2011-1801: Pop-up blocker bypass. Credit to Chamal De
+        Silva.
+      - [82546] High, CVE-2011-1804: Stale pointer in floats rendering. Credit
+        to Martin Barbella.
+      - [82903] Critical, CVE-2011-1807: Out-of-bounds write in blob handling.
+        Credit to Google Chrome Security Team (Inferno) and Kostya Serebryany
+        of the Chromium development community.
+      - other issues covered by CVE-2011-1802, CVE-2011-1803, CVE-2011-1805
+    + GPU/WebGL issue:
+      - [82873] Critical, CVE-2011-1806: Memory corruption in GPU command
+        buffer. Credit to Google Chrome Security Team (Cris Neckar).
+  * Update the svg icon once again, the previous one contained an embedded png
+    (LP: #748881)
+    - update debian/chromium-browser.svg
+  * Don't build with libjpeg-turbo on armel, to prevent a FTBFS
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 24 May 2011 23:42:08 +0200
+
+chromium-browser (11.0.696.68~r84545-0ubuntu1) oneiric; urgency=high
+
+  * New Minor upstream release from the Stable Channel (LP: #781822)
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [64046] High, CVE-2011-1799: Bad casts in Chromium WebKit glue. Credit
+        to Google Chrome Security Team (SkyLined).
+      - [80608] High, CVE-2011-1800: Integer overflows in SVG filters. Credit
+        to Google Chrome Security Team (Cris Neckar).
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 12 May 2011 19:37:35 +0200
+
+chromium-browser (11.0.696.65~r84435-0ubuntu1) oneiric; urgency=high
+
+  * New Minor upstream release from the Stable Channel (LP: #778822)
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [67923] High, CVE-2011-1793: stale pointer in SVG image handling
+        (credit: Mitz)
+      - [78327] High, CVE-2011-1794: integer overflow in SVG filters (credit:
+        Inferno)
+      - [78948] High, CVE-2011-1795: integer underflow in forms handling
+        (credit: Cris Neckar)
+      - [79055] High, CVE-2011-1796: use-after-free in frame handling (credit:
+        Inferno)
+      - [79075] High, CVE-2011-1797: stale pointer in table captioning (credit:
+        wushi)
+      - [79595] High, CVE-2011-1798: bad cast in SVG text handling (credit:
+        Inferno)
+  * Add a static quicklist for Unity allowing to open a new window (either regular
+    or incognito) or a fresh session with a temporary profile
+    - update debian/chromium-browser.desktop
+  * Don't let scour touch the svg files (LP: #748881)
+    - update debian/rules
+  * Pass --delete_unversioned_trees to gclient and drop the git.chromium.org
+    workaround.
+    - update debian/rules
+  * Build with gcc-4.5 on Oneiric for now. It's not ready for 4.6
+    - update debian/control
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 06 May 2011 23:04:53 +0200
+
+chromium-browser (11.0.696.57~r82915-0ubuntu1) natty-security; urgency=high
+
+  * New Major upstream release from the Stable Channel (LP: #771935)
+    This release fixes the following security issues:
+    + WebKit issues:
+      - [61502] High, CVE-2011-1303: Stale pointer in floating object handling.
+        Credit to Scott Hess of the Chromium development community and Martin
+        Barbella.
+      - [70538] Low, CVE-2011-1304: Pop-up block bypass via plug-ins. Credit to
+        Chamal De Silva.
+      - [70589] Medium, CVE-2011-1305: Linked-list race in database handling.
+        Credit to Kostya Serebryany of the Chromium development community.
+      - [73526] High, CVE-2011-1437: Integer overflows in float rendering.
+        Credit to miaubiz.
+      - [74653] High, CVE-2011-1438: Same origin policy violation with blobs.
+        Credit to kuzzcc.
+      - [75186] High, CVE-2011-1440: Use-after-free with <ruby> tag and CSS.
+        Credit to Jose A. Vazquez.
+      - [75347] High, CVE-2011-1441: Bad cast with floating select lists.
+        Credit to Michael Griffiths.
+      - [75801] High, CVE-2011-1442: Corrupt node trees with mutation events.
+        Credit to Sergey Glazunov and wushi of team 509.
+      - [76001] High, CVE-2011-1443: Stale pointers in layering code. Credit to
+        Martin Barbella.
+      - [76646] Medium, CVE-2011-1445: Out-of-bounds read in SVG. Credit to
+        wushi of team509.
+      - [76666] [77507] [78031] High, CVE-2011-1446: Possible URL bar spoofs
+        with navigation errors and interrupted loads. Credit to kuzzcc.
+      - [76966] High, CVE-2011-1447: Stale pointer in drop-down list handling.
+        Credit to miaubiz.
+      - [77130] High, CVE-2011-1448: Stale pointer in height calculations.
+        Credit to wushi of team509.
+      - [77346] High, CVE-2011-1449: Use-after-free in WebSockets. Credit to
+        Marek Majkowski.
+      - [77463] High, CVE-2011-1451: Dangling pointers in DOM id map. Credit to
+        Sergey Glazunov.
+      - [79199] High, CVE-2011-1454: Use-after-free in DOM id handling. Credit
+        to Sergey Glazunov.
+    + Chromium issues:
+      - [71586] Medium, CVE-2011-1434: Lack of thread safety in MIME handling.
+        Credit to Aki Helin.
+      - [72523] Medium, CVE-2011-1435: Bad extension with ‘tabs’ permission can
+        capture local files. Credit to Cole Snodgrass.
+      - [72910] Low, CVE-2011-1436: Possible browser crash due to bad
+        interaction with X. Credit to miaubiz.
+      - [76542] High, CVE-2011-1444: Race condition in sandbox launcher. Credit
+        to Dan Rosenberg.
+      - [77349] Low, CVE-2011-1450: Dangling pointers in file dialogs. Credit
+        to kuzzcc.
+      - [77786] Medium, CVE-2011-1452: URL bar spoof with redirect and manual
+        reload. Credit to Jordi Chancel.
+      - [74763] High, CVE-2011-1439: Prevent interference between renderer
+        processes. Credit to Julien Tinnes of the Google Security Team.
+  * Fix the password store regression from the last Chromium 10 update.
+    Backport from trunk provided by Elliot Glaysher from upstream (LP: #743494)
+    - add debian/patches/stored_passwords_lp743494.patch
+    - update debian/patches/series
+  * Fix the dedicated webapp WMClass (needed by Unity/bamf).
+    Don't change the WMClass at all on XFCE where it is displayed to
+    the user as a title (which it isn't). This is a backport
+    of upstream revisions 82581 & 82672 (LP: #692462)
+    - update debian/patches/webapps-wm-class-lp692462.patch
   * Update the SVG logo to match the new simplified 2D logo (LP: #748881)
     - update debian/chromium-browser.svg
   * Ship the app icon in all the sizes provided upstream
     - update debian/rules
   * Add libpam0g-dev to Build-depends, needed by "Chromoting"
     - update debian/control
-  * Enable the third_party translations at build time (they come from Launchpad)
+  * Enable the new use_third_party_translations flag at build time (it enables
+    the Launchpad translations already used in Ubuntu since Chromium 8)
     - update debian/rules
 
- -- Fabien Tassin <fta@ubuntu.com>  Tue, 05 Apr 2011 13:37:39 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 27 Apr 2011 17:31:35 +0200
+
+chromium-browser (10.0.648.205~r81283-0ubuntu1) natty; urgency=high
+
+  * New upstream minor release from the Stable Channel (LP: #762275)
+    This release fixes the following security issues:
+    - [75629] Critical, CVE-2011-1301: Use-after-free in the GPU process.
+      Credit to Google Chrome Security Team (Inferno).
+    - [78524] Critical, CVE-2011-1302: Heap overflow in the GPU process. Credit
+      to Christoph Diehl.
+  * Make the default mail client and browser settings work with the
+    x-scheme-handler method of registering URI handlers in gnome3.
+    This is based on the xdg-utils 1.1.0~rc1-2ubuntu3 fix by Chris Coulson
+    <chris.coulson@canonical.com>, itself based on Bastien Nocera <hadess@hadess.net>
+    upstream fix (LP: #670128)
+    - add debian/patches/xdg-utils_gnome3_lp670128_for_natty.patch
+    - update debian/patches/series
+  * Fix the apport hooks to pass the expected 'ui' to add_info(), needed when
+    called from apport/ubuntu-bug (LP: #759635)
+    - update debian/apport/chromium-browser.py
+  * Report a dedicated WMClass per webapp, needed by Unity/bamf.
+    (backported from trunk) (LP: #692462)
+    - add debian/patches/webapps-wm-class-lp692462.patch
+    - update debian/patches/series
+
+ -- Fabien Tassin <fta@ubuntu.com>  Thu, 14 Apr 2011 22:36:16 +0200
 
 chromium-browser (10.0.648.204~r79063-0ubuntu2) natty; urgency=high
 

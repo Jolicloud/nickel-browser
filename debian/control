@@ -11,6 +11,7 @@ Build-Depends: cdbs,
 	lzma,
 	quilt,
 	patchutils (>= 0.2.25),
+	g++-4.5 | g++-4.4,
 	libc6-dev-i386 [amd64],
 	g++-multilib [amd64],
 	hardening-wrapper,
@@ -54,12 +55,11 @@ Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
-	chromium-browser-inspector,
 	chromium-codecs-ffmpeg (>= 0.6) | chromium-codecs-ffmpeg-extra (>= 0.6)
 Recommends: chromium-browser-l10n
-Provides: www-browser, chromium-testsuite
-Replaces: chromium-testsuite
-Conflicts: chromium-testsuite
+Provides: www-browser, chromium-browser-inspector
+Replaces: chromium-browser-inspector
+Conflicts: chromium-browser-inspector
 Description: Chromium browser
  Chromium is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
@@ -76,9 +76,6 @@ Section: devel
 Priority: optional
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (= ${binary:Version})
-Provides: chromium-testsuite-dbg
-Replaces: chromium-testsuite-dbg
-Conflicts: chromium-testsuite-dbg
 Description: chromium-browser debug symbols
  Debug symbols for the Chromium browser
 
@@ -86,34 +83,21 @@ Package: chromium-browser-l10n
 Architecture: all
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (= ${binary:Version})
-Breaks: chromium-browser (<< 3.0.197.0~svn20090804r22432)
-Replaces: chromium-browser (<< 3.0.197.0~svn20090804r22432)
 Description: chromium-browser language packages
  Chromium is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
  .
- This package contains language packages for 54 languages:
- am, ar, bg, bn, ca, cs, da, de, el, en-GB, es, es-419, et, eu, fa, fi, fil, fr,
- gl, gu, he, hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr, nb, nl, pl, pt-BR,
- pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, ug, uk, vi, zh-CN, zh-TW
-
-Package: chromium-browser-inspector
-Architecture: all
-Pre-Depends: lzma
-Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser
-Description: page inspector for the chromium-browser
- Chromium is an open-source browser project that aims to build a safer, faster,
- and more stable way for all Internet users to experience the web.
- .
- This package contains 'inspector', allowing web developpers to inspect any
- element of a web page at runtime (html, javascript, css, ..)
+ This package contains language packages for 55 languages:
+ am, ar, bg, bn, ca, ca@valencia, cs, da, de, el, en-GB, es, es-419, et, eu,
+ fa, fi, fil, fr, gl, gu, he, hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr,
+ nb, nl, pl, pt-BR, pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, ug, uk,
+ vi, zh-CN, zh-TW
 
 Package: chromium-codecs-ffmpeg
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (>= 4.0.203.0~)
-Conflicts: chromium-codecs-ffmpeg-extra, chromium-codecs-ffmpeg-nonfree
-Replaces: chromium-codecs-ffmpeg-extra, chromium-codecs-ffmpeg-nonfree
-Breaks: chromium-browser (<< 3.0.197.0~svn20090802r22252)
+Conflicts: chromium-codecs-ffmpeg-extra
+Replaces: chromium-codecs-ffmpeg-extra
 Description: Free ffmpeg codecs for the Chromium Browser
  Chromium is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
@@ -127,18 +111,16 @@ Architecture: any
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-codecs-ffmpeg (= ${binary:Version})
-Conflicts: chromium-codecs-ffmpeg-extra-dbg, chromium-codecs-ffmpeg-nonfree-dbg
-Replaces: chromium-codecs-ffmpeg-extra-dbg, chromium-codecs-ffmpeg-nonfree-dbg
+Conflicts: chromium-codecs-ffmpeg-extra-dbg
+Replaces: chromium-codecs-ffmpeg-extra-dbg
 Description: chromium-codecs-ffmpeg debug symbols
  Debug symbols for the free ffmpeg-mt codecs
 
 Package: chromium-codecs-ffmpeg-extra
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (>= 4.0.203.0~)
-Conflicts: chromium-codecs-ffmpeg, chromium-codecs-ffmpeg-nonfree (<< 0.5+svn20100323r42310+42573+42709)
-Breaks: chromium-browser (<< 3.0.197.0~svn20090802r22252)
-Replaces: chromium-codecs-ffmpeg, chromium-codecs-ffmpeg-nonfree, chromium-browser
-Provides: chromium-codecs-ffmpeg-nonfree
+Conflicts: chromium-codecs-ffmpeg
+Replaces: chromium-codecs-ffmpeg
 Description: Extra ffmpeg codecs for the Chromium Browser
  Chromium is an open-source browser project that aims to build a safer, faster,
  and more stable way for all Internet users to experience the web.
@@ -153,22 +135,7 @@ Architecture: any
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-codecs-ffmpeg-extra (= ${binary:Version})
-Conflicts: chromium-codecs-ffmpeg-dbg, chromium-codecs-ffmpeg-nonfree-dbg (<< 0.5+svn20100323r42310+42573+42709)
-Replaces: chromium-codecs-ffmpeg-dbg, chromium-codecs-ffmpeg-nonfree-dbg
-Provides: chromium-codecs-ffmpeg-nonfree-dbg
+Conflicts: chromium-codecs-ffmpeg-dbg
+Replaces: chromium-codecs-ffmpeg-dbg
 Description: chromium-codecs-ffmpeg-extra debug symbols
  Debug symbols for the extra ffmpeg-mt codecs
-
-Package: chromium-codecs-ffmpeg-nonfree
-Architecture: all
-Depends: chromium-codecs-ffmpeg-extra
-Description: dummy upgrade package
- This is a transitional package so chromium-codecs-ffmpeg-nonfree users
- get chromium-codecs-ffmpeg-extra on upgrade. It can be safely removed.
-
-Package: chromium-codecs-ffmpeg-nonfree-dbg
-Architecture: all
-Depends: chromium-codecs-ffmpeg-extra-dbg
-Description: dummy upgrade package
- This is a transitional package so chromium-codecs-ffmpeg-nonfree-dbg users
- get chromium-codecs-ffmpeg-extra-dbg on upgrade. It can be safely removed.

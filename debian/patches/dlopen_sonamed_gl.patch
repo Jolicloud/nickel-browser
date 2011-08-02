@@ -4,14 +4,14 @@ as we don't want to Depend on the -dev packages for the .so files:
 - libGLESv2.so.1 and libEGL.so.1: available only since Maverick
 
 ---
- app/gfx/gl/gl_implementation_linux.cc |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ ui/gfx/gl/gl_implementation_linux.cc |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-Index: src/app/gfx/gl/gl_implementation_linux.cc
+Index: src/ui/gfx/gl/gl_implementation_linux.cc
 ===================================================================
---- src.orig/app/gfx/gl/gl_implementation_linux.cc
-+++ src/app/gfx/gl/gl_implementation_linux.cc
-@@ -40,19 +40,19 @@
+--- src.orig/ui/gfx/gl/gl_implementation_linux.cc
++++ src/ui/gfx/gl/gl_implementation_linux.cc
+@@ -56,17 +56,17 @@
      case kGLImplementationOSMesaGL: {
        FilePath module_path;
        if (!PathService::Get(base::DIR_MODULE, &module_path)) {
@@ -19,21 +19,19 @@ Index: src/app/gfx/gl/gl_implementation_linux.cc
          return false;
        }
  
-       base::NativeLibrary library = base::LoadNativeLibrary(
+       base::NativeLibrary library = LoadLibrary(
 -          module_path.Append("libosmesa.so"));
 +          module_path.Append("libosmesa.so.6"));
-       if (!library) {
--        VLOG(1) << "libosmesa.so not found";
-+        VLOG(1) << "libosmesa.so.6 not found";
+       if (!library)
          return false;
-       }
  
        GLGetProcAddressProc get_proc_address =
            reinterpret_cast<GLGetProcAddressProc>(
                base::GetFunctionPointerFromNativeLibrary(
                    library, "OSMesaGetProcAddress"));
        if (!get_proc_address) {
-@@ -92,26 +92,26 @@
+@@ -102,20 +102,20 @@
+       AddGLNativeLibrary(library);
        SetGLImplementation(kGLImplementationDesktopGL);
  
        InitializeGLBindingsGL();
@@ -41,26 +39,17 @@ Index: src/app/gfx/gl/gl_implementation_linux.cc
        break;
      }
      case kGLImplementationEGLGLES2: {
-       base::NativeLibrary gles_library = base::LoadNativeLibrary(
--          FilePath("libGLESv2.so"));
-+          FilePath("libGLESv2.so.2"));
-       if (!gles_library) {
--        VLOG(1) << "libGLESv2.so not found";
-+        VLOG(1) << "libGLESv2.so.2 not found";
+-      base::NativeLibrary gles_library = LoadLibrary("libGLESv2.so");
++      base::NativeLibrary gles_library = LoadLibrary("libGLESv2.so.2");
+       if (!gles_library)
          return false;
-       }
- 
-       base::NativeLibrary egl_library = base::LoadNativeLibrary(
--          FilePath("libEGL.so"));
-+          FilePath("libEGL.so.1"));
-       if (!egl_library) {
--        VLOG(1) << "libEGL.so not found";
-+        VLOG(1) << "libEGL.so.1 not found";
-         base::UnloadNativeLibrary(gles_library);
+-      base::NativeLibrary egl_library = LoadLibrary("libEGL.so");
++      base::NativeLibrary egl_library = LoadLibrary("libEGL.so.1");
+       if (!egl_library)
          return false;
-       }
  
        GLGetProcAddressProc get_proc_address =
            reinterpret_cast<GLGetProcAddressProc>(
                base::GetFunctionPointerFromNativeLibrary(
                    egl_library, "eglGetProcAddress"));
+       if (!get_proc_address) {
