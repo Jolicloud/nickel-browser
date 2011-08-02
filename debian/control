@@ -9,6 +9,7 @@ Build-Depends: cdbs,
 	lzma,
 	quilt,
 	patchutils (>= 0.2.25),
+	g++-4.5 | g++-4.4,
 	libc6-dev-i386 [amd64],
 	g++-multilib [amd64],
 	hardening-wrapper,
@@ -52,12 +53,11 @@ Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
-	nickel-browser-inspector,
-	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-nonfree (>= 0.6)
-Recommends: nickel-browser-l10n, google-talkplugin
-Provides: www-browser, jolicloud-webapps-engine, chromium-testsuite
-Replaces: chromium-testsuite
-Conflicts: chromium-testsuite
+	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-extra (>= 0.6)
+Recommends: nickel-browser-l10n
+Provides: www-browser, nickel-browser-inspector
+Replaces: nickel-browser-inspector
+Conflicts: nickel-browser-inspector
 Description: Nickel browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -70,9 +70,6 @@ Section: devel
 Priority: optional
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
-Provides: chromium-testsuite-dbg
-Replaces: chromium-testsuite-dbg
-Conflicts: chromium-testsuite-dbg
 Description: nickel-browser debug symbols
  Debug symbols for the Nickel browser
 
@@ -80,34 +77,21 @@ Package: nickel-browser-l10n
 Architecture: all
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
-Breaks: nickel-browser (<< 3.0.197.0~svn20090804r22432)
-Replaces: nickel-browser (<< 3.0.197.0~svn20090804r22432)
-Description: nickel-browser language packages
- Nickel is a fork of Chromium, an open-source browser project that aims to build
- a safer, faster, and more stable way for all Internet users to experience the web.
+Description: Nickel-browser language packages
+ Nickel is an open-source browser project that aims to build a safer, faster,
+ and more stable way for all Internet users to experience the web.
  .
- This package contains language packages for 54 languages:
- am, ar, bg, bn, ca, cs, da, de, el, en-GB, es, es-419, et, eu, fa, fi, fil, fr,
- gl, gu, he, hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr, nb, nl, pl, pt-BR,
- pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, ug, uk, vi, zh-CN, zh-TW
-
-Package: nickel-browser-inspector
-Architecture: all
-Pre-Depends: lzma
-Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser
-Description: page inspector for the nickel-browser
- Nickel is a fork of Chromium, an open-source browser project that aims to build
- a safer, faster, and more stable way for all Internet users to experience the web.
- .
- This package contains 'inspector', allowing web developpers to inspect any
- element of a web page at runtime (html, javascript, css, ..)
+ This package contains language packages for 55 languages:
+ am, ar, bg, bn, ca, ca@valencia, cs, da, de, el, en-GB, es, es-419, et, eu,
+ fa, fi, fil, fr, gl, gu, he, hi, hr, hu, id, it, ja, kn, ko, lt, lv, ml, mr,
+ nb, nl, pl, pt-BR, pt-PT, ro, ru, sk, sl, sr, sv, sw, ta, te, th, tr, ug, uk,
+ vi, zh-CN, zh-TW
 
 Package: nickel-codecs-ffmpeg
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
-Conflicts: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
-Replaces: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
-Breaks: nickel-browser (<< 3.0.197.0~svn20090802r22252)
+Conflicts: nickel-codecs-ffmpeg-extra
+Replaces: nickel-codecs-ffmpeg-extra
 Description: Free ffmpeg codecs for the Nickel Browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -121,8 +105,8 @@ Architecture: any
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg (= ${binary:Version})
-Conflicts: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
-Replaces: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
+Conflicts: nickel-codecs-ffmpeg-extra-dbg
+Replaces: nickel-codecs-ffmpeg-extra-dbg
 Description: nickel-codecs-ffmpeg debug symbols
  Debug symbols for the free ffmpeg-mt codecs
 
@@ -130,10 +114,8 @@ Package: nickel-codecs-ffmpeg-extra
 Architecture: any
 Section: restricted/web
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
-Conflicts: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree (<< 0.5+svn20100323r42310+42573+42709)
-Breaks: nickel-browser (<< 3.0.197.0~svn20090802r22252)
-Replaces: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree, nickel-browser
-Provides: nickel-codecs-ffmpeg-nonfree
+Conflicts: nickel-codecs-ffmpeg
+Replaces: nickel-codecs-ffmpeg
 Description: Extra ffmpeg codecs for the Nickel Browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -148,24 +130,7 @@ Architecture: any
 Section: restricted/debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg-extra (= ${binary:Version})
-Conflicts: nickel-codecs-ffmpeg-dbg, nickel-codecs-ffmpeg-nonfree-dbg (<< 0.5+svn20100323r42310+42573+42709)
-Replaces: nickel-codecs-ffmpeg-dbg, nickel-codecs-ffmpeg-nonfree-dbg
-Provides: nickel-codecs-ffmpeg-nonfree-dbg
+Conflicts: nickel-codecs-ffmpeg-dbg
+Replaces: nickel-codecs-ffmpeg-dbg
 Description: nickel-codecs-ffmpeg-extra debug symbols
  Debug symbols for the extra ffmpeg-mt codecs
-
-Package: nickel-codecs-ffmpeg-nonfree
-Architecture: all
-Section: restricted/web
-Depends: nickel-codecs-ffmpeg-extra
-Description: dummy upgrade package
- This is a transitional package so nickel-codecs-ffmpeg-nonfree users
- get nickel-codecs-ffmpeg-extra on upgrade. It can be safely removed.
-
-Package: nickel-codecs-ffmpeg-nonfree-dbg
-Architecture: all
-Section: restricted/debug
-Depends: nickel-codecs-ffmpeg-extra-dbg
-Description: dummy upgrade package
- This is a transitional package so nickel-codecs-ffmpeg-nonfree-dbg users
- get nickel-codecs-ffmpeg-extra-dbg on upgrade. It can be safely removed.

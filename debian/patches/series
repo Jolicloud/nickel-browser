@@ -16,7 +16,8 @@ jolicloud_custom_neterror_page.patch
 jolicloud_inhibit_desktop_resize.patch
 jolicloud_use_default_buttons.patch
 jolicloud_fix_maximize_with_newer_metacity.patch
-#@DIST:11.04@ disable_gtk_resize_grip_on_natty.patch
 webkit_rev_parser.patch
 dlopen_libgnutls.patch
 dlopen_sonamed_gl.patch
+grit_language_variants.patch
+html5-codecs-fix.patch

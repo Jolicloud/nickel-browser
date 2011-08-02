@@ -15,6 +15,10 @@ SRC_DIR        := $(CURDIR)/build-tree/$(DEB_TAR_SRCDIR)
 LIB_DIR        := usr/lib/$(DEBIAN_NAME)
 DEB_BUILDDIR   := $(SRC_DIR)
 CDBS_NO_DOC_SYMLINKING := 1 # See LP #194574
+KEEPALIVE      := $(CURDIR)/debian/keep-alive.sh
+
+# Whitelist LP provided new langs only in release builds, PPAs ship them all
+WANT_ONLY_WHITELISTED_NEW_LANGS ?= 0
 
 WANT_LZMA_SRC    ?= 1
 WANT_LZMA_DEBS   ?= 1
@@ -34,7 +38,7 @@ endif
 # Don't do it on maverick/armel either for now, it fails to link
 # Don't do it on lucid/armel either, it crashes: LP #716703
 ifeq (armel,$(DEB_BUILD_ARCH))
-ifeq (,$(filter 10.04 10.10 11.04,$(DEBIAN_DIST_VERSION)))
+ifeq (,$(filter 10.04 10.10 11.04 11.10,$(DEBIAN_DIST_VERSION)))
 export DEB_BUILD_HARDENING=1
 else
 $(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 10.04+ armel. See LP #641126 and LP #716703)
@@ -73,6 +77,8 @@ GYP_DEFINES += \
 	target_arch=arm \
 	disable_nacl=1 \
 	linux_use_tcmalloc=0 \
+	use_libjpeg_turbo=0 \
+	use_cups=0 \
 	$(NULL)
 WANT_LZMA_DEBS := 0
 ifneq (,$(filter 10.10 11.04 unstable development,$(DEBIAN_DIST)))
@@ -95,6 +101,9 @@ endif
 
 # Don't let dh_installinit install *.default in /etc/default
 DEB_DH_INSTALLINIT_ARGS += --noscripts --onlyscripts
+
+# Don't let scour touch the svg files
+DEB_DH_SCOUR_ARGS += -Xsvg
 
 # Use lzma instead of gzip inside the debs (passed to dpkg-deb)
 ifeq (1,$(WANT_LZMA_DEBS))
@@ -120,7 +129,20 @@ ifeq (1,$(WANT_SHARED_LIBS))
 GYP_DEFINES += library=shared_library
 endif
 
+# Use upstream build flags (defined in build/common.gypi)
+BUILD_ARGS += CFLAGS="" CXXFLAGS="" CPPFLAGS="" LDFLAGS=""
+
 CC_VERSION   := $(shell gcc -dumpversion | cut -d. -f-2)
+
+# Set this to use gcc 4.5 instead of 4.6
+AVOID_GCC_46 ?= 1
+  
+ifeq (1/4.6,$(AVOID_GCC_46)/$(CC_VERSION))
+CC  := gcc-4.5
+CXX := g++-4.5
+BUILD_ARGS += CC=$(CC) CXX=$(CXX) CC.host=$(CC) CXX.host=$(CXX) LINK.host=$(CXX)
+GYP_DEFINES += werror=$(NULL)
+endif
  
 # See http://code.google.com/p/chromium/issues/detail?id=49533
 ifeq (4.5,$(CC_VERSION))
@@ -147,7 +169,7 @@ include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/class/makefile.mk
 
 ifneq (1,$(PROCESSORS))
-DEB_MAKE_EXTRA_ARGS += -j$(PROCESSORS)
+BUILD_ARGS += -j$(PROCESSORS)
 endif
 
 INSTALL_EXCLUDE_DIRS = \
@@ -277,7 +299,8 @@ endif
 		build-tree/src/chrome/common/chrome_paths.cc
 	touch $@
 
-DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS)
+DEB_MAKE_EXTRA_ARGS   := $(NULL)
+DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS) || ( $(KEEPALIVE) stop ; exit 1 )
 
 configure/$(DEBIAN_NAME):: debian/configure-stamp
 
@@ -292,6 +315,15 @@ debian/configure-stamp:
 	# files at this point
 	echo "$(DEBIAN_REVISION)" > $(SRC_DIR)/build/LASTCHANGE.in
 	# BUILD_ARGS=$(BUILD_ARGS)
+	# Start the keep-alive script
+	@chmod 755 $(KEEPALIVE)
+	$(KEEPALIVE) start &
+
+common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
+debian/stamp-makefile-build-perf: debian/stamp-makefile-build
+	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
+	touch $@
+	$(KEEPALIVE) stop
 
 common-build-arch:: debian/stamp-build-ffmpeg-std debian/stamp-build-ffmpeg-extra
 
@@ -308,11 +340,6 @@ debian/stamp-build-ffmpeg-%: debian/stamp-configure-ffmpeg-%
 	cd $(FFMPEG_SRC_DIR) ; $(MAKE) -f ffmpeg.Makefile $(BUILD_ARGS)
 	install -d -m 755 $(CURDIR)/debian/tmp-$*/$(LIB_DIR)
 	install -m 644 $(FFMPEG_SRC_DIR)/out/$(BUILD_TYPE)/libffmpegsumo.so $(CURDIR)/debian/tmp-$*/$(LIB_DIR)
-	touch $@
-
-common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
-debian/stamp-makefile-build-perf: debian/stamp-makefile-build
-	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
 	touch $@
 
 clean::
@@ -361,6 +388,7 @@ endif
 	# NaCL may be blacklisted, so only include it when it's been built
 ifeq (,$(filter disable_nacl=1,$(GYP_DEFINES)))
 	cp -a debian/tmp/$(LIB_DIR)/libppGoogleNaClPluginChrome.so debian/$(DEBIAN_NAME)/$(LIB_DIR)/
+	cp -a debian/tmp/$(LIB_DIR)/nacl_irt_* debian/$(DEBIAN_NAME)/$(LIB_DIR)/
 endif
 	# Locales: only keep en-US in the main deb
 	cd $(CURDIR)/debian/$(DEBIAN_NAME)/$(LIB_DIR)/locales && \
@@ -373,8 +401,6 @@ ifneq (i386,$(DEB_BUILD_ARCH_CPU))
 	# to drop the -l10n files from debian/tmp to make 'compare' happy
 	cd $(CURDIR)/debian/tmp/$(LIB_DIR)/locales && \
 	  rm $(filter-out en-US.pak,$(notdir $(wildcard $(CURDIR)/debian/tmp/$(LIB_DIR)/locales/*)))
-	# same for inspector
-	rm -rf $(CURDIR)/debian/tmp/$(LIB_DIR)/resources/inspector/*
 endif
 
 binary-install/$(DEBIAN_NAME)-l10n::
@@ -438,12 +464,12 @@ GRIT_TEMPLATES := \
 	chrome/app/chromium_strings.grd \
 	chrome/app/generated_resources.grd \
 	chrome/app/policy/policy_templates.grd \
-	app/resources/app_strings.grd \
+	ui/base/strings/app_strings.grd \
 	webkit/glue/inspector_strings.grd \
 	webkit/glue/webkit_strings.grd \
 	$(NULL)
 OTHER_GRIT_TEMPLATES := \
-	app/resources/app_locale_settings.grd \
+	ui/base/strings/app_locale_settings.grd \
 	chrome/app/resources/locale_settings.grd \
 	chrome/app/resources/locale_settings_linux.grd \
 	$(NULL)
@@ -451,6 +477,10 @@ OTHER_GRIT_TEMPLATES := \
 # New langs with enough coverage to land in official builds
 # (leave empty to accept all new lang)
 GRIT_WHITELISTED_LANGS ?= \
+	ca@valencia \
+	eu \
+	gl \
+	ug \
 	$(NULL)
 
 GRIT_CONVERTER_FLAGS := \
@@ -461,7 +491,7 @@ GRIT_CONVERTER_FLAGS := \
 	--other-grd-files $(shell echo $(OTHER_GRIT_TEMPLATES) | tr ' ' ',') \
 	$(NULL)
 	
-ifneq (,$(GRIT_WHITELISTED_LANGS))
+ifeq (1,$(WANT_ONLY_WHITELISTED_NEW_LANGS))
 GRIT_CONVERTER_FLAGS += --whitelisted-new-langs $(shell echo $(GRIT_WHITELISTED_LANGS) | tr ' ' ',')
 endif
 
@@ -591,6 +621,7 @@ endif
 get-current-source: gos-all
 
 gos-all: gos-co gos-pack
+gos-co: GCLIENT_UPDATE_FLAGS = --nohooks --delete_unversioned_trees $(REVISION)
 gos-co:
 ifneq (,$(CHANNEL))
 	@if [ Z$(VERS) = Z ] ; then \
@@ -628,11 +659,15 @@ ifneq (,$(STRIPPED_DIRS_FROM_CO))
 endif
 endif
 	# Checkout (drop the previous content and retry if gclient failed, see http://crbug.com/39954)
-	cd $(TMP_DIR) && ./tools/depot_tools/gclient update --nohooks $(REVISION) || \
-	  ( perl -i -pe 's,http://src.chromium.org/git,http://git.chromium.org/git,' */DEPS ; \
-	    ./tools/depot_tools/gclient update --nohooks $(REVISION) ) || \
+	cd $(TMP_DIR) && ./tools/depot_tools/gclient update $(GCLIENT_UPDATE_FLAGS) || \
 	  ( rm -rf $(foreach dir,src [0-9]*,$(wildcard $(TMP_DIR)/$(dir))) ; \
-	   ./tools/depot_tools/gclient update --nohooks $(REVISION) )
+	   ./tools/depot_tools/gclient update $(GCLIENT_UPDATE_FLAGS) )
+	# For NaCL, run the hooks, but not the gyp ones
+	( cd $(TMP_DIR) ; \
+	  SDIR=`grep '"name"' .gclient | cut -d\" -f4` ; \
+	  perl -i~ -pe 's%(.python., .src/build/gyp_chromium.)%"echo", "#disabled#", $$1%' $$SDIR/DEPS; \
+          ./tools/depot_tools/gclient runhooks ; \
+	  mv $$SDIR/DEPS~ $$SDIR/DEPS ; )
 
 ifneq (,$(LOCAL_BRANCH))
 	rm -rf $(TMP_DDIR)
