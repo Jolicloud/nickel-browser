@@ -1,3 +1,9 @@
+nickel-browser (11.0.696.34~r80286-1jolicloud1) robby-1.2.1; urgency=low
+
+  * Imported Upstream version 11.0.696.34~r80286
+
+ -- Adam McDaniel <adam@jolicloud.org>  Thu, 07 Apr 2011 10:36:50 -0600
+
 chromium-browser (11.0.696.34~r80286-0ubuntu1~ucd~beta1) natty; urgency=high
 
   * New upstream release from the Beta Channel
