@@ -10,10 +10,10 @@ jolicloud_default_homepage.patch
 jolicloud_use_liberation_fonts.patch
 disable_dlog_and_dcheck_in_release_builds.patch
 jolicloud_set_app_icon_from_desktop_file.patch
-#jolicloud_add_desktop_mode.patch
+jolicloud_add_desktop_mode.patch
 jolicloud_user_agent_extension.patch
 jolicloud_custom_neterror_page.patch
-#jolicloud_inhibit_desktop_resize.patch
+jolicloud_inhibit_desktop_resize.patch
 #jolicloud_use_default_buttons.patch
 jolicloud_fix_maximize_with_newer_metacity.patch
 webkit_rev_parser.patch

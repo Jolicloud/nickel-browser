@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -768,19 +768,41 @@
+@@ -833,19 +833,40 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -31,19 +31,18 @@
 +    browser_win->ResizeToDesktopSize();
 +    return TRUE;
 +  }
++  return FALSE;
++}
  
 -  gdkWindow = GTK_WIDGET( window_ )->window;
--  window = x11_util::GetX11WindowFromGdkWindow( gdkWindow );
--  x11_util::ChangeProperty( window,
+-  window = ui::GetX11WindowFromGdkWindow( gdkWindow );
+-  ui::ChangeProperty( window,
 -      "_NET_WM_WINDOW_TYPE", "_NET_WM_WINDOW_TYPE_DESKTOP" );
 -
 -  gtk_window_stick( window_ );
 -  gtk_window_maximize( window_ );
 -  gtk_window_set_wmclass( window_, "desktop_window", "chromium" );
 -  gtk_window_set_resizable( window_, FALSE );
-+  return FALSE;
-+}
-+
 +void BrowserWindowGtk::SetDesktop() {
 +  ResizeToDesktopSize();
 +  gtk_window_activate_focus( window_ );
@@ -56,7 +55,7 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
 --- a/chrome/browser/ui/gtk/browser_window_gtk.h
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -73,6 +73,7 @@
+@@ -79,6 +79,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
