@@ -284,7 +284,15 @@
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -305,6 +306,7 @@
+@@ -269,6 +270,7 @@
+   // Browser::OpenApplicationWindow().
+   static TabContents* OpenAppShortcutWindow(Profile* profile,
+                                             const GURL& url,
++                                            const FilePath& icon_id,
+                                             bool update_shortcut);
+ 
+   // Open an application for |extension| using |disposition|.  Returns NULL if
+@@ -305,6 +307,7 @@
    // State Storage and Retrieval for UI ///////////////////////////////////////
  
    // Save and restore the window position.
@@ -292,7 +300,7 @@
    std::string GetWindowPlacementKey() const;
    bool ShouldSaveWindowPlacement() const;
    void SaveWindowPlacement(const gfx::Rect& bounds, bool maximized);
-@@ -314,6 +316,9 @@
+@@ -314,6 +317,9 @@
    // Gets the Favicon of the page in the selected tab.
    SkBitmap GetCurrentPageIcon() const;
  

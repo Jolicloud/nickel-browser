@@ -178,7 +178,7 @@
    // Browser::OpenApplicationWindow().
    static TabContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
-+                                            const FilePath& icon_id,
+                                             const FilePath& icon_id,
 +                                            bool as_desktop,
                                              bool update_shortcut);
  
