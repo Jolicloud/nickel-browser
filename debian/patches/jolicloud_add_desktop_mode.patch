@@ -257,23 +257,44 @@
      // returns false to specify default processing.
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -833,6 +833,21 @@
+@@ -833,6 +833,42 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
++void BrowserWindowGtk::ResizeToDesktopSize() {
++  GdkScreen* gdkScreen = gtk_window_get_screen(window_);
++  GdkRectangle rect;
++
++  gdk_screen_get_monitor_geometry(gdkScreen, 0, &rect);
++
++  // Decrease the desktop size by the size of the gnome-panel.
++  // FIXME: Figure this out properly!
++  rect.y = 24;
++  rect.height -= rect.y;
++
++  gtk_window_move( window_, rect.x, rect.y );
++  gtk_window_resize( window_, rect.width, rect.height );
++}
++
++gboolean OnVisibilityNotify(GtkWindow* window, GdkEventVisibility* event,
++                             BrowserWindowGtk* browser_win) {
++  /* If we are a desktop window, this expose event may have been
++     triggered by a change in the screen dimensions, so resize.
++  */
++  if (window == browser_win->window() && gtk_window_get_type_hint(window) == GDK_WINDOW_TYPE_HINT_DESKTOP) {
++    browser_win->ResizeToDesktopSize();
++    return TRUE;
++  }
++  return FALSE;
++}
++
 +void BrowserWindowGtk::SetDesktop() {
-+  GdkWindow* gdkWindow;
-+  XID window;
-+
-+  gdkWindow = GTK_WIDGET( window_ )->window;
-+  window = ui::GetX11WindowFromGdkWindow( gdkWindow );
-+  ui::ChangeProperty( window,
-+      "_NET_WM_WINDOW_TYPE", "_NET_WM_WINDOW_TYPE_DESKTOP" );
-+
-+  gtk_window_stick( window_ );
-+  gtk_window_maximize( window_ );
-+  gtk_window_set_wmclass( window_, "desktop_window", "chromium" );
-+  gtk_window_set_resizable( window_, FALSE );
++  ResizeToDesktopSize();
++  gtk_window_activate_focus( window_ );
++  gtk_window_set_type_hint( window_, GDK_WINDOW_TYPE_HINT_DESKTOP );
++  gtk_window_set_skip_taskbar_hint( window_, FALSE );
++  gtk_window_set_skip_pager_hint( window_, FALSE );
++  g_signal_connect(G_OBJECT(window_), "visibility-notify-event", G_CALLBACK(OnVisibilityNotify), this);
 +}
 +
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
@@ -343,10 +364,11 @@
  
 --- a/chrome/browser/ui/gtk/browser_window_gtk.h
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -79,6 +79,7 @@
+@@ -79,6 +79,8 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
++  void ResizeToDesktopSize();
 +  virtual void SetDesktop();
    virtual LocationBar* GetLocationBar() const;
    virtual void SetFocusToLocationBar(bool select_all);
