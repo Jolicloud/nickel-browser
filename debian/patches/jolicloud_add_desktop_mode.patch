@@ -300,6 +300,19 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
+@@ -1851,6 +1887,12 @@
+   // Browser::SaveWindowPlacement is used for session restore.
+   if (browser_->ShouldSaveWindowPlacement())
+     browser_->SaveWindowPlacement(restored_bounds_, IsMaximized());
++  else {
++    // Do not continue with SaveWindowPosition() if the previous
++    // ShouldSaveWindowPlacement() returns false, such is the case when
++    // running in desktop mode: window preference settings will crash <!>
++    return;
++  }
+ 
+   // We also need to save the placement for startup.
+   // This is a web of calls between views and delegates on Windows, but the
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
 @@ -349,6 +349,36 @@
