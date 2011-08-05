@@ -54,7 +54,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
 	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-extra (>= 0.6)
-Recommends: nickel-browser-l10n
+Recommends: nickel-browser-l10n, google-talkplugin
 Provides: www-browser, nickel-browser-inspector
 Replaces: nickel-browser-inspector
 Conflicts: nickel-browser-inspector
@@ -134,3 +134,17 @@ Conflicts: nickel-codecs-ffmpeg-dbg
 Replaces: nickel-codecs-ffmpeg-dbg
 Description: nickel-codecs-ffmpeg-extra debug symbols
  Debug symbols for the extra ffmpeg-mt codecs
+
+Package: nickel-codecs-ffmpeg-nonfree
+Architecture: all
+Depends: nickel-codecs-ffmpeg-extra
+Description: dummy upgrade package
+ This is a transitional package so nickel-codecs-ffmpeg-nonfree users
+ get nickel-codecs-ffmpeg-extra on upgrade. It can be safely removed.
+
+Package: nickel-codecs-ffmpeg-nonfree-dbg
+Architecture: all
+Depends: nickel-codecs-ffmpeg-extra-dbg
+Description: dummy upgrade package
+ This is a transitional package so nickel-codecs-ffmpeg-nonfree-dbg users
+ get nickel-codecs-ffmpeg-extra-dbg on upgrade. It can be safely removed.
