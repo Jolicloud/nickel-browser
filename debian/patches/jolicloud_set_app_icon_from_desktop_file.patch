@@ -239,7 +239,13 @@
  #include "chrome/browser/prefs/pref_service.h"
  #include "chrome/browser/profiles/profile.h"
  #include "chrome/browser/ui/browser.h"
-@@ -555,14 +556,27 @@
+@@ -550,19 +551,30 @@
+   gtk_label_set_text(GTK_LABEL(app_mode_title_), UTF16ToUTF8(title).c_str());
+ 
+   // Note: we want to exclude the application popup window.
+-  if (browser_window_->browser()->is_app() &&
+-      !browser_window_->browser()->is_type_popup()) {
++  if (browser_window_->browser()->is_app()) {
      // Update the system app icon.  We don't need to update the icon in the top
      // left of the custom frame, that will get updated when the throbber is
      // updated.
@@ -258,7 +264,6 @@
 +    GList* icon_list = NULL;
 +    GdkPixbuf* icon_pixbuf = NULL;
 +    std::string icon_pref_key = browser_window_->browser()->GetWindowIconKey();
-+    size_t found = icon_pref_key.find(current_host);
 +    PrefService* prefs = browser_window_->browser()->profile()->GetPrefs();
 +    FilePath prefs_icon_id = prefs->GetFilePath(icon_pref_key.c_str());
 +    if (!prefs_icon_id.empty())
