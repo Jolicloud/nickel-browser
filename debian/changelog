@@ -1,3 +1,20 @@
+nickel-browser (13.0.782.107~r94237-1jolicloud1+0u1) robby-1.2; urgency=low
+
+  * Refreshed Jolicloud patches for Chromium 13
+  * Corrected OpenAppShortcutWindow() prototype modification order for
+    when icon_id is established
+  * Folded patch inhibit_desktop_resize into add_desktop_mode
+  * Avoid crash in BrowserWindowGtk::SaveWindowPosition() when desktop
+    mode is active
+  * Restored nickel-browser recommends:google-talkplugin, and ffmpeg-
+    nonfree => ffmpeg-extra transition package
+  * Restored use_default_buttons.patch; properly merged it with Chromium
+    13
+  * Corrected set_app_icon_from_desktop.patch to work within Chromium
+    13's features detection
+
+ -- Adam McDaniel <adam@jolicloud.org>  Mon, 08 Aug 2011 11:52:41 -0600
+
 chromium-browser (13.0.782.107~r94237-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New upstream release from the Beta Channel
