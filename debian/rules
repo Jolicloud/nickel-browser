@@ -135,13 +135,15 @@ BUILD_ARGS += CFLAGS="" CXXFLAGS="" CPPFLAGS="" LDFLAGS=""
 CC_VERSION   := $(shell gcc -dumpversion | cut -d. -f-2)
 
 # Set this to use gcc 4.5 instead of 4.6
-AVOID_GCC_46 ?= 1
+AVOID_GCC_46 ?= 0
   
-ifeq (1/4.6,$(AVOID_GCC_46)/$(CC_VERSION))
+ifeq (4.6,$(CC_VERSION))
+GYP_DEFINES += werror=$(NULL)
+ifeq (1,$(AVOID_GCC_46))
 CC  := gcc-4.5
 CXX := g++-4.5
 BUILD_ARGS += CC=$(CC) CXX=$(CXX) CC.host=$(CC) CXX.host=$(CXX) LINK.host=$(CXX)
-GYP_DEFINES += werror=$(NULL)
+endif
 endif
  
 # See http://code.google.com/p/chromium/issues/detail?id=49533
@@ -464,7 +466,7 @@ GRIT_TEMPLATES := \
 	chrome/app/chromium_strings.grd \
 	chrome/app/generated_resources.grd \
 	chrome/app/policy/policy_templates.grd \
-	ui/base/strings/app_strings.grd \
+	ui/base/strings/ui_strings.grd \
 	webkit/glue/inspector_strings.grd \
 	webkit/glue/webkit_strings.grd \
 	$(NULL)
@@ -472,6 +474,9 @@ OTHER_GRIT_TEMPLATES := \
 	ui/base/strings/app_locale_settings.grd \
 	chrome/app/resources/locale_settings.grd \
 	chrome/app/resources/locale_settings_linux.grd \
+	$(NULL)
+MAPPED_GRIT_TEMPLATES := \
+	--map-template-names ui/base/strings/ui_strings.grd=ui/base/strings/app_strings.grd \
 	$(NULL)
 
 # New langs with enough coverage to land in official builds
@@ -489,6 +494,7 @@ GRIT_CONVERTER_FLAGS := \
 	--export-grit ../translations-grit \
 	--build-gyp-file build/common.gypi \
 	--other-grd-files $(shell echo $(OTHER_GRIT_TEMPLATES) | tr ' ' ',') \
+	$(MAPPED_GRIT_TEMPLATES) \
 	$(NULL)
 	
 ifeq (1,$(WANT_ONLY_WHITELISTED_NEW_LANGS))
