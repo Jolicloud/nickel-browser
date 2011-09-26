@@ -1,3 +1,55 @@
+chromium-browser (14.0.835.126~r99097-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+
+  * New upstream release from the Beta channel
+  * Add libpulse-dev to Build-Depends, needed for WebRTC
+    - update debian/control
+  * Drop the HTML5 video patch, now committed upstream
+    - remove debian/patches/html5-codecs-fix.patch
+    - update debian/patches/series
+  * Rename ui/base/strings/app_strings.grd to ui_strings.grd following
+    the upstream rename, and add a mapping flag to the grit converter
+    - update debian/rules
+  * Add a "Conflicts" with -inspector so that it gets removed
+    - update debian/control
+  * Build with the default gcc-4.6 on Oneiric
+    - update debian/control
+    - update debian/rules
+
+ -- Fabien Tassin <fta@ubuntu.com>  Fri, 02 Sep 2011 06:21:01 +0200
+
+chromium-browser (13.0.782.215~r97094-0ubuntu1) oneiric; urgency=high
+
+  * New upstream release from the Stable Channel
+    This release fixes the following security issues:
+    + Chromium issues:
+     - [91517] High, CVE-2011-2828: Out-of-bounds write in v8. Credit to Google
+       Chrome Security Team (SkyLined).
+    + Webkit issues:
+     - [82552] High, CVE-2011-2823: Use-after-free in line box handling. Credit
+       to Google Chrome Security Team (SkyLined) and independent later
+       discovery by miaubiz.
+     - [88216] High, CVE-2011-2824: Use-after-free with counter nodes. Credit
+       to miaubiz.
+     - [88670] High, CVE-2011-2825: Use-after-free with custom fonts. Credit to
+       wushi of team509 reported through ZDI (ZDI-CAN-1283), plus indepdendent
+       later discovery by miaubiz.
+     - [87453] High, CVE-2011-2826: Cross-origin violation with empty origins.
+       Credit to Sergey Glazunov.
+     - [90668] High, CVE-2011-2827: Use-after-free in text searching. Credit to
+       miaubiz.
+     - [32-bit only] [91598] High, CVE-2011-2829: Integer overflow in uniform
+       arrays. Credit to Sergey Glazunov.
+    + libxml2 issue:
+     - [89402] High, CVE-2011-2821: Double free in libxml XPath handling.
+       Credit to Yang Dingning from NCNIPC, Graduate University of Chinese
+       Academy of Sciences.
+  Packaging changes:
+  * Fix a FTBFS with cups 1.5.0 by including individual cups headers
+    - add debian/patches/cups_1.5_build_fix.patch
+    - update debian/patches/series
+
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 23 Aug 2011 07:22:44 +0200
+
 nickel-browser (13.0.782.107~r94237-1jolicloud1+0u1) robby-1.2; urgency=low
 
   * Refreshed Jolicloud patches for Chromium 13
@@ -15,9 +67,81 @@ nickel-browser (13.0.782.107~r94237-1jolicloud1+0u1) robby-1.2; urgency=low
 
  -- Adam McDaniel <adam@jolicloud.org>  Mon, 08 Aug 2011 11:52:41 -0600
 
-chromium-browser (13.0.782.107~r94237-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+chromium-browser (13.0.782.107~r94237-0ubuntu2) oneiric; urgency=high
 
-  * New upstream release from the Beta Channel
+  * Add libgles2-mesa-dev to Build-deps for Armel (only), fixing a FTBFS
+    - update debian/control
+
+ -- Fabien Tassin <fta@ubuntu.com>  Wed, 03 Aug 2011 21:20:41 +0200
+
+chromium-browser (13.0.782.107~r94237-0ubuntu1) oneiric; urgency=high
+
+  * New Major upstream release from the Stable Channel
+    This release fixes the following security issues:
+    + Chromium issues:
+     - [75821] Medium, CVE-2011-2358: Always confirm an extension install via a 
+       browser dialog. Credit to Sergey Glazunov.
+     - [79266] Low, CVE-2011-2360: Potential bypass of dangerous file prompt. 
+       Credit to kuzzcc.
+     - [79426] Low, CVE-2011-2361: Improve designation of strings in the basic 
+       auth dialog. Credit to kuzzcc.
+     - [81307] Medium, CVE-2011-2782: File permissions error with drag and 
+       drop. Credit to Evan Martin of the Chromium development community.
+     - [83273] Medium, CVE-2011-2783: Always confirm a developer mode NPAPI 
+       extension install via a browser dialog. Credit to Sergey Glazunov.
+     - [84402] Low, CVE-2011-2785: Sanitize the homepage URL in extensions. 
+       Credit to kuzzcc.
+     - [84805] Medium, CVE-2011-2787: Browser crash due to GPU lock re-entrancy 
+       issue. Credit to kuzzcc.
+     - [85808] Medium, CVE-2011-2789: Use after free in Pepper plug-in 
+       instantiation. Credit to Mario Gomes and kuzzcc.
+     - [87815] Low, CVE-2011-2798: Prevent a couple of internal schemes from 
+       being web accessible. Credit to sirdarckcat of the Google Security Team.
+     - [88827] Medium, CVE-2011-2803: Out-of-bounds read in Skia paths. Credit 
+       to Google Chrome Security Team (Inferno).
+    + Webkit issues:
+     - [78841] High, CVE-2011-2359: Stale pointer due to bad line box tracking 
+       in rendering. Credit to miaubiz and Martin Barbella.
+     - [83841] Low, CVE-2011-2784: Local file path disclosure via GL program 
+       log. Credit to kuzzcc.
+     - [84600] Low, CVE-2011-2786: Make sure the speech input bubble is always 
+       on-screen. Credit to Olli Pettay of Mozilla.
+     - [85559] Low, CVE-2011-2788: Buffer overflow in inspector serialization. 
+       Credit to Mikołaj Małecki.
+     - [86502] High, CVE-2011-2790: Use-after-free with floating styles. Credit 
+       to miaubiz.
+     - [87148] High, CVE-2011-2792: Use-after-free with float removal. Credit 
+       to miaubiz.
+     - [87227] High, CVE-2011-2793: Use-after-free in media selectors. Credit 
+       to miaubiz.
+     - [87298] Medium, CVE-2011-2794: Out-of-bounds read in text iteration. 
+       Credit to miaubiz.
+     - [87339] Medium, CVE-2011-2795: Cross-frame function leak. Credit to Shih 
+       Wei-Long.
+     - [87548] High, CVE-2011-2796: Use-after-free in Skia. Credit to Google 
+       Chrome Security Team (Inferno) and Kostya Serebryany of the Chromium
+       development community.
+     - [87729] High, CVE-2011-2797: Use-after-free in resource caching. Credit 
+       to miaubiz.
+     - [87925] High, CVE-2011-2799: Use-after-free in HTML range handling. 
+       Credit to miaubiz.
+     - [88337] Medium, CVE-2011-2800: Leak of client-side redirect target. 
+       Credit to Juho Nurminen.
+     - [88591] High, CVE-2011-2802: v8 crash with const lookups. Credit to 
+       Christian Holler.
+     - [88846] High, CVE-2011-2801: Use-after-free in frame loader. Credit to 
+       miaubiz.
+     - [88889] High, CVE-2011-2818: Use-after-free in display box rendering. 
+       Credit to Martin Barbella.
+     - [89520] High, CVE-2011-2805: Cross-origin script injection. Credit to 
+       Sergey Glazunov.
+     - [90222] High, CVE-2011-2819: Cross-origin violation in base URI 
+       handling. Credit to Sergey Glazunov.
+    + ICU 4.6 issue:
+     - [86900] High, CVE-2011-2791: Out-of-bounds write in ICU. Credit to Yang 
+       Dingning from NCNIPC, Graduate University of Chinese Academy of
+       Sciences.
+  Packaging changes:
   * Add a "Conflicts" with -inspector so that it gets removed
     - update debian/control
   * Disable PIE for ARM on Oneiric too
@@ -27,8 +151,11 @@ chromium-browser (13.0.782.107~r94237-0ubuntu1~ucd~beta1~lucid) lucid; urgency=l
     Install the NaCL IRT files in the main deb
     - update debian/rules
     - update debian/chromium-browser.install
+  * Drop obsolete patches
+    - remove debian/patches/cups_cleanup_cr6883221.patch
+    - update debian/patches/series
 
- -- Fabien Tassin <fta@ubuntu.com>  Thu, 28 Jul 2011 09:35:47 +0200
+ -- Fabien Tassin <fta@ubuntu.com>  Tue, 02 Aug 2011 17:33:23 +0200
 
 chromium-browser (12.0.742.112~r90304-0ubuntu1) oneiric; urgency=high
 

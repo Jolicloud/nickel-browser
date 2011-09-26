@@ -1,0 +1,27 @@
+# cups 1.5.0 now needs individual headers
+---
+ chrome/browser/ui/webui/print_preview_handler.cc |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: src/chrome/browser/ui/webui/print_preview_handler.cc
+===================================================================
+--- src.orig/chrome/browser/ui/webui/print_preview_handler.cc
++++ src/chrome/browser/ui/webui/print_preview_handler.cc
+@@ -41,16 +41,17 @@
+ #include "printing/backend/print_backend.h"
+ #include "printing/metafile.h"
+ #include "printing/metafile_impl.h"
+ #include "printing/page_range.h"
+ #include "printing/print_job_constants.h"
+ 
+ #if defined(USE_CUPS)
+ #include <cups/cups.h>
++#include <cups/ppd.h>
+ 
+ #include "base/file_util.h"
+ #endif
+ 
+ namespace {
+ 
+ const char kDisableColorOption[] = "disableColorOption";
+ const char kSetColorAsDefault[] = "setColorAsDefault";
