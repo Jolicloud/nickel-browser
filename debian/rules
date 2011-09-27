@@ -320,6 +320,9 @@ debian/configure-stamp:
 	# Start the keep-alive script
 	@chmod 755 $(KEEPALIVE)
 	$(KEEPALIVE) start &
+	# Bump the ulimit for /usr/bin/ld.gold.real
+	# http://groups.google.com/a/chromium.org/group/chromium-dev/browse_thread/thread/9e4373212dc3756c
+	ulimit -n `ulimit -H -n`
 
 common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
 debian/stamp-makefile-build-perf: debian/stamp-makefile-build
