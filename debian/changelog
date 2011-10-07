@@ -1,3 +1,16 @@
+nickel-browser (14.0.835.126~r99097-1jolicloud1+0u1) robby-1.2; urgency=low
+
+  * Bump the ulimit for /usr/bin/ld.gold.real
+  * Refreshed Jolicloud patches for Chromium 14
+  * Set nickel-browser to depend on jolicloud-daemon >= 1.2.4~ due to
+    changed websocket protocol in Chromium 14
+  * Corrected path to execute nickel-browser in the nickel-browser.desktop
+    file.
+  * Request reboot after this upgrade in order to use the new
+    jolicloud-daemon and websocket protocol
+
+ -- Adam McDaniel <adam@jolicloud.org>  Mon, 10 Oct 2011 05:28:36 -0600
+
 chromium-browser (14.0.835.126~r99097-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   * New upstream release from the Beta channel
