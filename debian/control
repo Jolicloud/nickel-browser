@@ -52,6 +52,7 @@ Package: nickel-browser
 Architecture: any
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
+	jolicloud-daemon (>= 1.2.4~),
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
 	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-extra (>= 0.6)
