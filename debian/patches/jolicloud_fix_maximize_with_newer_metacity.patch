@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -808,20 +808,7 @@
+@@ -858,20 +858,7 @@
    if (fullscreen) {
      gtk_window_fullscreen(window_);
    } else {

@@ -1,6 +1,6 @@
 --- a/webkit/glue/user_agent.cc
 +++ b/webkit/glue/user_agent.cc
-@@ -100,7 +100,7 @@
+@@ -96,7 +96,7 @@
        os_minor_version,
        os_bugfix_version
  #else

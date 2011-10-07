@@ -104,7 +104,7 @@
     <ul>
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -412,6 +412,7 @@
+@@ -521,6 +521,7 @@
      const WebURLError& error) {
    GURL failed_url = error.unreachableURL;
    std::string html;
@@ -112,7 +112,7 @@
    const Extension* extension = NULL;
  
    // Use a local error page.
-@@ -419,7 +420,7 @@
+@@ -528,7 +529,7 @@
    DictionaryValue error_strings;
    if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
      extension = extension_dispatcher_->extensions()->GetByURL(failed_url);

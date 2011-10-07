@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -223,6 +223,7 @@
+@@ -248,6 +248,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
        last_blocked_command_disposition_(CURRENT_TAB),
@@ -8,7 +8,7 @@
        pending_web_app_action_(NONE),
        ALLOW_THIS_IN_INITIALIZER_LIST(
            tab_restore_service_delegate_(
-@@ -410,6 +411,14 @@
+@@ -445,6 +446,14 @@
  }
  
  // static
@@ -23,7 +23,7 @@
  Browser* Browser::CreateForDevTools(Profile* profile) {
    CreateParams params(TYPE_POPUP, profile);
    params.app_name = DevToolsWindow::kDevToolsApp;
-@@ -557,7 +566,7 @@
+@@ -592,7 +601,7 @@
      case extension_misc::LAUNCH_WINDOW:
      case extension_misc::LAUNCH_PANEL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
@@ -32,7 +32,7 @@
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, disposition);
-@@ -577,6 +586,7 @@
+@@ -612,6 +621,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
@@ -40,7 +40,7 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -604,8 +614,12 @@
+@@ -639,8 +649,12 @@
      window_bounds.set_height(extension->launch_height());
    }
  
@@ -55,7 +55,7 @@
  
    if (app_browser)
      *app_browser = browser;
-@@ -616,6 +630,9 @@
+@@ -651,6 +665,9 @@
        profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
    }
  
@@ -65,7 +65,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -632,6 +649,7 @@
+@@ -667,6 +684,7 @@
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -73,7 +73,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -640,6 +658,7 @@
+@@ -675,6 +693,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -81,7 +81,7 @@
        &app_browser);
  
    if (!tab)
-@@ -832,6 +851,9 @@
+@@ -867,6 +886,9 @@
      case TYPE_PANEL:
        // Do not save the window placement of panels.
        return false;
@@ -91,7 +91,7 @@
      default:
        return false;
    }
-@@ -952,7 +974,9 @@
+@@ -987,7 +1009,9 @@
  }
  
  bool Browser::ShouldCloseWindow() {
@@ -102,7 +102,7 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1353,6 +1377,14 @@
+@@ -1379,6 +1403,14 @@
  
      if (!is_app())
        features |= FEATURE_LOCATIONBAR;
@@ -117,16 +117,7 @@
    }
    return !!(features & feature);
  }
-@@ -1676,7 +1708,7 @@
-     }
-   }
- #endif
--  BrowserList::Exit();
-+  BrowserList::Exit(0);
- }
- 
- void Browser::BookmarkCurrentPage() {
-@@ -2820,7 +2852,7 @@
+@@ -2865,7 +2897,7 @@
      indices->clear();
      can_close_all = false;
    }
@@ -135,7 +126,7 @@
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -3311,6 +3343,10 @@
+@@ -3347,6 +3379,10 @@
      return;
    }
  
@@ -148,7 +139,7 @@
      *proceed_to_fire_unload = false;
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -85,6 +85,7 @@
+@@ -84,6 +84,7 @@
      TYPE_TABBED = 1,
      TYPE_POPUP = 2,
      TYPE_PANEL = 3,
@@ -156,7 +147,7 @@
    };
  
    // Possible elements of the Browser window.
-@@ -161,6 +162,10 @@
+@@ -160,6 +161,10 @@
                                 const gfx::Rect& window_bounds,
                                 Profile* profile);
  
@@ -167,7 +158,7 @@
    // Like Create, but creates a tabstrip-less and toolbar-less
    // DevTools "app" window.
    static Browser* CreateForDevTools(Profile* profile);
-@@ -187,6 +192,7 @@
+@@ -186,6 +191,7 @@
    Type type() const { return type_; }
    const std::string& app_name() const { return app_name_; }
    Profile* profile() const { return profile_; }
@@ -175,7 +166,7 @@
    const std::vector<std::wstring>& user_data_dir_profiles() const;
    gfx::Rect override_bounds() const { return override_bounds_; }
  
-@@ -260,6 +266,7 @@
+@@ -262,6 +268,7 @@
        extension_misc::LaunchContainer container,
        const GURL& url,
        const FilePath& icon_id,
@@ -183,7 +174,7 @@
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -271,6 +278,7 @@
+@@ -273,6 +280,7 @@
    static TabContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -191,7 +182,7 @@
                                              bool update_shortcut);
  
    // Open an application for |extension| using |disposition|.  Returns NULL if
-@@ -757,6 +765,7 @@
+@@ -774,6 +782,7 @@
    bool is_type_tabbed() const { return type_ == TYPE_TABBED; }
    bool is_type_popup() const { return type_ == TYPE_POPUP; }
    bool is_type_panel() const { return type_ == TYPE_PANEL; }
@@ -199,7 +190,7 @@
  
    bool is_app() const;
    bool is_devtools() const;
-@@ -1203,6 +1212,9 @@
+@@ -1245,6 +1254,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
@@ -211,7 +202,7 @@
    enum WebAppAction {
 --- a/chrome/browser/ui/browser_init.cc
 +++ b/chrome/browser/ui/browser_init.cc
-@@ -682,7 +682,8 @@
+@@ -694,7 +694,8 @@
  
      if (process_startup) {
        if (browser_defaults::kOSSupportsOtherBrowsers &&
@@ -221,7 +212,7 @@
          // Check whether we are the default browser.
          CheckDefaultBrowser(profile);
        }
-@@ -766,6 +767,13 @@
+@@ -778,6 +779,13 @@
    return (app_tab != NULL);
  }
  
@@ -235,7 +226,7 @@
  bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
    std::string url_string, app_id;
    if (!IsAppLaunch(&url_string, &app_id))
-@@ -822,6 +830,7 @@
+@@ -834,6 +842,7 @@
            profile,
            url,
            FilePath(icon_id),
@@ -257,7 +248,7 @@
      // returns false to specify default processing.
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -833,6 +833,42 @@
+@@ -883,6 +883,42 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -300,7 +291,7 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -1851,6 +1887,12 @@
+@@ -1905,6 +1941,12 @@
    // Browser::SaveWindowPlacement is used for session restore.
    if (browser_->ShouldSaveWindowPlacement())
      browser_->SaveWindowPlacement(restored_bounds_, IsMaximized());
@@ -315,7 +306,7 @@
    // This is a web of calls between views and delegates on Windows, but the
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -349,6 +349,36 @@
+@@ -347,6 +347,36 @@
    return true;
  }
  
@@ -354,9 +345,9 @@
    XID parent = None;
 --- a/ui/base/x/x11_util.h
 +++ b/ui/base/x/x11_util.h
-@@ -87,6 +87,8 @@
-                           std::vector<Atom>* value);
- bool GetStringProperty(
+@@ -93,6 +93,8 @@
+                                  std::vector<Atom>* value);
+ UI_API bool GetStringProperty(
      XID window, const std::string& property_name, std::string* value);
 +bool ChangeProperty(
 +    XID window, const std::string& property_name, const std::string& set_name);
@@ -365,7 +356,7 @@
  XID GetParentWindow(XID window);
 --- a/chrome/browser/ui/browser_window.h
 +++ b/chrome/browser/ui/browser_window.h
-@@ -143,6 +143,9 @@
+@@ -137,6 +137,9 @@
    // Returns true if the fullscreen bubble is visible.
    virtual bool IsFullscreenBubbleVisible() const = 0;
  
@@ -388,7 +379,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force);
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -162,6 +162,9 @@
+@@ -182,6 +182,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
  
@@ -400,218 +391,28 @@
  
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -59,6 +59,7 @@
+@@ -62,6 +62,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
  extern const char kDebugPrint[];
 +extern const char kDesktop[];
  extern const char kDeviceManagementUrl[];
  extern const char kDiagnostics[];
- extern const char kDisableAcceleratedLayers[];
+ extern const char kDisableAuthNegotiateCnameLookup[];
 --- a/chrome/browser/ui/browser_list.cc
 +++ b/chrome/browser/ui/browser_list.cc
-@@ -342,7 +342,7 @@
- #endif
- 
- // static
--void BrowserList::CloseAllBrowsers() {
-+void BrowserList::CloseAllBrowsers(int signal) {
-   bool session_ending =
-       browser_shutdown::GetShutdownType() == browser_shutdown::END_SESSION;
-   bool use_post = !session_ending;
-@@ -371,6 +371,7 @@
+@@ -399,6 +399,8 @@
    for (BrowserList::const_iterator i = BrowserList::begin();
         i != BrowserList::end();) {
      Browser* browser = *i;
-+    browser->set_kill_signal(signal);
++    //FIXME: how else can we implement this??
++    //browser->set_kill_signal(signal);
      browser->window()->Close();
-     if (use_post) {
+     if (!session_ending) {
        ++i;
-@@ -395,7 +396,7 @@
- }
- 
- // static
--void BrowserList::Exit() {
-+void BrowserList::Exit(int signal) {
- #if defined(OS_CHROMEOS)
-   signout_ = true;
-   // Fast shutdown for ChromeOS when there's no unload processing to be done.
-@@ -406,11 +407,11 @@
-     return;
-   }
- #endif
--  CloseAllBrowsersAndExit();
-+  CloseAllBrowsersAndExit(signal);
- }
- 
- // static
--void BrowserList::CloseAllBrowsersAndExit() {
-+void BrowserList::CloseAllBrowsersAndExit(int signal) {
-   MarkAsCleanShutdown();  // Don't notify users of crashes beyond this point.
-   NotificationService::current()->Notify(
-       NotificationType::APP_EXITING,
-@@ -419,7 +420,7 @@
- 
- #if !defined(OS_MACOSX)
-   // On most platforms, closing all windows causes the application to exit.
--  CloseAllBrowsers();
-+  CloseAllBrowsers(signal);
- #else
-   // On the Mac, the application continues to run once all windows are closed.
-   // Terminate will result in a CloseAllBrowsers() call, and once (and if)
-@@ -448,7 +449,7 @@
-   // Write important data first.
-   g_browser_process->EndSession();
- 
--  BrowserList::CloseAllBrowsers();
-+  BrowserList::CloseAllBrowsers(0);
- 
-   // Send out notification. This is used during testing so that the test harness
-   // can properly shutdown before we exit.
-@@ -504,7 +505,7 @@
-     // (MessageLoop::current() == null).
-     if (browsers_.empty() && !browser_shutdown::IsTryingToQuit() &&
-         MessageLoop::current())
--      CloseAllBrowsers();
-+      CloseAllBrowsers(0);
-   }
- }
- 
---- a/chrome/browser/browser_process_impl.cc
-+++ b/chrome/browser/browser_process_impl.cc
-@@ -1142,7 +1142,7 @@
-   }
- 
-   DLOG(WARNING) << "Shutting down current instance of the browser.";
--  BrowserList::CloseAllBrowsersAndExit();
-+  BrowserList::CloseAllBrowsersAndExit(0);
- 
-   // Transfer ownership to Upgrade.
-   upgrade_util::SetNewCommandLine(new_cl.release());
---- a/chrome/browser/ui/gtk/update_recommended_dialog.cc
-+++ b/chrome/browser/ui/gtk/update_recommended_dialog.cc
-@@ -60,7 +60,7 @@
-     PrefService* pref_service = g_browser_process->local_state();
-     pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
- 
--    BrowserList::CloseAllBrowsersAndExit();
-+    BrowserList::CloseAllBrowsersAndExit(0);
-   }
- 
-   delete this;
---- a/chrome/browser/automation/testing_automation_provider.cc
-+++ b/chrome/browser/automation/testing_automation_provider.cc
-@@ -439,7 +439,7 @@
- void TestingAutomationProvider::OnChannelError() {
-   if (!reinitialize_on_channel_error_ &&
-       browser_shutdown::GetShutdownType() == browser_shutdown::NOT_VALID)
--    BrowserList::CloseAllBrowsersAndExit();
-+    BrowserList::CloseAllBrowsersAndExit(0);
-   AutomationProvider::OnChannelError();
- }
- 
---- a/chrome/browser/background_mode_manager.cc
-+++ b/chrome/browser/background_mode_manager.cc
-@@ -71,7 +71,7 @@
-       break;
-     case IDC_EXIT:
-       UserMetrics::RecordAction(UserMetricsAction("Exit"));
--      BrowserList::CloseAllBrowsersAndExit();
-+      BrowserList::CloseAllBrowsersAndExit(0);
-       break;
-     case IDC_OPTIONS:
-       GetBrowserWindow()->OpenOptionsDialog();
---- a/chrome/browser/ui/views/about_chrome_view.cc
-+++ b/chrome/browser/ui/views/about_chrome_view.cc
-@@ -616,7 +616,7 @@
-   // Set the flag to restore the last session on shutdown.
-   PrefService* pref_service = g_browser_process->local_state();
-   pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
--  BrowserList::CloseAllBrowsersAndExit();
-+  BrowserList::CloseAllBrowsersAndExit(0);
- #endif
- 
-   return true;
---- a/chrome/browser/ui/views/update_recommended_message_box.cc
-+++ b/chrome/browser/ui/views/update_recommended_message_box.cc
-@@ -41,7 +41,7 @@
-   chromeos::CrosLibrary::Get()->GetPowerLibrary()->RequestRestart();
-   // If running the Chrome OS build, but we're not on the device, fall through
- #endif
--  BrowserList::CloseAllBrowsersAndExit();
-+  BrowserList::CloseAllBrowsersAndExit(0);
- 
-   return true;
- }
---- a/chrome/browser/browser_main_posix.cc
-+++ b/chrome/browser/browser_main_posix.cc
-@@ -138,7 +138,7 @@
- 
-   if (!BrowserThread::PostTask(
-       BrowserThread::UI, FROM_HERE,
--      NewRunnableFunction(BrowserList::CloseAllBrowsersAndExit))) {
-+      NewRunnableFunction(BrowserList::CloseAllBrowsersAndExit, 0))) {
-     // Without a UI thread to post the exit task to, there aren't many
-     // options.  Raise the signal again.  The default handler will pick it up
-     // and cause an ungraceful exit.
---- a/chrome/browser/ui/cocoa/restart_browser.mm
-+++ b/chrome/browser/ui/cocoa/restart_browser.mm
-@@ -46,7 +46,7 @@
-     // Set the flag to restore state after the restart.
-     PrefService* pref_service = g_browser_process->local_state();
-     pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
--    BrowserList::CloseAllBrowsersAndExit();
-+    BrowserList::CloseAllBrowsersAndExit(0);
-   } else {
-     NOTREACHED();
-   }
---- a/chrome/browser/ui/browser_list.h
-+++ b/chrome/browser/ui/browser_list.h
-@@ -101,18 +101,18 @@
-   static bool CanRestartForUpdate();
- 
-   // Called from Browser::Exit.
--  static void Exit();
-+  static void Exit(int signal);
- 
-   // Closes all browsers and exits.  This is equivalent to
-   // CloseAllBrowsers(true) on platforms where the application exits when no
-   // more windows are remaining.  On other platforms (the Mac), this will
-   // additionally exit the application.
--  static void CloseAllBrowsersAndExit();
-+  static void CloseAllBrowsersAndExit(int signal);
- 
-   // Closes all browsers. If the session is ending the windows are closed
-   // directly. Otherwise the windows are closed by way of posting a WM_CLOSE
-   // message.
--  static void CloseAllBrowsers();
-+  static void CloseAllBrowsers(int signal);
- 
-   // Begins shutdown of the application when the desktop session is ending.
-   static void SessionEnding();
---- a/chrome/browser/ui/webui/flags_ui.cc
-+++ b/chrome/browser/ui/webui/flags_ui.cc
-@@ -190,7 +190,7 @@
-   // Set the flag to restore state after the restart.
-   PrefService* pref_service = g_browser_process->local_state();
-   pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
--  BrowserList::CloseAllBrowsersAndExit();
-+  BrowserList::CloseAllBrowsersAndExit(0);
- #else
-   // For CrOS instead of browser restart (which is not supported) perform a full
-   // sign out. Session will be only restored is user has that setting set.
---- a/chrome/browser/ui/webui/options/language_options_handler.cc
-+++ b/chrome/browser/ui/webui/options/language_options_handler.cc
-@@ -112,5 +112,5 @@
-   // Set the flag to restore state after the restart.
-   PrefService* pref_service = g_browser_process->local_state();
-   pref_service->SetBoolean(prefs::kRestartLastSessionOnShutdown, true);
--  BrowserList::CloseAllBrowsersAndExit();
-+  BrowserList::CloseAllBrowsersAndExit(0);
- }
 --- a/chrome/browser/ui/panels/panel.cc
 +++ b/chrome/browser/ui/panels/panel.cc
-@@ -157,6 +157,10 @@
+@@ -172,6 +172,10 @@
    return false;
  }
  
@@ -624,7 +425,7 @@
    return NULL;
 --- a/chrome/browser/ui/panels/panel.h
 +++ b/chrome/browser/ui/panels/panel.h
-@@ -58,6 +58,7 @@
+@@ -71,6 +71,7 @@
    virtual void SetFullscreen(bool fullscreen) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
    virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
@@ -634,7 +435,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.h
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.h
-@@ -55,6 +55,7 @@
+@@ -56,6 +56,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
@@ -644,7 +445,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force);
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.mm
-@@ -220,6 +220,10 @@
+@@ -224,6 +224,10 @@
    return false;
  }
  
@@ -657,24 +458,21 @@
      Profile* profile) {
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.h
 +++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.h
-@@ -46,6 +46,7 @@
-   virtual void SetFullscreen(bool fullscreen) OVERRIDE;
-   virtual bool IsFullscreen() const OVERRIDE;
-   virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
+@@ -47,6 +47,7 @@
+   virtual bool IsDrawingAttention() const OVERRIDE;
+   virtual void DestroyPanelBrowser() OVERRIDE;
+   virtual NativePanelTesting* GetNativePanelTesting() OVERRIDE;
 +  virtual void SetDesktop() OVERRIDE;
-   virtual LocationBar* GetLocationBar() const OVERRIDE;
-   virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
-   virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
+ 
+   Panel* panel() { return panel_.get(); }
+   Browser* browser() { return browser_.get(); }
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.mm
 +++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.mm
-@@ -150,6 +150,10 @@
-   return false;
+@@ -155,3 +155,7 @@
+ NativePanelTesting* PanelBrowserWindowCocoa::GetNativePanelTesting() {
+   return this;
  }
- 
++
 +void PanelBrowserWindowCocoa::SetDesktop() {
 +  NOTIMPLEMENTED();
 +}
-+
- LocationBar* PanelBrowserWindowCocoa::GetLocationBar() const {
-   NOTIMPLEMENTED();
-   return NULL;
