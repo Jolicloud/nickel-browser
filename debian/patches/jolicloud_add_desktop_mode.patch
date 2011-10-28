@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -248,6 +248,7 @@
+@@ -272,6 +272,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
        last_blocked_command_disposition_(CURRENT_TAB),
@@ -8,7 +8,7 @@
        pending_web_app_action_(NONE),
        ALLOW_THIS_IN_INITIALIZER_LIST(
            tab_restore_service_delegate_(
-@@ -445,6 +446,14 @@
+@@ -478,6 +479,14 @@
  }
  
  // static
@@ -21,9 +21,9 @@
 +
 +// static
  Browser* Browser::CreateForDevTools(Profile* profile) {
-   CreateParams params(TYPE_POPUP, profile);
-   params.app_name = DevToolsWindow::kDevToolsApp;
-@@ -592,7 +601,7 @@
+ #if defined(OS_CHROMEOS)
+   CreateParams params(TYPE_TABBED, profile);
+@@ -624,7 +633,7 @@
      case extension_misc::LAUNCH_WINDOW:
      case extension_misc::LAUNCH_PANEL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
@@ -32,7 +32,7 @@
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = Browser::OpenApplicationTab(profile, extension, disposition);
-@@ -612,6 +621,7 @@
+@@ -644,6 +653,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
@@ -40,7 +40,7 @@
      Browser** app_browser) {
    GURL url;
    if (!url_input.is_empty()) {
-@@ -639,8 +649,12 @@
+@@ -671,8 +681,12 @@
      window_bounds.set_height(extension->launch_height());
    }
  
@@ -55,7 +55,7 @@
  
    if (app_browser)
      *app_browser = browser;
-@@ -651,6 +665,9 @@
+@@ -683,6 +697,9 @@
        profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
    }
  
@@ -65,7 +65,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, PageTransition::START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -667,6 +684,7 @@
+@@ -699,6 +716,7 @@
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -73,7 +73,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -675,6 +693,7 @@
+@@ -707,6 +725,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -81,7 +81,7 @@
        &app_browser);
  
    if (!tab)
-@@ -867,6 +886,9 @@
+@@ -900,6 +919,9 @@
      case TYPE_PANEL:
        // Do not save the window placement of panels.
        return false;
@@ -91,7 +91,7 @@
      default:
        return false;
    }
-@@ -987,7 +1009,9 @@
+@@ -1019,7 +1041,9 @@
  }
  
  bool Browser::ShouldCloseWindow() {
@@ -102,7 +102,7 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1379,6 +1403,14 @@
+@@ -1436,6 +1460,14 @@
  
      if (!is_app())
        features |= FEATURE_LOCATIONBAR;
@@ -117,7 +117,7 @@
    }
    return !!(features & feature);
  }
-@@ -2865,7 +2897,7 @@
+@@ -3159,7 +3191,7 @@
      indices->clear();
      can_close_all = false;
    }
@@ -126,7 +126,7 @@
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -3347,6 +3379,10 @@
+@@ -3663,6 +3695,10 @@
      return;
    }
  
@@ -139,7 +139,7 @@
      *proceed_to_fire_unload = false;
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -84,6 +84,7 @@
+@@ -91,6 +91,7 @@
      TYPE_TABBED = 1,
      TYPE_POPUP = 2,
      TYPE_PANEL = 3,
@@ -147,7 +147,7 @@
    };
  
    // Possible elements of the Browser window.
-@@ -160,6 +161,10 @@
+@@ -154,6 +155,10 @@
                                 const gfx::Rect& window_bounds,
                                 Profile* profile);
  
@@ -158,15 +158,7 @@
    // Like Create, but creates a tabstrip-less and toolbar-less
    // DevTools "app" window.
    static Browser* CreateForDevTools(Profile* profile);
-@@ -186,6 +191,7 @@
-   Type type() const { return type_; }
-   const std::string& app_name() const { return app_name_; }
-   Profile* profile() const { return profile_; }
-+  void set_kill_signal(int signal) { kill_signal_ = signal; };
-   const std::vector<std::wstring>& user_data_dir_profiles() const;
-   gfx::Rect override_bounds() const { return override_bounds_; }
- 
-@@ -262,6 +268,7 @@
+@@ -263,6 +268,7 @@
        extension_misc::LaunchContainer container,
        const GURL& url,
        const FilePath& icon_id,
@@ -174,7 +166,7 @@
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -273,6 +280,7 @@
+@@ -274,6 +280,7 @@
    static TabContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -182,7 +174,7 @@
                                              bool update_shortcut);
  
    // Open an application for |extension| using |disposition|.  Returns NULL if
-@@ -774,6 +782,7 @@
+@@ -841,6 +848,7 @@
    bool is_type_tabbed() const { return type_ == TYPE_TABBED; }
    bool is_type_popup() const { return type_ == TYPE_POPUP; }
    bool is_type_panel() const { return type_ == TYPE_PANEL; }
@@ -190,7 +182,7 @@
  
    bool is_app() const;
    bool is_devtools() const;
-@@ -1245,6 +1254,9 @@
+@@ -1399,6 +1407,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
@@ -202,7 +194,7 @@
    enum WebAppAction {
 --- a/chrome/browser/ui/browser_init.cc
 +++ b/chrome/browser/ui/browser_init.cc
-@@ -694,7 +694,8 @@
+@@ -711,7 +711,8 @@
  
      if (process_startup) {
        if (browser_defaults::kOSSupportsOtherBrowsers &&
@@ -212,7 +204,7 @@
          // Check whether we are the default browser.
          CheckDefaultBrowser(profile);
        }
-@@ -778,6 +779,13 @@
+@@ -795,6 +796,13 @@
    return (app_tab != NULL);
  }
  
@@ -226,7 +218,7 @@
  bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
    std::string url_string, app_id;
    if (!IsAppLaunch(&url_string, &app_id))
-@@ -834,6 +842,7 @@
+@@ -851,6 +859,7 @@
            profile,
            url,
            FilePath(icon_id),
@@ -248,7 +240,7 @@
      // returns false to specify default processing.
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -883,6 +883,42 @@
+@@ -878,6 +878,42 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -291,10 +283,10 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -1905,6 +1941,12 @@
-   // Browser::SaveWindowPlacement is used for session restore.
+@@ -1906,6 +1942,12 @@
+ 
    if (browser_->ShouldSaveWindowPlacement())
-     browser_->SaveWindowPlacement(restored_bounds_, IsMaximized());
+     browser_->SaveWindowPlacement(restored_bounds_, show_state);
 +  else {
 +    // Do not continue with SaveWindowPosition() if the previous
 +    // ShouldSaveWindowPlacement() returns false, such is the case when
@@ -306,7 +298,7 @@
    // This is a web of calls between views and delegates on Windows, but the
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -347,6 +347,36 @@
+@@ -361,6 +361,36 @@
    return true;
  }
  
@@ -345,9 +337,9 @@
    XID parent = None;
 --- a/ui/base/x/x11_util.h
 +++ b/ui/base/x/x11_util.h
-@@ -93,6 +93,8 @@
-                                  std::vector<Atom>* value);
- UI_API bool GetStringProperty(
+@@ -108,6 +108,8 @@
+                                     std::vector<Atom>* value);
+ UI_EXPORT bool GetStringProperty(
      XID window, const std::string& property_name, std::string* value);
 +bool ChangeProperty(
 +    XID window, const std::string& property_name, const std::string& set_name);
@@ -356,7 +348,7 @@
  XID GetParentWindow(XID window);
 --- a/chrome/browser/ui/browser_window.h
 +++ b/chrome/browser/ui/browser_window.h
-@@ -137,6 +137,9 @@
+@@ -141,6 +141,9 @@
    // Returns true if the fullscreen bubble is visible.
    virtual bool IsFullscreenBubbleVisible() const = 0;
  
@@ -368,7 +360,7 @@
  
 --- a/chrome/browser/ui/gtk/browser_window_gtk.h
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -79,6 +79,8 @@
+@@ -81,6 +81,8 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
@@ -379,7 +371,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force);
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -182,6 +182,9 @@
+@@ -196,6 +196,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
  
@@ -391,7 +383,7 @@
  
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -62,6 +62,7 @@
+@@ -65,6 +65,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
  extern const char kDebugPrint[];
@@ -399,20 +391,9 @@
  extern const char kDeviceManagementUrl[];
  extern const char kDiagnostics[];
  extern const char kDisableAuthNegotiateCnameLookup[];
---- a/chrome/browser/ui/browser_list.cc
-+++ b/chrome/browser/ui/browser_list.cc
-@@ -399,6 +399,8 @@
-   for (BrowserList::const_iterator i = BrowserList::begin();
-        i != BrowserList::end();) {
-     Browser* browser = *i;
-+    //FIXME: how else can we implement this??
-+    //browser->set_kill_signal(signal);
-     browser->window()->Close();
-     if (!session_ending) {
-       ++i;
 --- a/chrome/browser/ui/panels/panel.cc
 +++ b/chrome/browser/ui/panels/panel.cc
-@@ -172,6 +172,10 @@
+@@ -218,6 +218,10 @@
    return false;
  }
  
@@ -425,7 +406,7 @@
    return NULL;
 --- a/chrome/browser/ui/panels/panel.h
 +++ b/chrome/browser/ui/panels/panel.h
-@@ -71,6 +71,7 @@
+@@ -80,6 +80,7 @@
    virtual void SetFullscreen(bool fullscreen) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
    virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
@@ -435,7 +416,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.h
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.h
-@@ -56,6 +56,7 @@
+@@ -57,6 +57,7 @@
    virtual void SetFullscreen(bool fullscreen);
    virtual bool IsFullscreen() const;
    virtual bool IsFullscreenBubbleVisible() const;
@@ -445,7 +426,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force);
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.mm
-@@ -224,6 +224,10 @@
+@@ -262,6 +262,10 @@
    return false;
  }
  
@@ -458,21 +439,234 @@
      Profile* profile) {
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.h
 +++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.h
-@@ -47,6 +47,7 @@
-   virtual bool IsDrawingAttention() const OVERRIDE;
+@@ -52,6 +52,7 @@
+       const NativeWebKeyboardEvent& event) OVERRIDE;
+   virtual Browser* GetPanelBrowser() const OVERRIDE;
    virtual void DestroyPanelBrowser() OVERRIDE;
-   virtual NativePanelTesting* GetNativePanelTesting() OVERRIDE;
 +  virtual void SetDesktop() OVERRIDE;
- 
-   Panel* panel() { return panel_.get(); }
-   Browser* browser() { return browser_.get(); }
+   virtual gfx::Size GetNonClientAreaExtent() const OVERRIDE;
+   virtual int GetRestoredHeight() const OVERRIDE;
+   virtual void SetRestoredHeight(int height) OVERRIDE;
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.mm
-+++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.mm
-@@ -155,3 +155,7 @@
- NativePanelTesting* PanelBrowserWindowCocoa::GetNativePanelTesting() {
-   return this;
- }
-+
-+void PanelBrowserWindowCocoa::SetDesktop() {
-+  NOTIMPLEMENTED();
-+}
++++ /dev/null
+@@ -1,220 +0,0 @@
+-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+-#include "chrome/browser/ui/panels/panel_browser_window_cocoa.h"
+-
+-#include "base/logging.h"
+-#include "chrome/browser/ui/browser.h"
+-#include "chrome/browser/ui/cocoa/find_bar/find_bar_bridge.h"
+-#import "chrome/browser/ui/cocoa/browser_window_utils.h"
+-#include "chrome/browser/ui/panels/panel.h"
+-#include "chrome/browser/ui/panels/panel_manager.h"
+-#import "chrome/browser/ui/panels/panel_window_controller_cocoa.h"
+-#include "content/common/native_web_keyboard_event.h"
+-
+-namespace {
+-
+-// Use this instead of 0 for minimum size of a window when doing opening and
+-// closing animations, since OSX window manager does not like 0-sized windows
+-// (according to avi@).
+-const int kMinimumWindowSize = 1;
+-
+-// TODO(dcheng): Move elsewhere so BrowserWindowCocoa can use them too.
+-NSRect ConvertCoordinatesToCocoa(const gfx::Rect& bounds) {
+-  // Flip coordinates based on the primary screen.
+-  NSScreen* screen = [[NSScreen screens] objectAtIndex:0];
+-
+-  return NSMakeRect(
+-      bounds.x(), NSHeight([screen frame]) - bounds.height() - bounds.y(),
+-      bounds.width(), bounds.height());
+-}
+-
+-}  // namespace
+-
+-// This creates a shim window class, which in turn creates a Cocoa window
+-// controller which in turn creates actual NSWindow by loading a nib.
+-// Overall chain of ownership is:
+-// PanelWindowControllerCocoa -> PanelBrowserWindowCocoa -> Panel.
+-NativePanel* Panel::CreateNativePanel(Browser* browser, Panel* panel,
+-                                      const gfx::Rect& bounds) {
+-  return new PanelBrowserWindowCocoa(browser, panel, bounds);
+-}
+-
+-PanelBrowserWindowCocoa::PanelBrowserWindowCocoa(Browser* browser,
+-                                                 Panel* panel,
+-                                                 const gfx::Rect& bounds)
+-  : browser_(browser),
+-    panel_(panel),
+-    bounds_(bounds),
+-    is_shown_(false),
+-    has_find_bar_(false) {
+-  controller_ = [[PanelWindowControllerCocoa alloc] initWithBrowserWindow:this];
+-}
+-
+-PanelBrowserWindowCocoa::~PanelBrowserWindowCocoa() {
+-}
+-
+-bool PanelBrowserWindowCocoa::isClosed() {
+-  return !controller_;
+-}
+-
+-void PanelBrowserWindowCocoa::ShowPanel() {
+-  if (isClosed())
+-    return;
+-
+-  // Browser calls this several times, meaning 'ensure it's shown'.
+-  // Animations don't look good when repeated - hence this flag is needed.
+-  if (is_shown_) {
+-    return;
+-  }
+-  is_shown_ = true;
+-
+-  NSRect finalFrame = ConvertCoordinatesToCocoa(GetPanelBounds());
+-  [controller_ revealAnimatedWithFrame:finalFrame];
+-}
+-
+-void PanelBrowserWindowCocoa::ShowPanelInactive() {
+-  // TODO(dimich): to be implemented.
+-  ShowPanel();
+-}
+-
+-gfx::Rect PanelBrowserWindowCocoa::GetPanelBounds() const {
+-  return bounds_;
+-}
+-
+-void PanelBrowserWindowCocoa::SetPanelBounds(const gfx::Rect& bounds) {
+-  bounds_ = bounds;
+-  NSRect frame = ConvertCoordinatesToCocoa(bounds);
+-  [[controller_ window] setFrame:frame display:YES animate:YES];
+-}
+-
+-void PanelBrowserWindowCocoa::OnPanelExpansionStateChanged(
+-    Panel::ExpansionState expansion_state) {
+-  NOTIMPLEMENTED();
+-}
+-
+-bool PanelBrowserWindowCocoa::ShouldBringUpPanelTitlebar(int mouse_x,
+-                                                         int mouse_y) const {
+-  NOTIMPLEMENTED();
+-  return false;
+-}
+-
+-void PanelBrowserWindowCocoa::ClosePanel() {
+-  if (isClosed())
+-      return;
+-
+-  NSWindow* window = [controller_ window];
+-  [window performClose:controller_];
+-}
+-
+-void PanelBrowserWindowCocoa::ActivatePanel() {
+-  NOTIMPLEMENTED();
+-}
+-
+-void PanelBrowserWindowCocoa::DeactivatePanel() {
+-  NOTIMPLEMENTED();
+-}
+-
+-bool PanelBrowserWindowCocoa::IsPanelActive() const {
+-  NOTIMPLEMENTED();
+-  return false;
+-}
+-
+-gfx::NativeWindow PanelBrowserWindowCocoa::GetNativePanelHandle() {
+-  return [controller_ window];
+-}
+-
+-void PanelBrowserWindowCocoa::UpdatePanelTitleBar() {
+-  if (!is_shown_)
+-    return;
+-  [controller_ updateTitleBar];
+-}
+-
+-void PanelBrowserWindowCocoa::ShowTaskManagerForPanel() {
+-  NOTIMPLEMENTED();
+-}
+-
+-FindBar* PanelBrowserWindowCocoa::CreatePanelFindBar() {
+-  DCHECK(!has_find_bar_) << "find bar should only be created once";
+-  has_find_bar_ = true;
+-
+-  FindBarBridge* bridge = new FindBarBridge();
+-  [controller_ addFindBar:bridge->find_bar_cocoa_controller()];
+-  return bridge;
+-}
+-
+-void PanelBrowserWindowCocoa::NotifyPanelOnUserChangedTheme() {
+-  NOTIMPLEMENTED();
+-}
+-
+-void PanelBrowserWindowCocoa::DrawAttention() {
+-  NOTIMPLEMENTED();
+-}
+-
+-bool PanelBrowserWindowCocoa::IsDrawingAttention() const {
+-  NOTIMPLEMENTED();
+-  return false;
+-}
+-
+-bool PanelBrowserWindowCocoa::PreHandlePanelKeyboardEvent(
+-    const NativeWebKeyboardEvent& event, bool* is_keyboard_shortcut) {
+-  if (![BrowserWindowUtils shouldHandleKeyboardEvent:event])
+-    return false;
+-
+-  int id = [BrowserWindowUtils getCommandId:event];
+-  if (id == -1)
+-    return false;
+-
+-  if (browser()->IsReservedCommandOrKey(id, event)) {
+-      return [BrowserWindowUtils handleKeyboardEvent:event.os_event
+-                                 inWindow:GetNativePanelHandle()];
+-  }
+-
+-  DCHECK(is_keyboard_shortcut);
+-  *is_keyboard_shortcut = true;
+-  return false;
+-}
+-
+-void PanelBrowserWindowCocoa::HandlePanelKeyboardEvent(
+-    const NativeWebKeyboardEvent& event) {
+-  if ([BrowserWindowUtils shouldHandleKeyboardEvent:event]) {
+-    [BrowserWindowUtils handleKeyboardEvent:event.os_event
+-                                   inWindow:GetNativePanelHandle()];
+-  }
+-}
+-
+-Browser* PanelBrowserWindowCocoa::GetPanelBrowser() const {
+-  return browser();
+-}
+-
+-void PanelBrowserWindowCocoa::DestroyPanelBrowser() {
+-  [controller_ close];
+-}
+-
+-void PanelBrowserWindowCocoa::didCloseNativeWindow() {
+-  DCHECK(!isClosed());
+-  panel_->manager()->Remove(panel_.get());
+-  controller_ = NULL;
+-}
+-gfx::Size PanelBrowserWindowCocoa::GetNonClientAreaExtent() const {
+-  NOTIMPLEMENTED();
+-  return gfx::Size();
+-}
+-
+-int PanelBrowserWindowCocoa::GetRestoredHeight() const {
+-  NOTIMPLEMENTED();
+-  return 0;
+-}
+-
+-void PanelBrowserWindowCocoa::SetRestoredHeight(int height) {
+-  NOTIMPLEMENTED();
+-}
+-
+-// NativePanelTesting implementation.
+-
+-// static
+-NativePanelTesting* NativePanelTesting::Create(NativePanel* native_panel) {
+-  NOTIMPLEMENTED();
+-  return NULL;
+-}
