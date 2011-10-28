@@ -18,4 +18,3 @@ jolicloud_fix_maximize_with_newer_metacity.patch
 webkit_rev_parser.patch
 dlopen_libgnutls.patch
 dlopen_sonamed_gl.patch
-cups_1.5_build_fix.patch

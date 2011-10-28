@@ -4,16 +4,11 @@
 
 Index: src/webkit/build/webkit_version.py
 ===================================================================
---- src.orig/webkit/build/webkit_version.py
-+++ src/webkit/build/webkit_version.py
-@@ -46,16 +46,25 @@
-   # "svn info" tells us what we want, but third_party/WebKit does *not*
-   # point at the upstream repo.  So instead we run svn info on the directory
-   # containing the versioning file (which is some subdirectory of WebKit).
-   version_file_dir = os.path.dirname(version_file)
-   version_info = lastchange.FetchVersionInfo(
-       default_lastchange=None,
-       directory=os.path.join(webkit_dir, version_file_dir))
+--- src.orig/webkit/build/webkit_version.py	2011-10-21 18:38:45.875141666 +0100
++++ src/webkit/build/webkit_version.py	2011-10-21 18:39:12.591141191 +0100
+@@ -61,6 +61,15 @@
+       directory=os.path.join(webkit_dir, version_file_dir),
+       directory_regex_prior_to_src_url='webkit')
  
 +  if version_info.url is None or version_info.url == 'unknown':
 +    # parse the DEPS file
@@ -24,11 +19,6 @@ Index: src/webkit/build/webkit_version.py
 +    branch = os.path.basename(x.group(1)) if x else "n-a"
 +    return "%s@%s" % (branch, rev)
 +
-   if (version_info.url.startswith(version_info.root) and
-       version_info.url.endswith(version_file_dir)):
-     # Now compute the real WebKit URL by stripping off the version file
-     # directory from the URL we get out of version_info.
-     # Further, we want to strip off the "http://svn..." from the left.
-     # This is the root URL from the repository.
-     webkit_url = version_info.url[len(version_info.root):-len(version_file_dir)]
-     webkit_url = webkit_url.strip('/')
+   if version_info.url == None:
+     version_info.url = 'Unknown URL'
+   version_info.url = version_info.url.strip('/')

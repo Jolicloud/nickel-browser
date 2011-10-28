@@ -1,4 +1,4 @@
-chromium-browser (10.0.648.205~r81283-0ubuntu1) natty; urgency=low
+chromium-browser (10.0.648.205~r81283-0ubuntu0.10.04.1) lucid-security; urgency=high
 
   With this version (like with 10.0.648.204), you may notice that the saved
   passwords are no longer accessible in Chromium. (LP: #743494) This is due to

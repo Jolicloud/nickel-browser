@@ -2,6 +2,8 @@ Source: nickel-browser
 Section: web
 Priority: optional
 Maintainer: Jolicloud Developers <developers@jolicloud.org>
+Vcs-Git: http://github.com/jolicloud/nickel-browser
+Homepage: http://code.google.com/chromium/
 Build-Depends: cdbs,
 	debhelper (>= 5),
 	pkg-config,
@@ -16,7 +18,6 @@ Build-Depends: cdbs,
 	bison,
 	flex,
 	gperf,
-	libvpx-dev,
 	libjpeg62-dev,
 	libpng12-dev,
 	libbz2-dev,
@@ -34,9 +35,9 @@ Build-Depends: cdbs,
 	libpam0g-dev,
 	libgl1-mesa-dri,
 	mesa-common-dev,
+	python-simplejson,
 	libgl1-mesa-dev,
 	libglu1-mesa-dev,
-	libgles2-mesa-dev [armel],
 	libxt-dev,
 	libxtst-dev,
 	libxss-dev,
@@ -49,7 +50,7 @@ Build-Depends: cdbs,
 Standards-Version: 3.8.3
 
 Package: nickel-browser
-Architecture: any
+Architecture: i386 amd64
 Pre-Depends: lzma
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	jolicloud-daemon (>= 1.2.4~),
@@ -57,9 +58,7 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
 	xdg-utils,
 	nickel-codecs-ffmpeg (>= 0.6) | nickel-codecs-ffmpeg-extra (>= 0.6)
 Recommends: nickel-browser-l10n, google-talkplugin
-Provides: www-browser, nickel-browser-inspector
-Replaces: nickel-browser-inspector
-Conflicts: nickel-browser-inspector
+Provides: www-browser
 Description: Nickel browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -67,7 +66,7 @@ Description: Nickel browser
  This package contains the Nickel browser
 
 Package: nickel-browser-dbg
-Architecture: any
+Architecture: i386 amd64
 Section: devel
 Priority: optional
 Pre-Depends: lzma
@@ -90,10 +89,10 @@ Description: Nickel-browser language packages
  vi, zh-CN, zh-TW
 
 Package: nickel-codecs-ffmpeg
-Architecture: any
+Architecture: i386 amd64
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
-Conflicts: nickel-codecs-ffmpeg-extra
-Replaces: nickel-codecs-ffmpeg-extra
+Conflicts: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
+Replaces: nickel-codecs-ffmpeg-extra, nickel-codecs-ffmpeg-nonfree
 Description: Free ffmpeg codecs for the Nickel Browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -103,21 +102,22 @@ Description: Free ffmpeg codecs for the Nickel Browser
  included. See nickel-codecs-ffmpeg-extra for additionnal codecs
 
 Package: nickel-codecs-ffmpeg-dbg
-Architecture: any
+Architecture: i386 amd64
 Section: debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg (= ${binary:Version})
-Conflicts: nickel-codecs-ffmpeg-extra-dbg
-Replaces: nickel-codecs-ffmpeg-extra-dbg
+Conflicts: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
+Replaces: nickel-codecs-ffmpeg-extra-dbg, nickel-codecs-ffmpeg-nonfree-dbg
 Description: nickel-codecs-ffmpeg debug symbols
  Debug symbols for the free ffmpeg-mt codecs
 
 Package: nickel-codecs-ffmpeg-extra
-Architecture: any
+Architecture: i386 amd64
 Section: restricted/web
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (>= 4.0.203.0~)
-Conflicts: nickel-codecs-ffmpeg
-Replaces: nickel-codecs-ffmpeg
+Conflicts: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree (<< 0.5+svn20100323r42310+42573+42709)
+Replaces: nickel-codecs-ffmpeg, nickel-codecs-ffmpeg-nonfree, nickel-browser
+Provides: nickel-codecs-ffmpeg-nonfree
 Description: Extra ffmpeg codecs for the Nickel Browser
  Nickel is a fork of Chromium, an open-source browser project that aims to build
  a safer, faster, and more stable way for all Internet users to experience the web.
@@ -128,7 +128,7 @@ Description: Extra ffmpeg codecs for the Nickel Browser
  See nickel-codecs-ffmpeg if you prefer only the patent-free codecs
 
 Package: nickel-codecs-ffmpeg-extra-dbg
-Architecture: any
+Architecture: i386 amd64
 Section: restricted/debug
 Priority: extra
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-codecs-ffmpeg-extra (= ${binary:Version})
