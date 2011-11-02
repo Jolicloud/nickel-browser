@@ -324,3 +324,48 @@
  extern const char kImport[];
  extern const char kImportFromFile[];
  extern const char kIncognito[];
+--- a/chrome/browser/ui/gtk/browser_titlebar.cc
++++ b/chrome/browser/ui/gtk/browser_titlebar.cc
+@@ -606,14 +606,26 @@
+         // Update the system app icon.  We don't need to update the icon in the
+         // top left of the custom frame, that will get updated when the
+         // throbber is updated.
+-        SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
+-        if (icon.empty()) {
+-          gtk_util::SetWindowIcon(window_);
+-        } else {
+-          GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
+-          gtk_window_set_icon(window_, icon_pixbuf);
+-          g_object_unref(icon_pixbuf);
++        // If we got an icon-id parameter (saved into prefs) and the current URL is a subpath of
++        // the app parameter use the icon-id icon
++
++        std::string current_host = browser_window_->browser()->GetURLForCurrentTab().host();
++
++        GList* icon_list = NULL;
++        GdkPixbuf* icon_pixbuf = NULL;
++        std::string icon_pref_key = browser_window_->browser()->GetWindowIconKey();
++        PrefService* prefs = browser_window_->browser()->profile()->GetPrefs();
++        FilePath prefs_icon_id = prefs->GetFilePath(icon_pref_key.c_str());
++        if (!prefs_icon_id.empty())
++          icon_pixbuf = gtk_util::GetPixbufFromIconID(prefs_icon_id.value());
++        if (icon_pixbuf) {
++          icon_list = g_list_append(icon_list, icon_pixbuf);
++        }
++        else {
++          gtk_util::GetIconList();
+         }
++        gtk_window_set_icon_list(window_, icon_list);
++        g_list_free(icon_list);
+         break;
+       }
+       case Browser::TYPE_TABBED: {
+@@ -639,7 +651,7 @@
+ 
+     // Note: we want to exclude the application popup window.
+     if (browser_window_->browser()->is_app() &&
+-        browser_window_->browser()->is_type_popup()) {
++        !browser_window_->browser()->is_type_popup()) {
+       SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
+       if (icon.empty()) {
+         // Fallback to the Chromium icon if the page has no icon.
