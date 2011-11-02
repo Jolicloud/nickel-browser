@@ -12,7 +12,7 @@ if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] ; then
 fi
 
 if [ "$1" = "configure" ] ; then
-        if dpkg --compare-versions "$2" le "14.0.835.126~r99097-1jolicloud1+0u1"; then
+        if dpkg --compare-versions "$2" lt "14.0.835.126~r99097-1jolicloud1+0u1"; then
             echo "Forcing reboot to switch to new launcher and jolicloud-daemon."
             echo "Required due to changed Web Sockets protocol."
             touch /var/run/reboot-required
