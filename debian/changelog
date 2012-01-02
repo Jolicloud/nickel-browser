@@ -1,3 +1,22 @@
+nickel-browser (15.0.874.106~r107270-1jolicloud2+0u1) robby-1.2; urgency=low
+
+  * Issue a reboot notification only if the user is upgrading from "less
+    than" 14.0.835.126~r99097-1jolicloud1+0u1 (not "less than or equal
+    to")
+  * Restore a lost chunk in jolicloud_set_app_icon_from_desktop_file.patch
+    in charge of setting webapp icons in the window manager.
+
+ -- Adam McDaniel <adam@jolicloud.org>  Wed, 02 Nov 2011 10:49:47 -0600
+
+nickel-browser (15.0.874.106~r107270-1jolicloud1+0u1) robby-1.2; urgency=low
+
+  * Imported Upstream version 15.0.874.106~r107270
+  * Restored missing debian/ directory from failed upstream upgrade to
+    chromium-browser-15.0.874.106~r107270
+  * Refreshed Jolicloud patches for nickel-browser-15.0.874.106~r107270
+
+ -- Adam McDaniel <adam@jolicloud.org>  Fri, 28 Oct 2011 12:32:09 -0600
+
 chromium-browser (15.0.874.106~r107270-0ubuntu0.10.04.1) lucid-security; urgency=low
 
   * New upstream release from the Stable Channel (LP: #881786)
