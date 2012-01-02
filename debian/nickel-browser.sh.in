@@ -41,9 +41,12 @@ fi
 export LD_LIBRARY_PATH
 
 # For the Default Browser detection to work, we need to give access
-# to xdg-settings. Also set CHROME_WRAPPER in case xdg-settings is
+# to xdg-settings if it's not present on the system (ensures that the system
+# xdg-utils is recent enough). Also set CHROME_WRAPPER in case xdg-settings is
 # not able to do anything useful
-export PATH="$LIBDIR:$PATH"
+if [ ! -e /usr/bin/xdg-settings ] ; then
+  export PATH="$LIBDIR:$PATH"
+fi
 export CHROME_WRAPPER="`readlink -f "$0"`"
 export CHROME_DESKTOP=$APPNAME.desktop
 

@@ -30,7 +30,7 @@ _cdbs_class_path ?= /usr/share/cdbs/1/class
 ifndef _cdbs_rules_tarball
 _cdbs_rules_tarball = 1
 
-include $(_cdbs_rules_path)/buildcore.mk$(_cdbs_makefile_suffix)
+-include $(_cdbs_rules_path)/buildcore.mk$(_cdbs_makefile_suffix)
 
 # The user developper may override this variable to choose which tarballs
 # to unpack.

@@ -15,6 +15,10 @@ SRC_DIR        := $(CURDIR)/build-tree/$(DEB_TAR_SRCDIR)
 LIB_DIR        := usr/lib/$(DEBIAN_NAME)
 DEB_BUILDDIR   := $(SRC_DIR)
 CDBS_NO_DOC_SYMLINKING := 1 # See LP #194574
+KEEPALIVE      := $(CURDIR)/debian/keep-alive.sh
+
+# Whitelist LP provided new langs only in release builds, PPAs ship them all
+WANT_ONLY_WHITELISTED_NEW_LANGS ?= 0
 
 WANT_LZMA_SRC    ?= 1
 WANT_LZMA_DEBS   ?= 1
@@ -65,9 +69,6 @@ ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
 GYP_DEFINES += werror=$(NULL)
 endif
 
-# Disable NaCl until we figure out what to do with the private toolchain
-GYP_DEFINES += disable_nacl=1
-
 ifeq (armel,$(DEB_BUILD_ARCH))
 GYP_DEFINES += \
 	arm_thumb=1 \
@@ -77,6 +78,7 @@ GYP_DEFINES += \
 	disable_nacl=1 \
 	linux_use_tcmalloc=0 \
 	use_libjpeg_turbo=0 \
+	use_cups=0 \
 	$(NULL)
 WANT_LZMA_DEBS := 0
 ifneq (,$(filter 10.10 11.04 unstable development,$(DEBIAN_DIST)))
@@ -99,6 +101,9 @@ endif
 
 # Don't let dh_installinit install *.default in /etc/default
 DEB_DH_INSTALLINIT_ARGS += --noscripts --onlyscripts
+
+# Don't let scour touch the svg files
+DEB_DH_SCOUR_ARGS += -Xsvg
 
 # Use lzma instead of gzip inside the debs (passed to dpkg-deb)
 ifeq (1,$(WANT_LZMA_DEBS))
@@ -124,7 +129,22 @@ ifeq (1,$(WANT_SHARED_LIBS))
 GYP_DEFINES += library=shared_library
 endif
 
+# Use upstream build flags (defined in build/common.gypi)
+BUILD_ARGS += CFLAGS="" CXXFLAGS="" CPPFLAGS="" LDFLAGS=""
+
 CC_VERSION   := $(shell gcc -dumpversion | cut -d. -f-2)
+
+# Set this to use gcc 4.5 instead of 4.6
+AVOID_GCC_46 ?= 0
+  
+ifeq (4.6,$(CC_VERSION))
+GYP_DEFINES += werror=$(NULL)
+ifeq (1,$(AVOID_GCC_46))
+CC  := gcc-4.5
+CXX := g++-4.5
+BUILD_ARGS += CC=$(CC) CXX=$(CXX) CC.host=$(CC) CXX.host=$(CXX) LINK.host=$(CXX)
+endif
+endif
  
 # See http://code.google.com/p/chromium/issues/detail?id=49533
 ifeq (4.5,$(CC_VERSION))
@@ -142,13 +162,16 @@ TAR_FLAGS := -j
 COMPRESS  := bzip2
 endif
 
+post-patches::
+	perl $(CURDIR)/debian/enable-dist-patches.pl $(DEBIAN_DIST_VERSION) $(CURDIR)/debian/patches/series
+
 include $(CURDIR)/debian/cdbs/tarball.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/class/makefile.mk
+-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+-include /usr/share/cdbs/1/rules/debhelper.mk
+-include /usr/share/cdbs/1/class/makefile.mk
 
 ifneq (1,$(PROCESSORS))
-DEB_MAKE_EXTRA_ARGS += -j$(PROCESSORS)
+BUILD_ARGS += -j$(PROCESSORS)
 endif
 
 INSTALL_EXCLUDE_DIRS = \
@@ -160,7 +183,6 @@ INSTALL_EXCLUDE_DIRS = \
 	docs_app \
 	gmail_app \
 	pyproto \
-	pseudo_locales \
 	$(NULL)
 
 INSTALL_EXCLUDE_FILES = \
@@ -197,7 +219,7 @@ BROWSER_GYP_DEFINES += \
 	build_ffmpegsumo=0 \
 	$(NULL)
 FFMPEG_MT_GYP_DEFINES = \
-	use_system_vpx=0 \
+	use_system_vpx=1 \
 	release_extra_cflags=-g \
 	$(NULL)
 FFMPEG_MT_STD_GYP_DEFINES   = $(NULL)
@@ -279,7 +301,8 @@ endif
 		build-tree/src/chrome/common/chrome_paths.cc
 	touch $@
 
-DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS)
+DEB_MAKE_EXTRA_ARGS   := $(NULL)
+DEB_MAKE_BUILD_TARGET := $(BUILD_ARGS) $(BUILD_TARGETS) || ( $(KEEPALIVE) stop ; exit 1 )
 
 configure/$(DEBIAN_NAME):: debian/configure-stamp
 
@@ -297,6 +320,15 @@ debian/configure-stamp:
 	# Bump the ulimit for /usr/bin/ld.gold.real
 	# http://groups.google.com/a/chromium.org/group/chromium-dev/browse_thread/thread/9e4373212dc3756c
 	ulimit -n `ulimit -H -n`
+	# Start the keep-alive script
+	@chmod 755 $(KEEPALIVE)
+	$(KEEPALIVE) start &
+
+common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
+debian/stamp-makefile-build-perf: debian/stamp-makefile-build
+	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
+	touch $@
+	$(KEEPALIVE) stop
 
 common-build-arch:: debian/stamp-build-ffmpeg-std debian/stamp-build-ffmpeg-extra
 
@@ -315,14 +347,10 @@ debian/stamp-build-ffmpeg-%: debian/stamp-configure-ffmpeg-%
 	install -m 644 $(FFMPEG_SRC_DIR)/out/$(BUILD_TYPE)/libffmpegsumo.so $(CURDIR)/debian/tmp-$*/$(LIB_DIR)
 	touch $@
 
-common-build-arch common-build-indep:: debian/stamp-makefile-build-perf
-debian/stamp-makefile-build-perf: debian/stamp-makefile-build
-	@T2=`date +%s`; T1=`date -r debian/configure-stamp +%s`; echo "PERF: '$(BUILD_TARGETS)' built in "`expr $$T2 - $$T1`" sec"
-	touch $@
-
 clean::
 	rm -f debian/*-stamp debian/stamp-* debian/tmp-*
 	rm -f $(subst_files) *.cdbs-config_list
+	perl $(CURDIR)/debian/enable-dist-patches.pl --clean $(CURDIR)/debian/patches/series
 
 # Install: there's no install rules in scons yet, do it manually
 common-install-prehook-impl::
@@ -457,6 +485,7 @@ MAPPED_GRIT_TEMPLATES := \
 # New langs with enough coverage to land in official builds
 # (leave empty to accept all new lang)
 GRIT_WHITELISTED_LANGS ?= \
+	ca@valencia \
 	eu \
 	gl \
 	ug \
@@ -471,7 +500,7 @@ GRIT_CONVERTER_FLAGS := \
 	$(MAPPED_GRIT_TEMPLATES) \
 	$(NULL)
 	
-ifneq (,$(GRIT_WHITELISTED_LANGS))
+ifeq (1,$(WANT_ONLY_WHITELISTED_NEW_LANGS))
 GRIT_CONVERTER_FLAGS += --whitelisted-new-langs $(shell echo $(GRIT_WHITELISTED_LANGS) | tr ' ' ',')
 endif
 
@@ -646,7 +675,7 @@ endif
 	( cd $(TMP_DIR) ; \
 	  SDIR=`grep '"name"' .gclient | cut -d\" -f4` ; \
 	  perl -i~ -pe 's%(.python., .src/build/gyp_chromium.)%"echo", "#disabled#", $$1%' $$SDIR/DEPS; \
-	   ./tools/depot_tools/gclient runhooks ; \
+          ./tools/depot_tools/gclient runhooks ; \
 	  mv $$SDIR/DEPS~ $$SDIR/DEPS ; )
 
 ifneq (,$(LOCAL_BRANCH))
