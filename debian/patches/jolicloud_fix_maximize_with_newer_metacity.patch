@@ -1,23 +1,23 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -853,20 +853,7 @@
-   if (fullscreen) {
-     gtk_window_fullscreen(window_);
-   } else {
--    // Work around a bug where if we try to unfullscreen, metacity immediately
--    // fullscreens us again.  This is a little flickery and not necessary if
--    // there's a gnome-panel, but it's not easy to detect whether there's a
--    // panel or not.
--    std::string wm_name;
--    bool unmaximize_before_unfullscreen = IsMaximized() &&
--        ui::GetWindowManagerName(&wm_name) && wm_name == "Metacity";
--    if (unmaximize_before_unfullscreen)
--      UnMaximize();
--
-     gtk_window_unfullscreen(window_);
--
--    if (unmaximize_before_unfullscreen)
--      gtk_window_maximize(window_);
-   }
+@@ -875,20 +875,7 @@
  }
  
+ void BrowserWindowGtk::ExitFullscreen() {
+-  // Work around a bug where if we try to unfullscreen, metacity immediately
+-  // fullscreens us again.  This is a little flickery and not necessary if
+-  // there's a gnome-panel, but it's not easy to detect whether there's a
+-  // panel or not.
+-  std::string wm_name;
+-  bool unmaximize_before_unfullscreen = IsMaximized() &&
+-      ui::GetWindowManagerName(&wm_name) && wm_name == "Metacity";
+-  if (unmaximize_before_unfullscreen)
+-    UnMaximize();
+-
+   gtk_window_unfullscreen(window_);
+-
+-  if (unmaximize_before_unfullscreen)
+-    gtk_window_maximize(window_);
+ }
+ 
+ bool BrowserWindowGtk::IsFullscreen() const {

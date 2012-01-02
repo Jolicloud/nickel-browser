@@ -104,20 +104,20 @@
     <ul>
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -521,6 +521,7 @@
-     const WebURLError& error) {
-   GURL failed_url = error.unreachableURL;
-   std::string html;
+@@ -584,6 +584,7 @@
+     std::string* error_html,
+     string16* error_description) {
+   const GURL failed_url = error.unreachableURL;
 +  static const std::string kMyJolicloudHost("my.jolicloud.com");
    const Extension* extension = NULL;
- 
-   // Use a local error page.
-@@ -528,7 +529,7 @@
-   DictionaryValue error_strings;
-   if (failed_url.is_valid() && !failed_url.SchemeIs(chrome::kExtensionScheme))
-     extension = extension_dispatcher_->extensions()->GetByURL(failed_url);
--  if (extension) {
-+  if (failed_url.host() != kMyJolicloudHost && extension) {
-     LocalizedError::GetAppErrorStrings(error, failed_url, extension,
-                                        &error_strings);
+   const bool is_repost =
+       error.reason == net::ERR_CACHE_MISS &&
+@@ -597,7 +598,7 @@
+     // Use a local error page.
+     int resource_id;
+     DictionaryValue error_strings;
+-    if (extension) {
++    if (failed_url.host() != kMyJolicloudHost && extension) {
+       LocalizedError::GetAppErrorStrings(error, failed_url, extension,
+                                          &error_strings);
  
