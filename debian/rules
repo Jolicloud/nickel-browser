@@ -98,6 +98,7 @@ $(warning unsupported target arch $(DEB_BUILD_ARCH) - continuing anyway)
 endif
 endif
 endif
+GYP_DEFINES += disable_nacl=1
 
 # Don't let dh_installinit install *.default in /etc/default
 DEB_DH_INSTALLINIT_ARGS += --noscripts --onlyscripts
@@ -443,7 +444,7 @@ compare:
 	# Find missing
 	@find $(PKG_DIRS) -type f -print | grep -v /DEBIAN/ | grep -vE '(/usr/lib/debug|/locales/|/inspector/|libffmpegsumo.so)' | \
 	  grep $(LIB_DIR) | cut -d/ -f5- | sort > /tmp/pkg-$$$$.indebs ; \
-	find debian/tmp/$(LIB_DIR) -type f -print | cut -d/ -f5- | grep -vE '(\.log$$|/locales/|/inspector/)' | sort > /tmp/pkg-$$$$.inhammer ; \
+	find debian/tmp/$(LIB_DIR) -type f -print | cut -d/ -f5- | grep -vE '(\.log$$|/(pseudo_)?locales/|/inspector/)' | sort > /tmp/pkg-$$$$.inhammer ; \
 	diff -u /tmp/pkg-$$$$.inhammer /tmp/pkg-$$$$.indebs ; \
 	if [ $$? -eq 0 ] ; then \
 	  echo " => All fine" ; \
