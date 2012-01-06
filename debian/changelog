@@ -1,3 +1,15 @@
+nickel-browser (16.0.912.63~r113337-1jolicloud1+0u1) robby-1.2; urgency=low
+
+  * Refreshed Jolicloud patches for nickel-browser-16.0.912.63~r113337
+  * Add libelfg0-dev to build-depends for nacl
+  * Ignore /(pseudo_)?locales/ path when comparing build output and deb
+    pkg input
+  * Depend on jolicloud-daemon >=1.2.5~ which provides WebSocket
+    protocol RFC6455 (formerly hybi-17), required by Chromium 16.
+    Request reboot after upgrading.
+
+ -- Adam McDaniel <adam@jolicloud.org>  Tue, 03 Jan 2012 12:12:16 -0700
+
 chromium-browser (16.0.912.63~r113337-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   [ Fabien Tassin ]
