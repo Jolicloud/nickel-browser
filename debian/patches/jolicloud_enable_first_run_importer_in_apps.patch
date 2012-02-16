@@ -1,17 +1,17 @@
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
-@@ -1313,12 +1313,10 @@
-         !FirstRun::ProcessMasterPreferences(user_data_dir, master_prefs_.get());
-     AddFirstRunNewTabs(&browser_init, master_prefs_->new_tabs);
+@@ -1338,12 +1338,10 @@
+         user_data_dir_, master_prefs_.get());
+     AddFirstRunNewTabs(browser_init_.get(), master_prefs_->new_tabs);
  
 -    // If we are running in App mode, we do not want to show the importer
 +    // Even if we are running in App mode, we do want to show the importer
      // (first run) UI.
-     if (!first_run_ui_bypass &&
+     if (!first_run_ui_bypass_ &&
 -        (parsed_command_line().HasSwitch(switches::kApp) ||
 -         parsed_command_line().HasSwitch(switches::kAppId) ||
 -         parsed_command_line().HasSwitch(switches::kNoFirstRun)))
 +         parsed_command_line().HasSwitch(switches::kNoFirstRun))
-       first_run_ui_bypass = true;
+       first_run_ui_bypass_ = true;
    }
  

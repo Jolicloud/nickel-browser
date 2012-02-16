@@ -1,10 +1,10 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -2388,7 +2388,6 @@
-           wm_name == "compiz" ||
-           wm_name == "Compiz" ||
-           wm_name == "e16" ||  // Enlightenment DR16
--          wm_name == "Metacity" ||
-           wm_name == "Mutter" ||
-           wm_name == "Openbox" ||
-           wm_name == "Xfwm4");
+@@ -2426,7 +2426,6 @@
+   return (wm_type == ui::WM_BLACKBOX ||
+           wm_type == ui::WM_COMPIZ ||
+           wm_type == ui::WM_ENLIGHTENMENT ||
+-          wm_type == ui::WM_METACITY ||
+           wm_type == ui::WM_MUTTER ||
+           wm_type == ui::WM_OPENBOX ||
+           wm_type == ui::WM_XFWM4);

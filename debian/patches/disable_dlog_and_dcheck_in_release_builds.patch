@@ -2,26 +2,14 @@
  base/logging.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: src/base/logging.h
-===================================================================
---- src.orig/base/logging.h
-+++ src/base/logging.h
-@@ -495,17 +495,17 @@
- #define CHECK_LT(val1, val2) CHECK_OP(LT, < , val1, val2)
- #define CHECK_GE(val1, val2) CHECK_OP(GE, >=, val1, val2)
- #define CHECK_GT(val1, val2) CHECK_OP(GT, > , val1, val2)
- 
- // http://crbug.com/16512 is open for a real fix for this.  For now, Windows
+--- a/base/logging.h
++++ b/base/logging.h
+@@ -451,7 +451,7 @@
  // uses OFFICIAL_BUILD and other platforms use the branding flag when NDEBUG is
  // defined.
  #if ( defined(OS_WIN) && defined(OFFICIAL_BUILD)) || \
 -    (!defined(OS_WIN) && defined(NDEBUG) && defined(GOOGLE_CHROME_BUILD))
 +    (!defined(OS_WIN) && defined(NDEBUG))
- // Used by unit tests.
- #define LOGGING_IS_OFFICIAL_BUILD
- 
- // In order to have optimized code for official builds, remove DLOGs and
- // DCHECKs.
- #define ENABLE_DLOG 0
- #define ENABLE_DCHECK 0
- 
+ #define LOGGING_IS_OFFICIAL_BUILD 1
+ #else
+ #define LOGGING_IS_OFFICIAL_BUILD 0

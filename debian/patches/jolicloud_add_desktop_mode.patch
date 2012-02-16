@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -281,6 +281,7 @@
+@@ -316,6 +316,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
        last_blocked_command_disposition_(CURRENT_TAB),
@@ -8,7 +8,7 @@
        pending_web_app_action_(NONE),
        ALLOW_THIS_IN_INITIALIZER_LIST(
            tab_restore_service_delegate_(
-@@ -468,6 +469,14 @@
+@@ -505,6 +506,14 @@
  }
  
  // static
@@ -23,24 +23,24 @@
  Browser* Browser::CreateForDevTools(Profile* profile) {
  #if defined(OS_CHROMEOS)
    CreateParams params(TYPE_TABBED, profile);
-@@ -590,7 +599,7 @@
-     case extension_misc::LAUNCH_WINDOW:
+@@ -636,7 +645,7 @@
      case extension_misc::LAUNCH_PANEL:
+     case extension_misc::LAUNCH_SHELL:
        tab = Browser::OpenApplicationWindow(profile, extension, container,
--                                           GURL(), empty_icon, NULL);
-+                                           GURL(), empty_icon, false, NULL);
+-                                           override_url, empty_icon, NULL);
++                                           override_url, empty_icon, false, NULL);
        break;
      case extension_misc::LAUNCH_TAB: {
-       tab = Browser::OpenApplicationTab(profile, extension, disposition);
-@@ -610,6 +619,7 @@
+       tab = Browser::OpenApplicationTab(profile, extension, override_url,
+@@ -657,6 +666,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
 +    bool as_desktop,
      Browser** app_browser) {
-   GURL url;
-   if (!url_input.is_empty()) {
-@@ -637,8 +647,12 @@
+   DCHECK(!url_input.is_empty() || extension);
+   GURL url = UrlForExtension(extension, url_input);
+@@ -685,8 +695,12 @@
      window_bounds.set_height(extension->launch_height());
    }
  
@@ -55,7 +55,7 @@
  
    if (app_browser)
      *app_browser = browser;
-@@ -649,6 +663,9 @@
+@@ -697,6 +711,9 @@
        profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
    }
  
@@ -65,7 +65,7 @@
    TabContentsWrapper* wrapper =
        browser->AddSelectedTabWithURL(url, content::PAGE_TRANSITION_START_PAGE);
    TabContents* contents = wrapper->tab_contents();
-@@ -665,6 +682,7 @@
+@@ -713,6 +730,7 @@
  TabContents* Browser::OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -73,7 +73,7 @@
                                              bool update_shortcut) {
    Browser* app_browser;
    TabContents* tab = OpenApplicationWindow(
-@@ -673,6 +691,7 @@
+@@ -721,6 +739,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -81,17 +81,17 @@
        &app_browser);
  
    if (!tab)
-@@ -870,6 +889,9 @@
-     case TYPE_PANEL:
-       // Do not save the window placement of panels.
+@@ -917,6 +936,9 @@
        return false;
+     case TYPE_SHELL:
+       return true;
 +    case TYPE_DESKTOP:
 +      // Do not save the window placement of desktop.
 +      return false;
      default:
        return false;
    }
-@@ -989,7 +1011,9 @@
+@@ -1039,7 +1061,9 @@
  }
  
  bool Browser::ShouldCloseWindow() {
@@ -102,7 +102,7 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1413,6 +1437,14 @@
+@@ -1506,6 +1530,14 @@
  
      if (!is_app())
        features |= FEATURE_LOCATIONBAR;
@@ -117,7 +117,7 @@
    }
    return !!(features & feature);
  }
-@@ -3131,7 +3163,7 @@
+@@ -3223,7 +3255,7 @@
      indices->clear();
      can_close_all = false;
    }
@@ -126,7 +126,7 @@
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -3625,6 +3657,10 @@
+@@ -3676,6 +3708,10 @@
      return;
    }
  
@@ -139,15 +139,16 @@
      *proceed_to_fire_unload = false;
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -95,6 +95,7 @@
-     TYPE_TABBED = 1,
+@@ -100,6 +100,7 @@
      TYPE_POPUP = 2,
      TYPE_PANEL = 3,
-+    TYPE_DESKTOP = 4,
+-    TYPE_SHELL = 4
++    TYPE_SHELL = 4,
++    TYPE_DESKTOP = 5
    };
  
    // Possible elements of the Browser window.
-@@ -158,6 +159,10 @@
+@@ -178,6 +179,10 @@
                                 const gfx::Rect& window_bounds,
                                 Profile* profile);
  
@@ -158,7 +159,7 @@
    // Like Create, but creates a tabstrip-less and toolbar-less
    // DevTools "app" window.
    static Browser* CreateForDevTools(Profile* profile);
-@@ -267,6 +272,7 @@
+@@ -290,6 +295,7 @@
        extension_misc::LaunchContainer container,
        const GURL& url,
        const FilePath& icon_id,
@@ -166,7 +167,7 @@
        Browser** app_browser);
  
    // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -278,6 +284,7 @@
+@@ -301,6 +307,7 @@
    static TabContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -174,15 +175,15 @@
                                              bool update_shortcut);
  
    // Open an application for |extension| using |disposition|.  Returns NULL if
-@@ -831,6 +838,7 @@
-   bool is_type_tabbed() const { return type_ == TYPE_TABBED; }
+@@ -865,6 +872,7 @@
    bool is_type_popup() const { return type_ == TYPE_POPUP; }
    bool is_type_panel() const { return type_ == TYPE_PANEL; }
+   bool is_type_shell() const { return type_ == TYPE_SHELL; }
 +  bool is_type_desktop() const { return type_ == TYPE_DESKTOP; }
  
    bool is_app() const;
    bool is_devtools() const;
-@@ -1401,6 +1409,9 @@
+@@ -1405,6 +1413,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
@@ -194,7 +195,7 @@
    enum WebAppAction {
 --- a/chrome/browser/ui/browser_init.cc
 +++ b/chrome/browser/ui/browser_init.cc
-@@ -738,7 +738,8 @@
+@@ -687,7 +687,8 @@
  
      if (process_startup) {
        if (browser_defaults::kOSSupportsOtherBrowsers &&
@@ -204,7 +205,7 @@
          // Check whether we are the default browser.
          CheckDefaultBrowser(profile);
        }
-@@ -822,6 +823,13 @@
+@@ -771,6 +772,13 @@
    return (app_tab != NULL);
  }
  
@@ -218,7 +219,7 @@
  bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
    std::string url_string, app_id;
    if (!IsAppLaunch(&url_string, &app_id))
-@@ -878,6 +886,7 @@
+@@ -827,6 +835,7 @@
            profile,
            url,
            FilePath(icon_id),
@@ -228,7 +229,7 @@
      }
 --- a/chrome/browser/ui/browser_init.h
 +++ b/chrome/browser/ui/browser_init.h
-@@ -152,6 +152,9 @@
+@@ -150,6 +150,9 @@
      // In this case |app_url| or |app_id| are populated if they're non-null.
      bool IsAppLaunch(std::string* app_url, std::string* app_id);
  
@@ -240,7 +241,7 @@
      // returns false to specify default processing.
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -899,6 +899,42 @@
+@@ -916,6 +916,42 @@
    return fullscreen_exit_bubble_.get() ? true : false;
  }
  
@@ -283,7 +284,7 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -1925,6 +1961,12 @@
+@@ -1940,6 +1976,12 @@
  
    if (browser_->ShouldSaveWindowPlacement())
      browser_->SaveWindowPlacement(restored_bounds_, show_state);
@@ -298,8 +299,8 @@
    // This is a web of calls between views and delegates on Windows, but the
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -416,6 +416,36 @@
-   return true;
+@@ -431,6 +431,36 @@
+ #endif
  }
  
 +bool ChangeProperty(
@@ -337,18 +338,18 @@
    XID parent = None;
 --- a/ui/base/x/x11_util.h
 +++ b/ui/base/x/x11_util.h
-@@ -118,6 +118,8 @@
+@@ -122,6 +122,8 @@
                                      std::vector<Atom>* value);
  UI_EXPORT bool GetStringProperty(
      XID window, const std::string& property_name, std::string* value);
 +bool ChangeProperty(
 +    XID window, const std::string& property_name, const std::string& set_name);
  
- // Get |window|'s parent window, or None if |window| is the root window.
- XID GetParentWindow(XID window);
+ // Gets the X atom for default display corresponding to atom_name.
+ Atom GetAtom(const char* atom_name);
 --- a/chrome/browser/ui/browser_window.h
 +++ b/chrome/browser/ui/browser_window.h
-@@ -148,6 +148,9 @@
+@@ -150,6 +150,9 @@
    // Returns true if the fullscreen bubble is visible.
    virtual bool IsFullscreenBubbleVisible() const = 0;
  
@@ -360,30 +361,30 @@
  
 --- a/chrome/browser/ui/gtk/browser_window_gtk.h
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.h
-@@ -99,6 +99,8 @@
+@@ -103,6 +103,8 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
-   virtual bool IsFullscreen() const;
-   virtual bool IsFullscreenBubbleVisible() const;
+   virtual bool IsFullscreen() const OVERRIDE;
+   virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
 +  void ResizeToDesktopSize();
 +  virtual void SetDesktop();
-   virtual LocationBar* GetLocationBar() const;
-   virtual void SetFocusToLocationBar(bool select_all);
-   virtual void UpdateReloadStopState(bool is_loading, bool force);
+   virtual LocationBar* GetLocationBar() const OVERRIDE;
+   virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
+   virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -200,6 +200,9 @@
+@@ -213,6 +213,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
  
 +// Specifies that the browser should be launched in "X Desktop" mode.
 +const char kDesktop[]                       = "desktop";
 +
- // Triggers a pletora of diagnostic modes.
+ // Triggers a plethora of diagnostic modes.
  const char kDiagnostics[]                   = "diagnostics";
  
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -66,6 +66,7 @@
+@@ -69,6 +69,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
  extern const char kDebugPrint[];
@@ -393,7 +394,7 @@
  extern const char kDisableAuthNegotiateCnameLookup[];
 --- a/chrome/browser/ui/panels/panel.cc
 +++ b/chrome/browser/ui/panels/panel.cc
-@@ -270,6 +270,10 @@
+@@ -326,6 +326,10 @@
    return false;
  }
  
@@ -406,7 +407,7 @@
    return NULL;
 --- a/chrome/browser/ui/panels/panel.h
 +++ b/chrome/browser/ui/panels/panel.h
-@@ -93,6 +93,7 @@
+@@ -115,6 +115,7 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
    virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
@@ -416,17 +417,17 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.h
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.h
-@@ -63,6 +63,7 @@
+@@ -66,6 +66,7 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
-   virtual bool IsFullscreen() const;
-   virtual bool IsFullscreenBubbleVisible() const;
+   virtual bool IsFullscreen() const OVERRIDE;
+   virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
 +  virtual void SetDesktop();
-   virtual LocationBar* GetLocationBar() const;
-   virtual void SetFocusToLocationBar(bool select_all);
-   virtual void UpdateReloadStopState(bool is_loading, bool force);
+   virtual LocationBar* GetLocationBar() const OVERRIDE;
+   virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
+   virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.mm
-@@ -281,6 +281,10 @@
+@@ -299,6 +299,10 @@
    return false;
  }
  
@@ -439,11 +440,11 @@
      Profile* profile) {
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.h
 +++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.h
-@@ -53,6 +53,7 @@
-       const NativeWebKeyboardEvent& event) OVERRIDE;
+@@ -57,6 +57,7 @@
+   virtual void FullScreenModeChanged(bool is_full_screen) OVERRIDE;
    virtual Browser* GetPanelBrowser() const OVERRIDE;
    virtual void DestroyPanelBrowser() OVERRIDE;
 +  virtual void SetDesktop() OVERRIDE;
+   virtual gfx::Size IconOnlySize() const OVERRIDE;
+   virtual void EnsurePanelFullyVisible() OVERRIDE;
  
-   // These sizes are in screen coordinates.
-   virtual gfx::Size WindowSizeFromContentSize(

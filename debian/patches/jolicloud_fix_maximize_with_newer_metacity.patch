@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -875,20 +875,7 @@
+@@ -893,19 +893,7 @@
  }
  
  void BrowserWindowGtk::ExitFullscreen() {
@@ -8,9 +8,8 @@
 -  // fullscreens us again.  This is a little flickery and not necessary if
 -  // there's a gnome-panel, but it's not easy to detect whether there's a
 -  // panel or not.
--  std::string wm_name;
 -  bool unmaximize_before_unfullscreen = IsMaximized() &&
--      ui::GetWindowManagerName(&wm_name) && wm_name == "Metacity";
+-      ui::GuessWindowManager() == ui::WM_METACITY;
 -  if (unmaximize_before_unfullscreen)
 -    UnMaximize();
 -
