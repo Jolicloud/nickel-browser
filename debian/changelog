@@ -1,4 +1,4 @@
-chromium-browser (16.0.912.63~r113337-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
+chromium-browser (17.0.963.46~r119351-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   [ Fabien Tassin ]
   * New upstream release from the Beta channel
@@ -27,7 +27,11 @@ chromium-browser (16.0.912.63~r113337-0ubuntu1~ucd~beta1~lucid) lucid; urgency=l
     - update debian/rules
     - update debian/cdbs/tarball.mk
 
- -- Chris Coulson <chrisccoulson@chinstrap.canonical.com>  Thu, 08 Dec 2011 08:24:42 +0000
+  [ Brandon Snider <brandonsnider@ubuntu.com> ]
+  * Refresh patch
+    - update debian/patches/chromium_useragent.patch.in
+
+ -- Chris Coulson <chrisccoulson@chinstrap.canonical.com>  Tue, 31 Jan 2012 07:24:50 +0000
 
 chromium-browser (13.0.782.215~r97094-0ubuntu1) oneiric; urgency=high
 

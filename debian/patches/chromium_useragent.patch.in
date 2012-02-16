@@ -1,17 +1,8 @@
----
- webkit/glue/user_agent.cc |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
-
 Index: src/webkit/glue/user_agent.cc
 ===================================================================
---- src.orig/webkit/glue/user_agent.cc
-+++ src/webkit/glue/user_agent.cc
-@@ -127,25 +127,32 @@
- #endif
- 
-   std::string user_agent;
- 
-   // Replace Safari's Version/X string with the product name/version passed in.
+--- src.orig/webkit/glue/user_agent.cc	2011-10-20 21:31:42.228492515 +0100
++++ src/webkit/glue/user_agent.cc	2011-10-20 21:36:06.260487823 +0100
+@@ -130,15 +130,22 @@
    // This is done to expose our product name in a manner that is maximally
    // compatible with Safari, we hope!!
  
@@ -27,7 +18,7 @@ Index: src/webkit/glue/user_agent.cc
        "Mozilla/5.0 (%s%s) AppleWebKit/%d.%d"
 -      " (KHTML, like Gecko) %s Safari/%d.%d",
 +      " (KHTML, like Gecko) @BUILD_DIST_NAME@/@BUILD_DIST_VERSION@ %s %s Safari/%d.%d",
-       mimic_windows ? "Windows " : kUserAgentPlatform,
+       kUserAgentPlatform,
        webkit_glue::BuildOSCpuInfo().c_str(),
        WEBKIT_VERSION_MAJOR,
        WEBKIT_VERSION_MINOR,
@@ -35,8 +26,3 @@ Index: src/webkit/glue/user_agent.cc
        product.c_str(),
        WEBKIT_VERSION_MAJOR,
        WEBKIT_VERSION_MINOR);
-   return user_agent;
- }
- 
- }  // namespace webkit_glue
- 
