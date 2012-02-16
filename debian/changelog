@@ -1,3 +1,10 @@
+nickel-browser (17.0.963.46~r119351-1jolicloud0+0u1) robby-1.2; urgency=low
+
+  * Refreshed Jolicloud patches for nickel-browser-17.0.963.46~r119351
+  * Include content_resources.pak with final DEB package
+
+ -- Adam McDaniel <adam@jolicloud.org>  Tue, 03 Jan 2012 12:12:16 -0700
+
 chromium-browser (17.0.963.46~r119351-0ubuntu1~ucd~beta1~lucid) lucid; urgency=low
 
   [ Fabien Tassin ]
