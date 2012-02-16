@@ -1,7 +1,7 @@
 Index: src/webkit/glue/user_agent.cc
 ===================================================================
---- src.orig/webkit/glue/user_agent.cc
-+++ src/webkit/glue/user_agent.cc
+--- src.orig/webkit/glue/user_agent.cc	2011-10-20 21:31:42.228492515 +0100
++++ src/webkit/glue/user_agent.cc	2011-10-20 21:36:06.260487823 +0100
 @@ -130,15 +130,22 @@
    // This is done to expose our product name in a manner that is maximally
    // compatible with Safari, we hope!!
