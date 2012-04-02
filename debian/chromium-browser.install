@@ -1,10 +1,9 @@
 debian/tmp/etc
 debian/tmp/usr/bin
 debian/tmp/usr/lib/chromium-browser/chromium*
-debian/tmp/usr/lib/chromium-browser/chrome.pak
+debian/tmp/usr/lib/chromium-browser/*.pak
 debian/tmp/usr/lib/chromium-browser/xdg-settings
 debian/tmp/usr/lib/chromium-browser/xdg-mime
-debian/tmp/usr/lib/chromium-browser/resources.pak
 debian/tmp/usr/lib/chromium-browser/locales/*
 debian/chromium-browser.desktop usr/share/applications
 debian/chromium-browser.xml usr/share/gnome-control-center/default-apps

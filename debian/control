@@ -1,8 +1,8 @@
 Source: chromium-browser
 Section: web
 Priority: optional
-Maintainer: Fabien Tassin <fta@ubuntu.com>
-Vcs-Bzr: https://code.launchpad.net/~chromium-team/chromium-browser/chromium-browser.head
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Vcs-Bzr: https://code.launchpad.net/~chromium-team/chromium-browser/chromium-browser.precise
 Homepage: http://code.google.com/chromium/
 Build-Depends: cdbs,
 	debhelper (>= 5),
@@ -18,8 +18,7 @@ Build-Depends: cdbs,
 	bison,
 	flex,
 	gperf,
-	libvpx-dev,
-	libjpeg62-dev,
+	libjpeg-dev,
 	libpng12-dev,
 	libbz2-dev,
 	zlib1g-dev,
@@ -36,9 +35,10 @@ Build-Depends: cdbs,
 	libpam0g-dev,
 	libgl1-mesa-dri,
 	mesa-common-dev,
+	python-simplejson,
 	libgl1-mesa-dev,
 	libglu1-mesa-dev,
-	libgles2-mesa-dev [armel],
+	libgles2-mesa-dev [armel armhf],
 	libxt-dev,
 	libxtst-dev,
 	libxss-dev,
@@ -47,12 +47,13 @@ Build-Depends: cdbs,
 	libgtk2.0-dev,
 	libdbus-glib-1-dev,
 	libgnome-keyring-dev,
+	libudev-dev,
 	libgconf2-dev
 Standards-Version: 3.8.3
 
 Package: chromium-browser
 Architecture: any
-Pre-Depends: lzma
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends},
 	libnss3-1d (>= 3.12.3),
 	xdg-utils,
@@ -73,16 +74,16 @@ Description: Chromium browser
 
 Package: chromium-browser-dbg
 Architecture: any
-Section: devel
-Priority: optional
-Pre-Depends: lzma
+Priority: extra
+Section: debug
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (= ${binary:Version})
 Description: chromium-browser debug symbols
  Debug symbols for the Chromium browser
 
 Package: chromium-browser-l10n
 Architecture: all
-Pre-Depends: lzma
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (= ${binary:Version})
 Description: chromium-browser language packages
  Chromium is an open-source browser project that aims to build a safer, faster,
@@ -96,6 +97,7 @@ Description: chromium-browser language packages
 
 Package: chromium-codecs-ffmpeg
 Architecture: any
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (>= 4.0.203.0~)
 Conflicts: chromium-codecs-ffmpeg-extra
 Replaces: chromium-codecs-ffmpeg-extra
@@ -111,6 +113,7 @@ Package: chromium-codecs-ffmpeg-dbg
 Architecture: any
 Section: debug
 Priority: extra
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-codecs-ffmpeg (= ${binary:Version})
 Conflicts: chromium-codecs-ffmpeg-extra-dbg
 Replaces: chromium-codecs-ffmpeg-extra-dbg
@@ -119,6 +122,7 @@ Description: chromium-codecs-ffmpeg debug symbols
 
 Package: chromium-codecs-ffmpeg-extra
 Architecture: any
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-browser (>= 4.0.203.0~)
 Conflicts: chromium-codecs-ffmpeg
 Replaces: chromium-codecs-ffmpeg
@@ -135,6 +139,7 @@ Package: chromium-codecs-ffmpeg-extra-dbg
 Architecture: any
 Section: debug
 Priority: extra
+Pre-Depends: dpkg (>= 1.15.6)
 Depends: ${shlibs:Depends}, ${misc:Depends}, chromium-codecs-ffmpeg-extra (= ${binary:Version})
 Conflicts: chromium-codecs-ffmpeg-dbg
 Replaces: chromium-codecs-ffmpeg-dbg
