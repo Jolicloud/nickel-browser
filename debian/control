@@ -18,9 +18,7 @@ Build-Depends: cdbs,
 	bison,
 	flex,
 	gperf,
-	libelfg0-dev,
-	libvpx-dev,
-	libjpeg62-dev,
+	libjpeg-dev,
 	libpng12-dev,
 	libbz2-dev,
 	zlib1g-dev,
@@ -37,9 +35,10 @@ Build-Depends: cdbs,
 	libpam0g-dev,
 	libgl1-mesa-dri,
 	mesa-common-dev,
+	python-simplejson,
 	libgl1-mesa-dev,
 	libglu1-mesa-dev,
-	libgles2-mesa-dev [armel],
+	libgles2-mesa-dev [armel armhf],
 	libxt-dev,
 	libxtst-dev,
 	libxss-dev,
@@ -48,6 +47,7 @@ Build-Depends: cdbs,
 	libgtk2.0-dev,
 	libdbus-glib-1-dev,
 	libgnome-keyring-dev,
+	libudev-dev,
 	libgconf2-dev
 Standards-Version: 3.8.3
 
@@ -72,10 +72,10 @@ Description: Nickel browser
  This package contains the Nickel browser
 
 Package: nickel-browser-dbg
-Architecture: i386 amd64
-Section: devel
-Priority: optional
+Architecture: any
 Pre-Depends: lzma
+Priority: extra
+Section: debug
 Depends: ${shlibs:Depends}, ${misc:Depends}, nickel-browser (= ${binary:Version})
 Description: nickel-browser debug symbols
  Debug symbols for the Nickel browser

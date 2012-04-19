@@ -38,7 +38,7 @@ endif
 # Don't do it on maverick/armel either for now, it fails to link
 # Don't do it on lucid/armel either, it crashes: LP #716703
 ifeq (armel,$(DEB_BUILD_ARCH))
-ifeq (,$(filter 10.04 10.10 11.04 11.10,$(DEBIAN_DIST_VERSION)))
+ifeq (,$(filter 10.04 10.10 11.04,$(DEBIAN_DIST_VERSION)))
 export DEB_BUILD_HARDENING=1
 else
 $(warning ## Not enabling DEB_BUILD_HARDENING on Ubuntu 10.04+ armel. See LP #641126 and LP #716703)
@@ -69,7 +69,16 @@ ifeq (,$(filter unstable development,$(DEBIAN_DIST)))
 GYP_DEFINES += werror=$(NULL)
 endif
 
-ifeq (armel,$(DEB_BUILD_ARCH))
+# Disable NaCl until we figure out what to do with the private toolchain
+GYP_DEFINES += disable_nacl=1
+
+ifneq (,$(findstring armhf,$(DEB_BUILD_ARCH)))
+GYP_DEFINES += \
+	v8_use_arm_eabi_hardfloat=true \
+	$(NULL)
+endif
+
+ifneq (,$(findstring arm,$(DEB_BUILD_ARCH)))
 GYP_DEFINES += \
 	arm_thumb=1 \
 	arm_neon=0 \
@@ -184,6 +193,7 @@ INSTALL_EXCLUDE_DIRS = \
 	docs_app \
 	gmail_app \
 	pyproto \
+	pseudo_locales \
 	$(NULL)
 
 INSTALL_EXCLUDE_FILES = \
@@ -220,7 +230,7 @@ BROWSER_GYP_DEFINES += \
 	build_ffmpegsumo=0 \
 	$(NULL)
 FFMPEG_MT_GYP_DEFINES = \
-	use_system_vpx=1 \
+	use_system_vpx=0 \
 	release_extra_cflags=-g \
 	$(NULL)
 FFMPEG_MT_STD_GYP_DEFINES   = $(NULL)
@@ -569,6 +579,7 @@ STRIPPED_DIRS := \
 ALMOST_STRIPPED_DIRS := \
 	courgette \
 	third_party/gles2_book \
+	third_party/openssl \
 	$(NULL)
 
 ifeq (1,$(WANT_SYSTEM_LIBS))
@@ -695,7 +706,7 @@ ifneq (,$(STRIPPED_SYSTEM_LIB_DIRS))
 endif
 endif
 	# Remove binaries
-	cd $(TMP_DDIR)/src && find . -type f \( -iname \*.exe -o -iname \*.dll -o -iname \*.pdb -o -name \*.o -o -name \*.a -o -name \*.dylib \) -exec rm -fv {} \; > REMOVED-bin_only.txt
+	cd $(TMP_DDIR)/src && find . -type f \( -iname \*.exe -o -iname \*.dll -o -iname \*.pdb -o -name \*.o -o -name \*.a -o -name \*.dylib -o -name \*.so -o -name \*.so.\* \) -exec rm -fv {} \; > REMOVED-bin_only.txt
 	wc -l $(TMP_DDIR)/src/REMOVED-*.txt
 	
 gos-pack: TMP_DIR  = $(TMP_DDIR)
@@ -724,7 +735,7 @@ endif
 	if [ src != $(DEB_TAR_SRCDIR) ] ; then mv $(TMP_DIR)/src $(TMP_DIR)/$(DEB_TAR_SRCDIR) ; fi
 	mv $(TMP_DIR)/tools/depot_tools $(TMP_DIR)/$(DEB_TAR_SRCDIR)/depot_tools
 	## tar >= 1.23-2 now invokes xz when lzma is called, so we can no longer use --lzma because of the backports
-	cd $(TMP_DIR) && tar -cf - --exclude=.svn $(DEB_TAR_SRCDIR) | $(COMPRESS) > $(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT)
+	cd $(TMP_DIR) && tar -cf - --exclude-vcs $(DEB_TAR_SRCDIR) | $(COMPRESS) > $(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT)
 	mkdir $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)
 	mv $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)-source.tar.$(TAR_EXT) $(TMP_DIR)/$(DEBIAN_NAME)-$(VERSION)
 	cd $(TMP_DIR) && tar zcf ../$(DEBIAN_NAME)_$(VERSION).orig.tar.gz $(DEBIAN_NAME)-$(VERSION)

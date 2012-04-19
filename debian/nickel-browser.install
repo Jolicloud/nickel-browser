@@ -1,11 +1,10 @@
 debian/tmp/etc
 debian/tmp/usr/bin
-debian/tmp/usr/lib/nickel-browser/chrome.pak
 debian/tmp/usr/lib/nickel-browser/nickel*
+debian/tmp/usr/lib/nickel-browser/*.pak
 debian/tmp/usr/lib/nickel-browser/xdg-settings
 debian/tmp/usr/lib/nickel-browser/xdg-mime
-debian/tmp/usr/lib/nickel-browser/resources.pak
-debian/tmp/usr/lib/nickel-browser/content_resources.pak
 debian/tmp/usr/lib/nickel-browser/locales/*
 debian/nickel-browser.desktop usr/share/applications
 debian/nickel-browser.xml usr/share/gnome-control-center/default-apps
+debian/apport/nickel-browser.py usr/share/apport/package-hooks/

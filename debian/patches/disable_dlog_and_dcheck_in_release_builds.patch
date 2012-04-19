@@ -2,8 +2,10 @@
  base/logging.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/base/logging.h
-+++ b/base/logging.h
+Index: src/base/logging.h
+===================================================================
+--- src.orig/base/logging.h
++++ src/base/logging.h
 @@ -451,7 +451,7 @@
  // uses OFFICIAL_BUILD and other platforms use the branding flag when NDEBUG is
  // defined.

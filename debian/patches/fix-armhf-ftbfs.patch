@@ -1,0 +1,40 @@
+Author: Jani Monoses <jani@ubuntu.com>
+Subject: Fix FTBFS on armhf
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/943281
+
+Index: src/build/common.gypi
+===================================================================
+--- src.orig/build/common.gypi	2012-03-05 10:39:30.082526500 +0200
++++ src/build/common.gypi	2012-03-05 11:02:24.082526500 +0200
+@@ -1814,7 +1814,6 @@
+                     'cflags': [
+                       '-march=armv7-a',
+                       '-mtune=cortex-a8',
+-                      '-mfloat-abi=softfp',
+                     ],
+                     'conditions': [
+                       ['arm_neon==1', {
+Index: src/native_client/build/common.gypi
+===================================================================
+--- src.orig/native_client/build/common.gypi	2012-02-15 23:35:45.000000000 +0200
++++ src/native_client/build/common.gypi	2012-03-05 11:03:09.160651492 +0200
+@@ -289,7 +289,6 @@
+                 '-march=armv7-a',
+                 '-mtune=cortex-a8',
+                 '-mfpu=neon',
+-                '-mfloat-abi=softfp',
+                 '-fno-exceptions',
+                 '-Wall',
+                 '-fPIC',
+Index: src/third_party/ffmpeg/ffmpeg.gyp
+===================================================================
+--- src.orig/third_party/ffmpeg/ffmpeg.gyp	2012-02-15 23:35:36.000000000 +0200
++++ src/third_party/ffmpeg/ffmpeg.gyp	2012-03-05 11:02:34.004401501 +0200
+@@ -170,7 +170,6 @@
+                 '-mthumb',
+                 '-march=armv7-a',
+                 '-mtune=cortex-a8',
+-                '-mfloat-abi=softfp',
+               ],
+               'conditions': [
+                 ['arm_neon == 0', {
