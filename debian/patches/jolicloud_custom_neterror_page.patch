@@ -104,7 +104,7 @@
     <ul>
 --- a/chrome/renderer/chrome_content_renderer_client.cc
 +++ b/chrome/renderer/chrome_content_renderer_client.cc
-@@ -584,6 +584,7 @@
+@@ -544,6 +544,7 @@
      std::string* error_html,
      string16* error_description) {
    const GURL failed_url = error.unreachableURL;
@@ -112,12 +112,13 @@
    const Extension* extension = NULL;
    const bool is_repost =
        error.reason == net::ERR_CACHE_MISS &&
-@@ -597,7 +598,7 @@
+@@ -559,7 +560,8 @@
      // Use a local error page.
      int resource_id;
      DictionaryValue error_strings;
--    if (extension) {
-+    if (failed_url.host() != kMyJolicloudHost && extension) {
+-    if (extension && !extension->from_bookmark()) {
++    if (failed_url.host() != kMyJolicloudHost &&
++        extension && !extension->from_bookmark()) {
        LocalizedError::GetAppErrorStrings(error, failed_url, extension,
                                           &error_strings);
  

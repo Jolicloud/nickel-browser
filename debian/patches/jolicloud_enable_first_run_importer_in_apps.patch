@@ -1,6 +1,6 @@
 --- a/chrome/browser/chrome_browser_main.cc
 +++ b/chrome/browser/chrome_browser_main.cc
-@@ -1338,12 +1338,10 @@
+@@ -1247,12 +1247,10 @@
          user_data_dir_, master_prefs_.get());
      AddFirstRunNewTabs(browser_init_.get(), master_prefs_->new_tabs);
  
@@ -13,5 +13,5 @@
 -         parsed_command_line().HasSwitch(switches::kNoFirstRun)))
 +         parsed_command_line().HasSwitch(switches::kNoFirstRun))
        first_run_ui_bypass_ = true;
-   }
  
+     // Create Sentinel if no-first-run argument is passed in.

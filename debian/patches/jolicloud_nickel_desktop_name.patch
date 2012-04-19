@@ -1,6 +1,6 @@
 --- a/chrome/browser/shell_integration_linux.cc
 +++ b/chrome/browser/shell_integration_linux.cc
-@@ -237,7 +237,7 @@
+@@ -242,7 +242,7 @@
    std::string name;
    if (env->GetVar("CHROME_DESKTOP", &name) && !name.empty())
      return name;

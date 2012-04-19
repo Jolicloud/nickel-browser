@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -2426,7 +2426,6 @@
+@@ -2515,7 +2515,6 @@
    return (wm_type == ui::WM_BLACKBOX ||
            wm_type == ui::WM_COMPIZ ||
            wm_type == ui::WM_ENLIGHTENMENT ||

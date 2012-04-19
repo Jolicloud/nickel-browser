@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -2141,8 +2141,7 @@
+@@ -2401,8 +2401,7 @@
    if (home_page_pref &&
        !home_page_pref->IsManaged() &&
        !prefs->HasPrefPath(prefs::kHomePage)) {
