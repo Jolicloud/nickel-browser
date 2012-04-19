@@ -7,4 +7,3 @@ debian/tmp/usr/lib/nickel-browser/xdg-mime
 debian/tmp/usr/lib/nickel-browser/locales/*
 debian/nickel-browser.desktop usr/share/applications
 debian/nickel-browser.xml usr/share/gnome-control-center/default-apps
-debian/apport/nickel-browser.py usr/share/apport/package-hooks/
