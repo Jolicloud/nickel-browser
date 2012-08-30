@@ -1,3 +1,11 @@
+nickel-browser (21.0.1180.79~r152299-1jolicloud0) robby-1.2; urgency=low
+
+  * Imported Upstream version 21.0.1180.79~r152299
+  * Refreshed patches for 21.0.1180.79~r152299, removed obsolete patches
+  * Depend on libssl-dev
+
+ -- Adam McDaniel <adam@jolicloud.org>  Sun, 19 Aug 2012 15:33:12 -0600
+
 nickel-browser (18.0.1025.162~r131933-1jolicloud0+0u1) robby-1.2; urgency=low
 
   * Refreshed Jolicloud patches for chromium-browser-18.0.1025.162~r131933
