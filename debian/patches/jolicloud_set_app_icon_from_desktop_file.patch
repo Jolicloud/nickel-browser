@@ -1,8 +1,8 @@
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -742,6 +742,9 @@
- // <profile_dir>/Default/TransportSecurity
- const char kHstsHosts[]                     = "hsts-hosts";
+@@ -785,6 +785,9 @@
+ // Ignores GPU blacklist.
+ const char kIgnoreGpuBlacklist[]            = "ignore-gpu-blacklist";
  
 +// Specifies the icon_id in order to use the correct icon.
 +const char kIconId[]                        = "icon-id";
@@ -20,15 +20,15 @@
  #include "base/environment.h"
  #include "base/i18n/rtl.h"
  #include "base/logging.h"
-@@ -27,6 +28,7 @@
- #include "content/browser/disposition_utils.h"
- #include "content/browser/renderer_host/render_view_host.h"
+@@ -31,6 +32,7 @@
+ #include "chrome/browser/ui/gtk/gtk_theme_service.h"
+ #include "content/public/browser/render_view_host.h"
  #include "content/public/browser/web_contents.h"
 +#include "chrome/common/chrome_switches.h"
- #include "content/public/common/renderer_preferences.h"
  #include "googleurl/src/gurl.h"
  #include "grit/theme_resources.h"
-@@ -130,17 +132,6 @@
+ #include "grit/theme_resources_standard.h"
+@@ -127,17 +129,6 @@
        GetCharacterWidthForPixels(label, GPOINTER_TO_INT(pixel_width)));
  }
  
@@ -37,16 +37,16 @@
 -  ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
 -  GList* icon_list = NULL;
 -  icon_list = g_list_append(icon_list,
--                            rb.GetNativeImageNamed(IDR_PRODUCT_LOGO_32));
+-      rb.GetNativeImageNamed(IDR_PRODUCT_LOGO_32).ToGdkPixbuf());
 -  icon_list = g_list_append(icon_list,
--                            rb.GetNativeImageNamed(IDR_PRODUCT_LOGO_16));
+-      rb.GetNativeImageNamed(IDR_PRODUCT_LOGO_16).ToGdkPixbuf());
 -  return icon_list;
 -}
 -
- // Expose event handler for a container that simply suppresses the default
- // drawing and propagates the expose event to the container's children.
- gboolean PaintNoBackground(GtkWidget* widget,
-@@ -217,6 +208,51 @@
+ // Returns the avatar icon for |profile|.
+ //
+ // Returns NULL if there is only one profile; always returns an icon for
+@@ -293,6 +284,51 @@
  
  namespace gtk_util {
  
@@ -98,16 +98,7 @@
  GtkWidget* CreateLabeledControlsGroup(std::vector<GtkWidget*>* labels,
                                        const char* text, ...) {
    va_list ap;
-@@ -548,7 +584,7 @@
- }
- 
- void SetWindowIcon(GtkWindow* window) {
--  GList* icon_list = GetIconList();
-+  GList* icon_list = gtk_util::GetIconList();
-   gtk_window_set_icon_list(window, icon_list);
-   g_list_free(icon_list);
- }
-@@ -565,7 +601,7 @@
+@@ -584,7 +620,7 @@
      // case where the first window created doesn't have an icon.
      gtk_window_set_icon_name(window, kIconName);
    } else {
@@ -116,6 +107,15 @@
      gtk_window_set_default_icon_list(icon_list);
      // Same logic applies here.
      gtk_window_set_icon_list(window, icon_list);
+@@ -593,7 +629,7 @@
+ }
+ 
+ void SetWindowIcon(GtkWindow* window, Profile* profile) {
+-  GList* icon_list = GetIconListWithAvatars(window, profile);
++  GList* icon_list = gtk_util::GetIconList();
+   gtk_window_set_icon_list(window, icon_list);
+   g_list_foreach(icon_list, reinterpret_cast<GFunc>(g_object_unref), NULL);
+   g_list_free(icon_list);
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -15,6 +15,7 @@
@@ -126,62 +126,7 @@
  #include "base/logging.h"
  #include "base/metrics/field_trial.h"
  #include "base/metrics/histogram.h"
-@@ -633,6 +634,8 @@
- 
-   UMA_HISTOGRAM_ENUMERATION("Extensions.AppLaunchContainer", container, 100);
- 
-+  const FilePath::CharType kEmptyIcon[] = FILE_PATH_LITERAL("");
-+  FilePath empty_icon(kEmptyIcon);
-   switch (container) {
-     case extension_misc::LAUNCH_SHELL: {
-       ShellWindow* shell_window = ShellWindow::Create(
-@@ -646,7 +649,7 @@
-     case extension_misc::LAUNCH_WINDOW:
-     case extension_misc::LAUNCH_PANEL:
-       tab = Browser::OpenApplicationWindow(profile, extension, container,
--                                           override_url, NULL);
-+                                           override_url, empty_icon, NULL);
-       break;
-     case extension_misc::LAUNCH_TAB: {
-       tab = Browser::OpenApplicationTab(profile, extension, override_url,
-@@ -666,6 +669,7 @@
-     const Extension* extension,
-     extension_misc::LaunchContainer container,
-     const GURL& url_input,
-+    const FilePath& icon_id,
-     Browser** app_browser) {
-   DCHECK(!url_input.is_empty() || extension);
-   GURL url = UrlForExtension(extension, url_input);
-@@ -690,6 +694,12 @@
-   if (app_browser)
-     *app_browser = browser;
- 
-+  // save icon-id value for later use by UpdateWindowIcon
-+  if (!icon_id.empty()) {
-+      std::string icon_pref_key = browser->GetWindowIconKey();
-+      profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
-+  }
-+
-   TabContentsWrapper* wrapper =
-       browser->AddSelectedTabWithURL(url, content::PAGE_TRANSITION_START_PAGE);
-   WebContents* contents = wrapper->web_contents();
-@@ -705,6 +715,7 @@
- 
- WebContents* Browser::OpenAppShortcutWindow(Profile* profile,
-                                             const GURL& url,
-+                                            const FilePath& icon_id,
-                                             bool update_shortcut) {
-   Browser* app_browser;
-   WebContents* tab = OpenApplicationWindow(
-@@ -712,6 +723,7 @@
-       NULL,  // this is a URL app.  No extension.
-       extension_misc::LAUNCH_WINDOW,
-       url,
-+      icon_id,
-       &app_browser);
- 
-   if (!tab)
-@@ -877,6 +889,15 @@
+@@ -738,6 +739,15 @@
  ///////////////////////////////////////////////////////////////////////////////
  // Browser, State Storage and Retrieval for UI:
  
@@ -197,21 +142,21 @@
  std::string Browser::GetWindowPlacementKey() const {
    std::string name(prefs::kBrowserWindowPlacement);
    if (!app_name_.empty()) {
-@@ -959,6 +980,13 @@
+@@ -849,6 +859,13 @@
    return contents ? contents->favicon_tab_helper()->GetFavicon() : SkBitmap();
  }
  
 +GURL Browser::GetURLForCurrentTab() const {
-+  WebContents* contents = GetSelectedWebContents();
++  WebContents* contents = GetActiveWebContents();
 +  // |contents| can be NULL because GetWindowTitleForCurrentTab is called by the
 +  // window during the window's creation (before tabs have been added).
 +  return contents ? contents->GetURL() : GURL();
 +}
 +
  string16 Browser::GetWindowTitleForCurrentTab() const {
-   WebContents* contents = GetSelectedWebContents();
+   WebContents* contents = GetActiveWebContents();
    string16 title;
-@@ -2413,6 +2441,7 @@
+@@ -2070,6 +2087,7 @@
  
  // static
  void Browser::RegisterPrefs(PrefService* prefs) {
@@ -219,7 +164,7 @@
    prefs->RegisterIntegerPref(prefs::kOptionsWindowLastTabIndex, 0);
    prefs->RegisterBooleanPref(prefs::kAllowFileSelectionDialogs, true);
    prefs->RegisterBooleanPref(prefs::kShouldShowFirstRunBubble, false);
-@@ -5274,6 +5303,12 @@
+@@ -4885,6 +4903,12 @@
      prefs->RegisterDictionaryPref(window_pref.c_str(),
                                    PrefService::UNSYNCABLE_PREF);
    }
@@ -231,26 +176,10 @@
 +  prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath());
  }
  
- void Browser::TabRestoreServiceChanged(TabRestoreService* service) {
+ void Browser::ReloadInternal(WindowOpenDisposition disposition,
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -285,6 +285,7 @@
-       const Extension* extension,
-       extension_misc::LaunchContainer container,
-       const GURL& url,
-+      const FilePath& icon_id,
-       Browser** app_browser);
- 
-   // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -295,6 +296,7 @@
-   // Browser::OpenApplicationWindow().
-   static content::WebContents* OpenAppShortcutWindow(Profile* profile,
-                                                      const GURL& url,
-+                                                     const FilePath& icon_id,
-                                                      bool update_shortcut);
- 
-   // Open an application for |extension| using |disposition|.  Returns NULL if
-@@ -328,6 +330,7 @@
+@@ -342,6 +342,7 @@
    // State Storage and Retrieval for UI ///////////////////////////////////////
  
    // Save and restore the window position.
@@ -258,7 +187,7 @@
    std::string GetWindowPlacementKey() const;
    bool ShouldSaveWindowPlacement() const;
    void SaveWindowPlacement(const gfx::Rect& bounds,
-@@ -338,6 +341,9 @@
+@@ -352,6 +353,9 @@
    // Gets the Favicon of the page in the selected tab.
    SkBitmap GetCurrentPageIcon() const;
  
@@ -270,7 +199,7 @@
  
 --- a/chrome/browser/ui/gtk/gtk_util.h
 +++ b/chrome/browser/ui/gtk/gtk_util.h
-@@ -42,6 +42,10 @@
+@@ -31,6 +31,10 @@
  
  namespace gtk_util {
  
@@ -283,7 +212,7 @@
  // NULL.  The first argument is a vector in which to place all labels
 --- a/chrome/common/pref_names.cc
 +++ b/chrome/common/pref_names.cc
-@@ -1113,6 +1113,9 @@
+@@ -1212,6 +1212,9 @@
  // window to restore on startup.
  const char kBrowserWindowPlacement[] = "browser.window_placement";
  
@@ -295,7 +224,7 @@
  const char kTaskManagerWindowPlacement[] = "task_manager.window_placement";
 --- a/chrome/common/pref_names.h
 +++ b/chrome/common/pref_names.h
-@@ -396,6 +396,7 @@
+@@ -433,6 +433,7 @@
  extern const char kUninstallLastLaunchTimeSec[];
  extern const char kUninstallLastObservedRunTimeSec[];
  
@@ -303,45 +232,32 @@
  extern const char kBrowserWindowPlacement[];
  extern const char kTaskManagerWindowPlacement[];
  extern const char kKeywordEditorWindowPlacement[];
---- a/chrome/browser/ui/browser_init.cc
-+++ b/chrome/browser/ui/browser_init.cc
-@@ -982,9 +982,11 @@
-             extension_misc::APP_LAUNCH_CMD_LINE_APP_LEGACY,
-             extension_misc::APP_LAUNCH_BUCKET_BOUNDARY);
-       }
-+      std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
-       WebContents* app_tab = Browser::OpenAppShortcutWindow(
-           profile,
-           url,
-+          FilePath(icon_id),
-           true);  // Update app info.
-       return (app_tab != NULL);
-     }
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -203,6 +203,7 @@
+@@ -212,6 +212,7 @@
  extern const char kHostResolverRetryAttempts[];
  extern const char kHostResolverRules[];
  extern const char kHstsHosts[];
 +extern const char kIconId[];
+ extern const char kIgnoreGpuBlacklist[];
  extern const char kImport[];
  extern const char kImportFromFile[];
- extern const char kIncognito[];
 --- a/chrome/browser/ui/gtk/browser_titlebar.cc
 +++ b/chrome/browser/ui/gtk/browser_titlebar.cc
-@@ -613,14 +613,26 @@
-         // Update the system app icon.  We don't need to update the icon in the
+@@ -602,14 +602,27 @@
          // top left of the custom frame, that will get updated when the
          // throbber is updated.
+         Profile* profile = browser_window_->browser()->profile();
 -        SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
 -        if (icon.empty()) {
--          gtk_util::SetWindowIcon(window_);
+-          gtk_util::SetWindowIcon(window_, profile);
 -        } else {
--          GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(&icon);
--          gtk_window_set_icon(window_, icon_pixbuf);
+-          GdkPixbuf* icon_pixbuf = gfx::GdkPixbufFromSkBitmap(icon);
+-          gtk_util::SetWindowIcon(window_, profile, icon_pixbuf);
 -          g_object_unref(icon_pixbuf);
-+        // If we got an icon-id parameter (saved into prefs) and the current URL is a subpath of
-+        // the app parameter use the icon-id icon
++        // If we got an icon-id parameter (saved into prefs) and the
++        // current URL is a subpath of the app parameter use the icon-id
++        // icon
 +
 +        std::string current_host = browser_window_->browser()->GetURLForCurrentTab().host();
 +
@@ -354,21 +270,110 @@
 +          icon_pixbuf = gtk_util::GetPixbufFromIconID(prefs_icon_id.value());
 +        if (icon_pixbuf) {
 +          icon_list = g_list_append(icon_list, icon_pixbuf);
-+        }
+         }
 +        else {
 +          gtk_util::GetIconList();
-         }
++        }
 +        gtk_window_set_icon_list(window_, icon_list);
 +        g_list_free(icon_list);
          break;
        }
        case Browser::TYPE_TABBED: {
-@@ -646,7 +658,7 @@
+@@ -636,6 +649,7 @@
  
-     // Note: we want to exclude the application popup window.
-     if (browser_window_->browser()->is_app() &&
--        browser_window_->browser()->is_type_popup()) {
-+        !browser_window_->browser()->is_type_popup()) {
+     // Note: we want to exclude the application popup/panel window.
+     if ((browser_window_->browser()->is_app() &&
++         browser_window_->browser()->is_type_popup() &&
+         !browser_window_->browser()->is_type_tabbed())) {
        SkBitmap icon = browser_window_->browser()->GetCurrentPageIcon();
        if (icon.empty()) {
-         // Fallback to the Chromium icon if the page has no icon.
+--- a/chrome/browser/ui/extensions/application_launch.cc
++++ b/chrome/browser/ui/extensions/application_launch.cc
+@@ -100,6 +100,8 @@
+     return NULL;
+   }
+ 
++  const FilePath::CharType kEmptyIcon[] = FILE_PATH_LITERAL("");
++  FilePath empty_icon(kEmptyIcon);
+   switch (container) {
+     case extension_misc::LAUNCH_NONE: {
+       NOTREACHED();
+@@ -122,7 +124,7 @@
+     }
+     case extension_misc::LAUNCH_WINDOW:
+       tab = OpenApplicationWindow(profile, extension, container,
+-                                  override_url, NULL);
++                                  override_url, empty_icon, NULL);
+       break;
+     case extension_misc::LAUNCH_TAB: {
+       tab = OpenApplicationTab(profile, extension, override_url,
+@@ -163,6 +165,7 @@
+     const Extension* extension,
+     extension_misc::LaunchContainer container,
+     const GURL& url_input,
++    const FilePath& icon_id,
+     Browser** app_browser) {
+   DCHECK(!url_input.is_empty() || extension);
+   GURL url = UrlForExtension(extension, url_input);
+@@ -209,6 +212,12 @@
+   if (app_browser)
+     *app_browser = browser;
+ 
++  // save icon-id value for later use by UpdateWindowIcon
++  if (!icon_id.empty()) {
++      std::string icon_pref_key = browser->GetWindowIconKey();
++      profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
++  }
++
+   TabContents* tab_contents =
+       browser->AddSelectedTabWithURL(url, content::PAGE_TRANSITION_START_PAGE);
+   WebContents* contents = tab_contents->web_contents();
+@@ -231,6 +240,7 @@
+ 
+ WebContents* OpenAppShortcutWindow(Profile* profile,
+                                    const GURL& url,
++                                   const FilePath& icon_id,
+                                    bool update_shortcut) {
+   Browser* app_browser;
+   WebContents* tab = OpenApplicationWindow(
+@@ -238,6 +248,7 @@
+       NULL,  // this is a URL app.  No extension.
+       extension_misc::LAUNCH_WINDOW,
+       url,
++      icon_id,
+       &app_browser);
+ 
+   if (!tab)
+--- a/chrome/browser/ui/extensions/application_launch.h
++++ b/chrome/browser/ui/extensions/application_launch.h
+@@ -55,6 +55,7 @@
+     const extensions::Extension* extension,
+     extension_misc::LaunchContainer container,
+     const GURL& url,
++    const FilePath& icon_id,
+     Browser** app_browser);
+ 
+ // Open |url| in an app shortcut window.  If |update_shortcut| is true,
+@@ -65,6 +66,7 @@
+ // Browser::OpenApplicationWindow().
+ content::WebContents* OpenAppShortcutWindow(Profile* profile,
+                                             const GURL& url,
++                                            const FilePath& icon_id,
+                                             bool update_shortcut);
+ 
+ // Open an application for |extension| using |disposition|.  Returns NULL if
+--- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
++++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
+@@ -504,10 +504,12 @@
+         AppLauncherHandler::RecordAppLaunchType(
+             extension_misc::APP_LAUNCH_CMD_LINE_APP_LEGACY);
+       }
++      std::string icon_id(command_line_.GetSwitchValueASCII(switches:kIconId));
+ 
+       WebContents* app_tab = application_launch::OpenAppShortcutWindow(
+           profile,
+           url,
++          FilePath(icon_id),
+           true);  // Update app info.
+ 
+       if (out_app_contents)

@@ -1,6 +1,6 @@
 --- a/chrome/browser/ui/gtk/custom_button.cc
 +++ b/chrome/browser/ui/gtk/custom_button.cc
-@@ -374,5 +374,5 @@
+@@ -381,5 +381,5 @@
  
  bool CustomDrawButton::UseGtkTheme() {
    return !forcing_chrome_theme_ && theme_service_ &&
@@ -9,7 +9,7 @@
  }
 --- a/chrome/browser/ui/gtk/reload_button_gtk.cc
 +++ b/chrome/browser/ui/gtk/reload_button_gtk.cc
-@@ -198,7 +198,7 @@
+@@ -199,7 +199,7 @@
  gboolean ReloadButtonGtk::OnExpose(GtkWidget* widget,
                                     GdkEventExpose* e) {
    TRACE_EVENT0("ui::gtk", "ReloadButtonGtk::OnExpose");
@@ -18,7 +18,7 @@
      return FALSE;
    return ((visible_mode_ == MODE_RELOAD) ? reload_ : stop_).OnExpose(
        widget, e, hover_controller_.GetCurrentValue());
-@@ -226,9 +226,9 @@
+@@ -227,9 +227,9 @@
  }
  
  void ReloadButtonGtk::UpdateThemeButtons() {
@@ -30,7 +30,7 @@
      gtk_widget_ensure_style(widget());
      GtkStyle* style = gtk_widget_get_style(widget());
      GtkIconSet* icon_set = gtk_style_lookup_icon_set(
-@@ -271,7 +271,7 @@
+@@ -272,7 +272,7 @@
      gtk_widget_set_double_buffered(widget(), FALSE);
    }
  
@@ -41,23 +41,23 @@
  void ReloadButtonGtk::OnDoubleClickTimer() {
 --- a/chrome/browser/ui/gtk/gtk_theme_service.cc
 +++ b/chrome/browser/ui/gtk/gtk_theme_service.cc
-@@ -292,6 +292,7 @@
-   use_gtk_ = false;
- #else
+@@ -294,6 +294,7 @@
+   registrar_.Init(profile->GetPrefs());
+   registrar_.Add(prefs::kUsesSystemTheme, this);
    use_gtk_ = profile->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme);
 +  use_gtk_buttons_ = false;
- #endif
    ThemeService::Init(profile);
  }
-@@ -376,6 +377,7 @@
+ 
+@@ -382,6 +383,7 @@
+       (*content::Details<std::string>(details).ptr() ==
            prefs::kUsesSystemTheme)) {
- #if !defined(OS_CHROMEOS)
      use_gtk_ = profile()->GetPrefs()->GetBoolean(prefs::kUsesSystemTheme);
 +    use_gtk_buttons_ = false;
- #endif
    } else {
      ThemeService::Observe(type, source, details);
-@@ -384,7 +386,7 @@
+   }
+@@ -389,7 +391,7 @@
  
  GtkWidget* GtkThemeService::BuildChromeButton() {
    GtkWidget* button = HoverControllerGtk::CreateChromeButton();
@@ -66,7 +66,7 @@
    chrome_buttons_.push_back(button);
  
    signals_->Connect(button, "destroy", G_CALLBACK(OnDestroyChromeButtonThunk),
-@@ -429,6 +431,10 @@
+@@ -434,6 +436,10 @@
    return alignment;
  }
  
@@ -77,7 +77,7 @@
  GdkColor GtkThemeService::GetGdkColor(int id) const {
    return gfx::SkColorToGdkColor(GetColor(id));
  }
-@@ -645,7 +651,7 @@
+@@ -649,7 +655,7 @@
    for (std::vector<GtkWidget*>::iterator it = chrome_buttons_.begin();
         it != chrome_buttons_.end(); ++it) {
      gtk_chrome_button_set_use_gtk_rendering(
@@ -88,7 +88,7 @@
    for (std::vector<GtkWidget*>::iterator it = link_buttons_.begin();
 --- a/chrome/browser/ui/gtk/gtk_theme_service.h
 +++ b/chrome/browser/ui/gtk/gtk_theme_service.h
-@@ -95,6 +95,9 @@
+@@ -101,6 +101,9 @@
    // Creates a theme-aware vertical separator widget.
    GtkWidget* CreateToolbarSeparator();
  
@@ -98,7 +98,7 @@
    // A wrapper around ui::ThemeProvider::GetColor, transforming the result to a
    // GdkColor.
    GdkColor GetGdkColor(int id) const;
-@@ -238,6 +241,7 @@
+@@ -242,6 +245,7 @@
  
    // Whether we should be using gtk rendering.
    bool use_gtk_;

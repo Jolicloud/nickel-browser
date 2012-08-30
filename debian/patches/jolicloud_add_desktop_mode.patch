@@ -1,96 +1,39 @@
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -318,6 +318,7 @@
+@@ -330,6 +330,15 @@
+ }
+ 
+ // static
++Browser::CreateParams Browser::CreateParams::CreateForAppDesktop(
++    const std::string& app_name,
++    Profile* profile) {
++  CreateParams params(TYPE_DESKTOP, profile);
++  params.app_name = app_name;
++  return params;
++}
++
++// static
+ Browser::CreateParams Browser::CreateParams::CreateForDevTools(
+     Profile* profile) {
+   CreateParams params(TYPE_POPUP, profile);
+@@ -357,6 +366,7 @@
        block_command_execution_(false),
        last_blocked_command_id_(-1),
        last_blocked_command_disposition_(CURRENT_TAB),
 +      kill_signal_(0),
        pending_web_app_action_(NONE),
        ALLOW_THIS_IN_INITIALIZER_LIST(
-           tab_restore_service_delegate_(
-@@ -511,6 +512,14 @@
- }
- 
- // static
-+Browser* Browser::CreateForAppDesktop(const std::string& app_name,
-+                                      Profile* profile) {
-+  CreateParams params(TYPE_DESKTOP, profile);
-+  params.app_name = app_name;
-+  return CreateWithParams(params);
-+}
-+
-+// static
- Browser* Browser::CreateForDevTools(Profile* profile) {
- #if defined(OS_CHROMEOS)
-   CreateParams params(TYPE_TABBED, profile);
-@@ -649,7 +658,7 @@
-     case extension_misc::LAUNCH_WINDOW:
-     case extension_misc::LAUNCH_PANEL:
-       tab = Browser::OpenApplicationWindow(profile, extension, container,
--                                           override_url, empty_icon, NULL);
-+                                           override_url, empty_icon, false, NULL);
-       break;
-     case extension_misc::LAUNCH_TAB: {
-       tab = Browser::OpenApplicationTab(profile, extension, override_url,
-@@ -670,6 +679,7 @@
-     extension_misc::LaunchContainer container,
-     const GURL& url_input,
-     const FilePath& icon_id,
-+    bool as_desktop,
-     Browser** app_browser) {
-   DCHECK(!url_input.is_empty() || extension);
-   GURL url = UrlForExtension(extension, url_input);
-@@ -688,8 +698,12 @@
-     window_bounds.set_height(extension->launch_height());
-   }
- 
--  Browser* browser = Browser::CreateForApp(type, app_name, window_bounds,
--                                           profile);
-+
-+  Browser* browser;
-+  if (as_desktop)
-+    browser = Browser::CreateForAppDesktop(app_name, profile);
-+  else
-+    browser = Browser::CreateForApp(type, app_name, window_bounds, profile);
- 
-   if (app_browser)
-     *app_browser = browser;
-@@ -700,6 +714,9 @@
-       profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
-   }
- 
-+  if (as_desktop)
-+    browser->window()->SetDesktop();
-+
-   TabContentsWrapper* wrapper =
-       browser->AddSelectedTabWithURL(url, content::PAGE_TRANSITION_START_PAGE);
-   WebContents* contents = wrapper->web_contents();
-@@ -716,6 +733,7 @@
- WebContents* Browser::OpenAppShortcutWindow(Profile* profile,
-                                             const GURL& url,
-                                             const FilePath& icon_id,
-+                                            bool as_desktop,
-                                             bool update_shortcut) {
-   Browser* app_browser;
-   WebContents* tab = OpenApplicationWindow(
-@@ -724,6 +742,7 @@
-       extension_misc::LAUNCH_WINDOW,
-       url,
-       icon_id,
-+      as_desktop,
-       &app_browser);
- 
-   if (!tab)
-@@ -916,6 +935,7 @@
-       // or the window belongs to DevTools.
+           content_setting_bubble_model_delegate_(
+@@ -770,6 +780,7 @@
+ #endif
        return browser_defaults::kRestorePopups || is_devtools();
      case TYPE_PANEL:
 +    case TYPE_DESKTOP:
        // Do not save the window placement of panels.
        return false;
      default:
-@@ -1038,7 +1058,9 @@
- }
+@@ -906,7 +917,9 @@
+ // Browser, OnBeforeUnload handling:
  
  bool Browser::ShouldCloseWindow() {
 -  if (!CanCloseWithInProgressDownloads())
@@ -100,7 +43,27 @@
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -1508,6 +1530,14 @@
+@@ -2873,7 +2886,7 @@
+     indices->clear();
+     can_close_all = false;
+   }
+-  return can_close_all;
++  return !(is_type_desktop() && !kill_signal_) && can_close_all;
+ }
+ 
+ bool Browser::CanBookmarkAllTabs() const {
+@@ -3427,6 +3440,10 @@
+     return;
+   }
+ 
++  if (is_type_desktop() && !this->kill_signal_) {
++    proceed = false;
++  }
++
+   if (!proceed) {
+     CancelWindowClose();
+     *proceed_to_fire_unload = false;
+@@ -4993,6 +5010,14 @@
  
      if (!is_app())
        features |= FEATURE_LOCATIONBAR;
@@ -115,29 +78,9 @@
    }
    return !!(features & feature);
  }
-@@ -3321,7 +3351,7 @@
-     indices->clear();
-     can_close_all = false;
-   }
--  return can_close_all;
-+  return !(is_type_desktop() && !kill_signal_) && can_close_all;
- }
- 
- bool Browser::CanBookmarkAllTabs() const {
-@@ -3781,6 +3811,10 @@
-     return;
-   }
- 
-+  if (is_type_desktop() && !this->kill_signal_) {
-+    proceed = false;
-+  }
-+
-   if (!proceed) {
-     CancelWindowClose();
-     *proceed_to_fire_unload = false;
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -102,7 +102,8 @@
+@@ -117,7 +117,8 @@
      // BrowserTest.StartMaximized.
      TYPE_TABBED = 1,
      TYPE_POPUP = 2,
@@ -146,35 +89,20 @@
 +    TYPE_DESKTOP = 4
    };
  
-   // Possible elements of the Browser window.
-@@ -180,6 +181,10 @@
-                                const gfx::Rect& window_bounds,
-                                Profile* profile);
+   // Distinguishes between browsers that host an app (opened from
+@@ -187,6 +188,11 @@
+                                      const gfx::Rect& window_bounds,
+                                      Profile* profile);
  
-+  // Like Create, but creates a tabstrip-less and toolbar-less "app" window for
-+  // the specified app, as the user's desktop.
-+  static Browser* CreateForAppDesktop(const std::string& app_name, Profile* profile);
++    // Like Create, but creates a tabstrip-less and toolbar-less "app" window for
++    // the specified app, as the user's desktop.
++    static CreateParams CreateForAppDesktop(const std::string& app_name,
++                                            Profile* profile);
 +
-   // Like Create, but creates a tabstrip-less and toolbar-less
-   // DevTools "app" window.
-   static Browser* CreateForDevTools(Profile* profile);
-@@ -286,6 +291,7 @@
-       extension_misc::LaunchContainer container,
-       const GURL& url,
-       const FilePath& icon_id,
-+      bool as_desktop,
-       Browser** app_browser);
+     static CreateParams CreateForDevTools(Profile* profile);
  
-   // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -297,6 +303,7 @@
-   static content::WebContents* OpenAppShortcutWindow(Profile* profile,
-                                                      const GURL& url,
-                                                      const FilePath& icon_id,
-+                                                     bool as_desktop,
-                                                      bool update_shortcut);
- 
-   // Open an application for |extension| using |disposition|.  Returns NULL if
-@@ -855,6 +862,7 @@
+     // The browser type.
+@@ -837,6 +843,7 @@
    bool is_type_tabbed() const { return type_ == TYPE_TABBED; }
    bool is_type_popup() const { return type_ == TYPE_POPUP; }
    bool is_type_panel() const { return type_ == TYPE_PANEL; }
@@ -182,66 +110,20 @@
  
    bool is_app() const;
    bool is_devtools() const;
-@@ -1419,6 +1427,9 @@
+@@ -1437,6 +1444,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
 +  // Stores the kill signal used to shutdown the browser.
 +  int kill_signal_;
 +
-   // Different types of action when web app info is available.
-   // OnDidGetApplicationInfo uses this to dispatch calls.
-   enum WebAppAction {
---- a/chrome/browser/ui/browser_init.cc
-+++ b/chrome/browser/ui/browser_init.cc
-@@ -845,7 +845,8 @@
- 
-     if (process_startup) {
-       if (browser_defaults::kOSSupportsOtherBrowsers &&
--          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)) {
-+          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck) &&
-+          !IsDesktopLaunch()) {
-         if (!CheckIfAutoLaunched(profile)) {
-           // Check whether we are the default browser.
-           CheckDefaultBrowser(profile);
-@@ -931,6 +932,13 @@
-   return (app_tab != NULL);
- }
- 
-+bool BrowserInit::LaunchWithProfile::IsDesktopLaunch() {
-+  if (command_line_.HasSwitch(switches::kDesktop)) {
-+    return true;
-+  }
-+  return false;
-+}
-+
- bool BrowserInit::LaunchWithProfile::OpenApplicationWindow(Profile* profile) {
-   std::string url_string, app_id;
-   if (!IsAppLaunch(&url_string, &app_id))
-@@ -987,6 +995,7 @@
-           profile,
-           url,
-           FilePath(icon_id),
-+          IsDesktopLaunch(),
-           true);  // Update app info.
-       return (app_tab != NULL);
-     }
---- a/chrome/browser/ui/browser_init.h
-+++ b/chrome/browser/ui/browser_init.h
-@@ -163,6 +163,9 @@
-     // In this case |app_url| or |app_id| are populated if they're non-null.
-     bool IsAppLaunch(std::string* app_url, std::string* app_id);
- 
-+    // If the process was launched with the desktop flag, return true.
-+    bool IsDesktopLaunch();
-+
-     // If IsAppLaunch is true, tries to open an application window.
-     // If the app is specified to start in a tab, or IsAppLaunch is false,
-     // returns false to specify default processing.
+   // Which deferred action to perform when OnDidGetApplicationInfo is notified
+   // from a WebContents. Currently, only one pending action is allowed.
+   WebAppAction pending_web_app_action_;
 --- a/chrome/browser/ui/gtk/browser_window_gtk.cc
 +++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
-@@ -944,6 +944,42 @@
-   return fullscreen_exit_bubble_.get() ? true : false;
+@@ -983,6 +983,42 @@
+   return fullscreen_exit_bubble_ != NULL;
  }
  
 +void BrowserWindowGtk::ResizeToDesktopSize() {
@@ -283,7 +165,7 @@
  LocationBar* BrowserWindowGtk::GetLocationBar() const {
    return toolbar_->GetLocationBar();
  }
-@@ -2020,6 +2056,12 @@
+@@ -2109,6 +2145,12 @@
  
    if (browser_->ShouldSaveWindowPlacement())
      browser_->SaveWindowPlacement(restored_bounds_, show_state);
@@ -298,7 +180,7 @@
    // This is a web of calls between views and delegates on Windows, but the
 --- a/ui/base/x/x11_util.cc
 +++ b/ui/base/x/x11_util.cc
-@@ -559,6 +559,36 @@
+@@ -688,6 +688,36 @@
  #endif
  }
  
@@ -337,7 +219,7 @@
    XID parent = None;
 --- a/ui/base/x/x11_util.h
 +++ b/ui/base/x/x11_util.h
-@@ -123,6 +123,8 @@
+@@ -147,6 +147,8 @@
                                      std::vector<Atom>* value);
  UI_EXPORT bool GetStringProperty(
      XID window, const std::string& property_name, std::string* value);
@@ -348,9 +230,9 @@
                                const std::string& name,
 --- a/chrome/browser/ui/browser_window.h
 +++ b/chrome/browser/ui/browser_window.h
-@@ -163,6 +163,9 @@
-   // Returns true if the fullscreen bubble is visible.
-   virtual bool IsFullscreenBubbleVisible() const = 0;
+@@ -158,6 +158,9 @@
+   virtual bool IsInMetroSnapMode() const = 0;
+ #endif
  
 +  // Sets the desktop-mode state
 +  virtual void SetDesktop() = 0;
@@ -371,7 +253,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/common/chrome_switches.cc
 +++ b/chrome/common/chrome_switches.cc
-@@ -230,6 +230,9 @@
+@@ -239,6 +239,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
  
@@ -383,7 +265,7 @@
  
 --- a/chrome/common/chrome_switches.h
 +++ b/chrome/common/chrome_switches.h
-@@ -72,6 +72,7 @@
+@@ -75,6 +75,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
  extern const char kDebugPrint[];
@@ -393,7 +275,7 @@
  extern const char kDisableAuthNegotiateCnameLookup[];
 --- a/chrome/browser/ui/panels/panel.cc
 +++ b/chrome/browser/ui/panels/panel.cc
-@@ -332,6 +332,10 @@
+@@ -478,6 +478,10 @@
    return false;
  }
  
@@ -401,22 +283,22 @@
 +  NOTIMPLEMENTED();
 +}
 +
- LocationBar* Panel::GetLocationBar() const {
- #if defined(USE_AURA)
-   // TODO(stevenjb): Remove this when Aura panels are implemented post R18.
+ void Panel::OnWindowAutoResized(const gfx::Size& preferred_window_size) {
+   DCHECK(auto_resizable_);
+   if (panel_strip_)
 --- a/chrome/browser/ui/panels/panel.h
 +++ b/chrome/browser/ui/panels/panel.h
 @@ -112,6 +112,7 @@
-       FullscreenExitBubbleType bubble_type) OVERRIDE;
+   virtual bool IsMaximized() const OVERRIDE;
+   virtual bool IsMinimized() const OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
-   virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
 +  virtual void SetDesktop() OVERRIDE;
-   virtual LocationBar* GetLocationBar() const OVERRIDE;
-   virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
-   virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
+   virtual gfx::NativeWindow GetNativeWindow() OVERRIDE;
+   virtual gfx::Rect GetRestoredBounds() const OVERRIDE;
+   virtual gfx::Rect GetBounds() const OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.h
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.h
-@@ -67,6 +67,7 @@
+@@ -75,6 +75,7 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
    virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
@@ -426,7 +308,7 @@
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 --- a/chrome/browser/ui/cocoa/browser_window_cocoa.mm
 +++ b/chrome/browser/ui/cocoa/browser_window_cocoa.mm
-@@ -305,6 +305,10 @@
+@@ -326,6 +326,10 @@
    return false;
  }
  
@@ -435,15 +317,124 @@
 +}
 +
  void BrowserWindowCocoa::ConfirmAddSearchProvider(
-     const TemplateURL* template_url,
+     TemplateURL* template_url,
      Profile* profile) {
 --- a/chrome/browser/ui/panels/panel_browser_window_cocoa.h
 +++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.h
-@@ -57,6 +57,7 @@
+@@ -61,6 +61,7 @@
    virtual void FullScreenModeChanged(bool is_full_screen) OVERRIDE;
    virtual Browser* GetPanelBrowser() const OVERRIDE;
    virtual void DestroyPanelBrowser() OVERRIDE;
 +  virtual void SetDesktop() OVERRIDE;
-   virtual gfx::Size IconOnlySize() const OVERRIDE;
    virtual void EnsurePanelFullyVisible() OVERRIDE;
-   virtual void SetPanelAppIconVisibility(bool visible) OVERRIDE;
+   virtual void SetPanelAlwaysOnTop(bool on_top) OVERRIDE;
+   virtual void EnableResizeByMouse(bool enable) OVERRIDE;
+--- a/chrome/browser/ui/extensions/application_launch.cc
++++ b/chrome/browser/ui/extensions/application_launch.cc
+@@ -124,7 +124,7 @@
+     }
+     case extension_misc::LAUNCH_WINDOW:
+       tab = OpenApplicationWindow(profile, extension, container,
+-                                  override_url, empty_icon, NULL);
++                                  override_url, empty_icon, false, NULL);
+       break;
+     case extension_misc::LAUNCH_TAB: {
+       tab = OpenApplicationTab(profile, extension, override_url,
+@@ -166,6 +166,7 @@
+     extension_misc::LaunchContainer container,
+     const GURL& url_input,
+     const FilePath& icon_id,
++    bool as_desktop,
+     Browser** app_browser) {
+   DCHECK(!url_input.is_empty() || extension);
+   GURL url = UrlForExtension(extension, url_input);
+@@ -188,6 +189,9 @@
+     window_bounds.set_height(extension->launch_height());
+   }
+ 
++  if (as_desktop)
++    type = Browser::TYPE_DESKTOP;
++
+   Browser::CreateParams params(type, profile);
+   params.app_name = app_name;
+   params.initial_bounds = window_bounds;
+@@ -241,6 +245,7 @@
+ WebContents* OpenAppShortcutWindow(Profile* profile,
+                                    const GURL& url,
+                                    const FilePath& icon_id,
++                                   bool as_desktop,
+                                    bool update_shortcut) {
+   Browser* app_browser;
+   WebContents* tab = OpenApplicationWindow(
+@@ -249,6 +254,7 @@
+       extension_misc::LAUNCH_WINDOW,
+       url,
+       icon_id,
++      as_desktop,
+       &app_browser);
+ 
+   if (!tab)
+--- a/chrome/browser/ui/extensions/application_launch.h
++++ b/chrome/browser/ui/extensions/application_launch.h
+@@ -56,6 +56,7 @@
+     extension_misc::LaunchContainer container,
+     const GURL& url,
+     const FilePath& icon_id,
++    bool as_desktop,
+     Browser** app_browser);
+ 
+ // Open |url| in an app shortcut window.  If |update_shortcut| is true,
+@@ -67,6 +68,7 @@
+ content::WebContents* OpenAppShortcutWindow(Profile* profile,
+                                             const GURL& url,
+                                             const FilePath& icon_id,
++                                            bool as_desktop,
+                                             bool update_shortcut);
+ 
+ // Open an application for |extension| using |disposition|.  Returns NULL if
+--- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
++++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
+@@ -357,7 +357,8 @@
+ 
+     if (process_startup) {
+       if (browser_defaults::kOSSupportsOtherBrowsers &&
+-          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)) {
++          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)
++          !IsDesktopLaunch()) {
+         if (!browser::ShowAutolaunchPrompt(profile))
+           browser::ShowDefaultBrowserPrompt(profile);
+       }
+@@ -443,6 +444,13 @@
+   return (app_tab != NULL);
+ }
+ 
++bool StartupBrowserCreatorImpl::IsDesktopLaunch() {
++  if (command_line_.HasSwitch(switches::kDesktop)) {
++    return true;
++  }
++  return false;
++}
++
+ bool StartupBrowserCreatorImpl::OpenApplicationWindow(
+     Profile* profile,
+     content::WebContents** out_app_contents) {
+@@ -510,6 +518,7 @@
+           profile,
+           url,
+           FilePath(icon_id),
++          IsDesktopLaunch(),
+           true);  // Update app info.
+ 
+       if (out_app_contents)
+--- a/chrome/browser/ui/startup/startup_browser_creator_impl.h
++++ b/chrome/browser/ui/startup/startup_browser_creator_impl.h
+@@ -74,6 +74,9 @@
+   // In this case |app_url| or |app_id| are populated if they're non-null.
+   bool IsAppLaunch(std::string* app_url, std::string* app_id);
+ 
++  // If the process was launched with the desktop flag, return true.
++  bool IsDesktopLaunch();
++
+   // If IsAppLaunch is true, tries to open an application window.
+   // If the app is specified to start in a tab, or IsAppLaunch is false,
+   // returns false to specify default processing. |out_app_contents| is an

@@ -1,15 +1,15 @@
 --- a/chrome/app/resources/locale_settings_linux.grd
 +++ b/chrome/app/resources/locale_settings_linux.grd
-@@ -154,7 +154,7 @@
-     <messages fallback_to_english="true">
-       <!-- The font used in Web UI (e.g. History). -->
+@@ -155,7 +155,7 @@
+       <!-- The font used in Web UI (e.g. History). Note that these are only
+            backups. We try to use the system font if possible. -->
        <message name="IDS_WEB_FONT_FAMILY" use_name_for_id="true">
 -        Arial, sans-serif
 +        Liberation Sans, sans-serif
        </message>
  
        <!-- The relative font size in % used in Web UI (e.g. History).  -->
-@@ -164,22 +164,22 @@
+@@ -165,22 +165,22 @@
  
        <!-- The default value for |WebPreference::standard_font_family| -->
        <message name="IDS_STANDARD_FONT_FAMILY" use_name_for_id="true">

@@ -4,7 +4,6 @@ jolicloud_set_default_window_size.patch
 jolicloud_enable_first_run_importer_in_apps.patch
 jolicloud_use_chrome_profile.patch
 # system_v8.patch
-ubuntu_dont_overwrite_default_download_directory.patch
 chromium_useragent.patch
 jolicloud_default_homepage.patch
 jolicloud_use_liberation_fonts.patch
@@ -17,5 +16,4 @@ jolicloud_use_default_buttons.patch
 jolicloud_fix_maximize_with_newer_metacity.patch
 webkit_rev_parser.patch
 dlopen_sonamed_gl.patch
-glib-header-single-entry.patch
-fix-armhf-ftbfs.patch
+# fix-armhf-ftbfs.patch

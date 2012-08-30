@@ -7,11 +7,9 @@ as we don't want to Depend on the -dev packages for the .so files:
  ui/gfx/gl/gl_implementation_linux.cc |    6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
-Index: src/ui/gfx/gl/gl_implementation_linux.cc
-===================================================================
---- src.orig/ui/gfx/gl/gl_implementation_linux.cc	2011-10-21 17:35:43.000000000 +0100
-+++ src/ui/gfx/gl/gl_implementation_linux.cc	2011-10-21 18:40:52.767139411 +0100
-@@ -73,7 +73,7 @@
+--- a/ui/gl/gl_implementation_linux.cc
++++ b/ui/gl/gl_implementation_linux.cc
+@@ -75,7 +75,7 @@
        }
  
        base::NativeLibrary library = LoadLibrary(
@@ -20,16 +18,3 @@ Index: src/ui/gfx/gl/gl_implementation_linux.cc
        if (!library)
          return false;
  
-@@ -120,10 +120,10 @@
-     }
- #endif  // !defined(USE_WAYLAND)
-     case kGLImplementationEGLGLES2: {
--      base::NativeLibrary gles_library = LoadLibrary("libGLESv2.so");
-+      base::NativeLibrary gles_library = LoadLibrary("libGLESv2.so.2");
-       if (!gles_library)
-         return false;
--      base::NativeLibrary egl_library = LoadLibrary("libEGL.so");
-+      base::NativeLibrary egl_library = LoadLibrary("libEGL.so.1");
-       if (!egl_library) {
-         base::UnloadNativeLibrary(gles_library);
-         return false;
