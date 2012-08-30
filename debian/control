@@ -48,6 +48,7 @@ Build-Depends: cdbs,
 	libdbus-glib-1-dev,
 	libgnome-keyring-dev,
 	libudev-dev,
+	libssl-dev,
 	libgconf2-dev
 Standards-Version: 3.8.3
 
