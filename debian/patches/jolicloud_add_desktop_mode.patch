@@ -1,5 +1,7 @@
---- a/chrome/browser/ui/browser.cc
-+++ b/chrome/browser/ui/browser.cc
+Index: src/chrome/browser/ui/browser.cc
+===================================================================
+--- src.orig/chrome/browser/ui/browser.cc	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/browser/ui/browser.cc	2012-09-06 17:29:21.642139350 +0200
 @@ -330,6 +330,15 @@
  }
  
@@ -78,8 +80,10 @@
    }
    return !!(features & feature);
  }
---- a/chrome/browser/ui/browser.h
-+++ b/chrome/browser/ui/browser.h
+Index: src/chrome/browser/ui/browser.h
+===================================================================
+--- src.orig/chrome/browser/ui/browser.h	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/browser/ui/browser.h	2012-09-06 17:29:21.642139350 +0200
 @@ -117,7 +117,8 @@
      // BrowserTest.StartMaximized.
      TYPE_TABBED = 1,
@@ -120,8 +124,10 @@
    // Which deferred action to perform when OnDidGetApplicationInfo is notified
    // from a WebContents. Currently, only one pending action is allowed.
    WebAppAction pending_web_app_action_;
---- a/chrome/browser/ui/gtk/browser_window_gtk.cc
-+++ b/chrome/browser/ui/gtk/browser_window_gtk.cc
+Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
+===================================================================
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-06 17:29:57.078138012 +0200
 @@ -983,6 +983,42 @@
    return fullscreen_exit_bubble_ != NULL;
  }
@@ -178,8 +184,10 @@
  
    // We also need to save the placement for startup.
    // This is a web of calls between views and delegates on Windows, but the
---- a/ui/base/x/x11_util.cc
-+++ b/ui/base/x/x11_util.cc
+Index: src/ui/base/x/x11_util.cc
+===================================================================
+--- src.orig/ui/base/x/x11_util.cc	2012-08-19 23:55:01.000000000 +0200
++++ src/ui/base/x/x11_util.cc	2012-09-06 17:29:21.646139350 +0200
 @@ -688,6 +688,36 @@
  #endif
  }
@@ -217,8 +225,10 @@
  XID GetParentWindow(XID window) {
    XID root = None;
    XID parent = None;
---- a/ui/base/x/x11_util.h
-+++ b/ui/base/x/x11_util.h
+Index: src/ui/base/x/x11_util.h
+===================================================================
+--- src.orig/ui/base/x/x11_util.h	2012-08-19 23:55:01.000000000 +0200
++++ src/ui/base/x/x11_util.h	2012-09-06 17:29:21.646139350 +0200
 @@ -147,6 +147,8 @@
                                      std::vector<Atom>* value);
  UI_EXPORT bool GetStringProperty(
@@ -228,8 +238,10 @@
  
  UI_EXPORT bool SetIntProperty(XID window,
                                const std::string& name,
---- a/chrome/browser/ui/browser_window.h
-+++ b/chrome/browser/ui/browser_window.h
+Index: src/chrome/browser/ui/browser_window.h
+===================================================================
+--- src.orig/chrome/browser/ui/browser_window.h	2012-08-19 23:49:10.000000000 +0200
++++ src/chrome/browser/ui/browser_window.h	2012-09-06 17:29:21.646139350 +0200
 @@ -158,6 +158,9 @@
    virtual bool IsInMetroSnapMode() const = 0;
  #endif
@@ -240,8 +252,10 @@
    // Returns the location bar.
    virtual LocationBar* GetLocationBar() const = 0;
  
---- a/chrome/browser/ui/gtk/browser_window_gtk.h
-+++ b/chrome/browser/ui/gtk/browser_window_gtk.h
+Index: src/chrome/browser/ui/gtk/browser_window_gtk.h
+===================================================================
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.h	2012-08-19 23:48:57.000000000 +0200
++++ src/chrome/browser/ui/gtk/browser_window_gtk.h	2012-09-06 17:29:21.646139350 +0200
 @@ -104,6 +104,8 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
@@ -251,8 +265,10 @@
    virtual LocationBar* GetLocationBar() const OVERRIDE;
    virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
---- a/chrome/common/chrome_switches.cc
-+++ b/chrome/common/chrome_switches.cc
+Index: src/chrome/common/chrome_switches.cc
+===================================================================
+--- src.orig/chrome/common/chrome_switches.cc	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/common/chrome_switches.cc	2012-09-06 17:29:21.646139350 +0200
 @@ -239,6 +239,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
@@ -263,8 +279,10 @@
  // Triggers a plethora of diagnostic modes.
  const char kDiagnostics[]                   = "diagnostics";
  
---- a/chrome/common/chrome_switches.h
-+++ b/chrome/common/chrome_switches.h
+Index: src/chrome/common/chrome_switches.h
+===================================================================
+--- src.orig/chrome/common/chrome_switches.h	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/common/chrome_switches.h	2012-09-06 17:29:21.646139350 +0200
 @@ -75,6 +75,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
@@ -273,8 +291,10 @@
  extern const char kDeviceManagementUrl[];
  extern const char kDiagnostics[];
  extern const char kDisableAuthNegotiateCnameLookup[];
---- a/chrome/browser/ui/panels/panel.cc
-+++ b/chrome/browser/ui/panels/panel.cc
+Index: src/chrome/browser/ui/panels/panel.cc
+===================================================================
+--- src.orig/chrome/browser/ui/panels/panel.cc	2012-08-19 23:48:53.000000000 +0200
++++ src/chrome/browser/ui/panels/panel.cc	2012-09-06 17:29:21.646139350 +0200
 @@ -478,6 +478,10 @@
    return false;
  }
@@ -286,8 +306,10 @@
  void Panel::OnWindowAutoResized(const gfx::Size& preferred_window_size) {
    DCHECK(auto_resizable_);
    if (panel_strip_)
---- a/chrome/browser/ui/panels/panel.h
-+++ b/chrome/browser/ui/panels/panel.h
+Index: src/chrome/browser/ui/panels/panel.h
+===================================================================
+--- src.orig/chrome/browser/ui/panels/panel.h	2012-08-19 23:48:53.000000000 +0200
++++ src/chrome/browser/ui/panels/panel.h	2012-09-06 17:29:21.646139350 +0200
 @@ -112,6 +112,7 @@
    virtual bool IsMaximized() const OVERRIDE;
    virtual bool IsMinimized() const OVERRIDE;
@@ -296,8 +318,10 @@
    virtual gfx::NativeWindow GetNativeWindow() OVERRIDE;
    virtual gfx::Rect GetRestoredBounds() const OVERRIDE;
    virtual gfx::Rect GetBounds() const OVERRIDE;
---- a/chrome/browser/ui/cocoa/browser_window_cocoa.h
-+++ b/chrome/browser/ui/cocoa/browser_window_cocoa.h
+Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.h
+===================================================================
+--- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-08-19 23:49:10.000000000 +0200
++++ src/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-09-06 17:29:21.646139350 +0200
 @@ -75,6 +75,7 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
@@ -306,8 +330,10 @@
    virtual LocationBar* GetLocationBar() const OVERRIDE;
    virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
---- a/chrome/browser/ui/cocoa/browser_window_cocoa.mm
-+++ b/chrome/browser/ui/cocoa/browser_window_cocoa.mm
+Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.mm
+===================================================================
+--- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-08-19 23:49:10.000000000 +0200
++++ src/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-09-06 17:29:21.646139350 +0200
 @@ -326,6 +326,10 @@
    return false;
  }
@@ -319,8 +345,10 @@
  void BrowserWindowCocoa::ConfirmAddSearchProvider(
      TemplateURL* template_url,
      Profile* profile) {
---- a/chrome/browser/ui/panels/panel_browser_window_cocoa.h
-+++ b/chrome/browser/ui/panels/panel_browser_window_cocoa.h
+Index: src/chrome/browser/ui/panels/panel_browser_window_cocoa.h
+===================================================================
+--- src.orig/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-08-19 23:48:53.000000000 +0200
++++ src/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-09-06 17:29:21.650139350 +0200
 @@ -61,6 +61,7 @@
    virtual void FullScreenModeChanged(bool is_full_screen) OVERRIDE;
    virtual Browser* GetPanelBrowser() const OVERRIDE;
@@ -329,9 +357,11 @@
    virtual void EnsurePanelFullyVisible() OVERRIDE;
    virtual void SetPanelAlwaysOnTop(bool on_top) OVERRIDE;
    virtual void EnableResizeByMouse(bool enable) OVERRIDE;
---- a/chrome/browser/ui/extensions/application_launch.cc
-+++ b/chrome/browser/ui/extensions/application_launch.cc
-@@ -124,7 +124,7 @@
+Index: src/chrome/browser/ui/extensions/application_launch.cc
+===================================================================
+--- src.orig/chrome/browser/ui/extensions/application_launch.cc	2012-09-06 17:28:10.186142039 +0200
++++ src/chrome/browser/ui/extensions/application_launch.cc	2012-09-06 17:29:21.650139350 +0200
+@@ -125,7 +125,7 @@
      }
      case extension_misc::LAUNCH_WINDOW:
        tab = OpenApplicationWindow(profile, extension, container,
@@ -340,7 +370,7 @@
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = OpenApplicationTab(profile, extension, override_url,
-@@ -166,6 +166,7 @@
+@@ -167,6 +167,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url_input,
      const FilePath& icon_id,
@@ -348,7 +378,7 @@
      Browser** app_browser) {
    DCHECK(!url_input.is_empty() || extension);
    GURL url = UrlForExtension(extension, url_input);
-@@ -188,6 +189,9 @@
+@@ -189,6 +190,9 @@
      window_bounds.set_height(extension->launch_height());
    }
  
@@ -358,7 +388,7 @@
    Browser::CreateParams params(type, profile);
    params.app_name = app_name;
    params.initial_bounds = window_bounds;
-@@ -241,6 +245,7 @@
+@@ -242,6 +246,7 @@
  WebContents* OpenAppShortcutWindow(Profile* profile,
                                     const GURL& url,
                                     const FilePath& icon_id,
@@ -366,7 +396,7 @@
                                     bool update_shortcut) {
    Browser* app_browser;
    WebContents* tab = OpenApplicationWindow(
-@@ -249,6 +254,7 @@
+@@ -250,6 +255,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -374,9 +404,11 @@
        &app_browser);
  
    if (!tab)
---- a/chrome/browser/ui/extensions/application_launch.h
-+++ b/chrome/browser/ui/extensions/application_launch.h
-@@ -56,6 +56,7 @@
+Index: src/chrome/browser/ui/extensions/application_launch.h
+===================================================================
+--- src.orig/chrome/browser/ui/extensions/application_launch.h	2012-09-06 17:28:10.186142039 +0200
++++ src/chrome/browser/ui/extensions/application_launch.h	2012-09-06 17:29:21.650139350 +0200
+@@ -57,6 +57,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url,
      const FilePath& icon_id,
@@ -384,7 +416,7 @@
      Browser** app_browser);
  
  // Open |url| in an app shortcut window.  If |update_shortcut| is true,
-@@ -67,6 +68,7 @@
+@@ -68,6 +69,7 @@
  content::WebContents* OpenAppShortcutWindow(Profile* profile,
                                              const GURL& url,
                                              const FilePath& icon_id,
@@ -392,14 +424,16 @@
                                              bool update_shortcut);
  
  // Open an application for |extension| using |disposition|.  Returns NULL if
---- a/chrome/browser/ui/startup/startup_browser_creator_impl.cc
-+++ b/chrome/browser/ui/startup/startup_browser_creator_impl.cc
+Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
+===================================================================
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-06 17:28:10.000000000 +0200
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-06 17:31:04.418134971 +0200
 @@ -357,7 +357,8 @@
  
      if (process_startup) {
        if (browser_defaults::kOSSupportsOtherBrowsers &&
 -          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)) {
-+          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck)
++          !command_line_.HasSwitch(switches::kNoDefaultBrowserCheck) &&
 +          !IsDesktopLaunch()) {
          if (!browser::ShowAutolaunchPrompt(profile))
            browser::ShowDefaultBrowserPrompt(profile);
@@ -426,8 +460,10 @@
            true);  // Update app info.
  
        if (out_app_contents)
---- a/chrome/browser/ui/startup/startup_browser_creator_impl.h
-+++ b/chrome/browser/ui/startup/startup_browser_creator_impl.h
+Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.h
+===================================================================
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-08-19 23:49:04.000000000 +0200
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-09-06 17:29:21.650139350 +0200
 @@ -74,6 +74,9 @@
    // In this case |app_url| or |app_id| are populated if they're non-null.
    bool IsAppLaunch(std::string* app_url, std::string* app_id);
@@ -438,3 +474,30 @@
    // If IsAppLaunch is true, tries to open an application window.
    // If the app is specified to start in a tab, or IsAppLaunch is false,
    // returns false to specify default processing. |out_app_contents| is an
+Index: src/chrome/browser/ui/panels/panel_browser_window.h
+===================================================================
+--- src.orig/chrome/browser/ui/panels/panel_browser_window.h	2012-08-19 23:48:53.000000000 +0200
++++ src/chrome/browser/ui/panels/panel_browser_window.h	2012-09-06 17:32:35.594131736 +0200
+@@ -76,6 +76,7 @@
+       const GURL& url,
+       FullscreenExitBubbleType bubble_type) OVERRIDE;
+   virtual bool IsFullscreenBubbleVisible() const OVERRIDE;
++  virtual void SetDesktop() OVERRIDE;
+   virtual LocationBar* GetLocationBar() const OVERRIDE;
+   virtual void SetFocusToLocationBar(bool select_all) OVERRIDE;
+   virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
+Index: src/chrome/browser/ui/panels/panel_browser_window.cc
+===================================================================
+--- src.orig/chrome/browser/ui/panels/panel_browser_window.cc	2012-08-19 23:48:53.000000000 +0200
++++ src/chrome/browser/ui/panels/panel_browser_window.cc	2012-09-06 17:33:53.730128770 +0200
+@@ -205,6 +205,10 @@
+   return false;
+ }
+ 
++void PanelBrowserWindow::SetDesktop() {
++  NOTIMPLEMENTED();
++}
++
+ LocationBar* PanelBrowserWindow::GetLocationBar() const {
+ #if defined(USE_AURA)
+   // TODO(stevenjb): Remove this when Aura panels are implemented post R18.
