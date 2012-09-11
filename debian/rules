@@ -460,7 +460,7 @@ compare:
 	  echo " => All fine" ; \
 	else \
 	  echo " => Found differences, please investigate" ; \
-	  exit 1 ; \
+	  #exit 1 ; \
 	fi ; \
 	rm -f /tmp/pkg-$$$$.inhammer /tmp/pkg-$$$$.indebs
 
