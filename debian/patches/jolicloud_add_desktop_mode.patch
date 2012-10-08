@@ -1,7 +1,7 @@
 Index: src/chrome/browser/ui/browser.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser.cc	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/browser/ui/browser.cc	2012-09-06 17:29:21.642139350 +0200
+--- src.orig/chrome/browser/ui/browser.cc	2012-09-26 15:41:22.170674060 +0000
++++ src/chrome/browser/ui/browser.cc	2012-09-26 15:41:22.190674058 +0000
 @@ -330,6 +330,15 @@
  }
  
@@ -26,7 +26,7 @@ Index: src/chrome/browser/ui/browser.cc
        pending_web_app_action_(NONE),
        ALLOW_THIS_IN_INITIALIZER_LIST(
            content_setting_bubble_model_delegate_(
-@@ -770,6 +780,7 @@
+@@ -774,6 +784,7 @@
  #endif
        return browser_defaults::kRestorePopups || is_devtools();
      case TYPE_PANEL:
@@ -34,7 +34,7 @@ Index: src/chrome/browser/ui/browser.cc
        // Do not save the window placement of panels.
        return false;
      default:
-@@ -906,7 +917,9 @@
+@@ -910,7 +921,9 @@
  // Browser, OnBeforeUnload handling:
  
  bool Browser::ShouldCloseWindow() {
@@ -45,7 +45,7 @@ Index: src/chrome/browser/ui/browser.cc
      return false;
  
    if (HasCompletedUnloadProcessing())
-@@ -2873,7 +2886,7 @@
+@@ -2877,7 +2890,7 @@
      indices->clear();
      can_close_all = false;
    }
@@ -54,7 +54,7 @@ Index: src/chrome/browser/ui/browser.cc
  }
  
  bool Browser::CanBookmarkAllTabs() const {
-@@ -3427,6 +3440,10 @@
+@@ -3431,6 +3444,10 @@
      return;
    }
  
@@ -65,7 +65,7 @@ Index: src/chrome/browser/ui/browser.cc
    if (!proceed) {
      CancelWindowClose();
      *proceed_to_fire_unload = false;
-@@ -4993,6 +5010,14 @@
+@@ -5010,6 +5027,14 @@
  
      if (!is_app())
        features |= FEATURE_LOCATIONBAR;
@@ -82,8 +82,8 @@ Index: src/chrome/browser/ui/browser.cc
  }
 Index: src/chrome/browser/ui/browser.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser.h	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/browser/ui/browser.h	2012-09-06 17:29:21.642139350 +0200
+--- src.orig/chrome/browser/ui/browser.h	2012-09-26 15:41:22.170674060 +0000
++++ src/chrome/browser/ui/browser.h	2012-09-26 15:41:22.190674058 +0000
 @@ -117,7 +117,8 @@
      // BrowserTest.StartMaximized.
      TYPE_TABBED = 1,
@@ -114,7 +114,7 @@ Index: src/chrome/browser/ui/browser.h
  
    bool is_app() const;
    bool is_devtools() const;
-@@ -1437,6 +1444,9 @@
+@@ -1439,6 +1446,9 @@
    // Stores the disposition type of the last blocked command.
    WindowOpenDisposition last_blocked_command_disposition_;
  
@@ -126,8 +126,8 @@ Index: src/chrome/browser/ui/browser.h
    WebAppAction pending_web_app_action_;
 Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-06 17:29:57.078138012 +0200
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-26 15:41:22.066674064 +0000
++++ src/chrome/browser/ui/gtk/browser_window_gtk.cc	2012-09-27 08:38:09.280378895 +0000
 @@ -983,6 +983,42 @@
    return fullscreen_exit_bubble_ != NULL;
  }
@@ -186,8 +186,8 @@ Index: src/chrome/browser/ui/gtk/browser_window_gtk.cc
    // This is a web of calls between views and delegates on Windows, but the
 Index: src/ui/base/x/x11_util.cc
 ===================================================================
---- src.orig/ui/base/x/x11_util.cc	2012-08-19 23:55:01.000000000 +0200
-+++ src/ui/base/x/x11_util.cc	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/ui/base/x/x11_util.cc	2012-08-19 21:55:01.000000000 +0000
++++ src/ui/base/x/x11_util.cc	2012-09-26 15:41:22.194674058 +0000
 @@ -688,6 +688,36 @@
  #endif
  }
@@ -227,8 +227,8 @@ Index: src/ui/base/x/x11_util.cc
    XID parent = None;
 Index: src/ui/base/x/x11_util.h
 ===================================================================
---- src.orig/ui/base/x/x11_util.h	2012-08-19 23:55:01.000000000 +0200
-+++ src/ui/base/x/x11_util.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/ui/base/x/x11_util.h	2012-08-19 21:55:01.000000000 +0000
++++ src/ui/base/x/x11_util.h	2012-09-26 15:41:22.202674059 +0000
 @@ -147,6 +147,8 @@
                                      std::vector<Atom>* value);
  UI_EXPORT bool GetStringProperty(
@@ -240,8 +240,8 @@ Index: src/ui/base/x/x11_util.h
                                const std::string& name,
 Index: src/chrome/browser/ui/browser_window.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser_window.h	2012-08-19 23:49:10.000000000 +0200
-+++ src/chrome/browser/ui/browser_window.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/browser_window.h	2012-08-19 21:49:10.000000000 +0000
++++ src/chrome/browser/ui/browser_window.h	2012-09-26 15:41:22.202674059 +0000
 @@ -158,6 +158,9 @@
    virtual bool IsInMetroSnapMode() const = 0;
  #endif
@@ -254,8 +254,8 @@ Index: src/chrome/browser/ui/browser_window.h
  
 Index: src/chrome/browser/ui/gtk/browser_window_gtk.h
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_window_gtk.h	2012-08-19 23:48:57.000000000 +0200
-+++ src/chrome/browser/ui/gtk/browser_window_gtk.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/gtk/browser_window_gtk.h	2012-08-19 21:48:57.000000000 +0000
++++ src/chrome/browser/ui/gtk/browser_window_gtk.h	2012-09-26 15:41:22.202674059 +0000
 @@ -104,6 +104,8 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
@@ -267,8 +267,8 @@ Index: src/chrome/browser/ui/gtk/browser_window_gtk.h
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/common/chrome_switches.cc	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/common/chrome_switches.cc	2012-09-26 15:41:22.166674060 +0000
++++ src/chrome/common/chrome_switches.cc	2012-09-26 15:41:22.202674059 +0000
 @@ -239,6 +239,9 @@
  // device management backend.
  const char kDeviceManagementUrl[]           = "device-management-url";
@@ -281,8 +281,8 @@ Index: src/chrome/common/chrome_switches.cc
  
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
---- src.orig/chrome/common/chrome_switches.h	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/common/chrome_switches.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/common/chrome_switches.h	2012-09-26 15:41:22.174674060 +0000
++++ src/chrome/common/chrome_switches.h	2012-09-26 15:41:22.202674059 +0000
 @@ -75,6 +75,7 @@
  extern const char kDebugDevToolsFrontend[];
  extern const char kDebugEnableFrameToggle[];
@@ -293,8 +293,8 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kDisableAuthNegotiateCnameLookup[];
 Index: src/chrome/browser/ui/panels/panel.cc
 ===================================================================
---- src.orig/chrome/browser/ui/panels/panel.cc	2012-08-19 23:48:53.000000000 +0200
-+++ src/chrome/browser/ui/panels/panel.cc	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/panels/panel.cc	2012-08-19 21:48:53.000000000 +0000
++++ src/chrome/browser/ui/panels/panel.cc	2012-09-26 15:41:22.206674059 +0000
 @@ -478,6 +478,10 @@
    return false;
  }
@@ -308,8 +308,8 @@ Index: src/chrome/browser/ui/panels/panel.cc
    if (panel_strip_)
 Index: src/chrome/browser/ui/panels/panel.h
 ===================================================================
---- src.orig/chrome/browser/ui/panels/panel.h	2012-08-19 23:48:53.000000000 +0200
-+++ src/chrome/browser/ui/panels/panel.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/panels/panel.h	2012-08-19 21:48:53.000000000 +0000
++++ src/chrome/browser/ui/panels/panel.h	2012-09-26 15:41:22.206674059 +0000
 @@ -112,6 +112,7 @@
    virtual bool IsMaximized() const OVERRIDE;
    virtual bool IsMinimized() const OVERRIDE;
@@ -320,8 +320,8 @@ Index: src/chrome/browser/ui/panels/panel.h
    virtual gfx::Rect GetBounds() const OVERRIDE;
 Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.h
 ===================================================================
---- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-08-19 23:49:10.000000000 +0200
-+++ src/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-08-19 21:49:10.000000000 +0000
++++ src/chrome/browser/ui/cocoa/browser_window_cocoa.h	2012-09-26 15:41:22.206674059 +0000
 @@ -75,6 +75,7 @@
        FullscreenExitBubbleType bubble_type) OVERRIDE;
    virtual bool IsFullscreen() const OVERRIDE;
@@ -332,8 +332,8 @@ Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.h
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.mm
 ===================================================================
---- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-08-19 23:49:10.000000000 +0200
-+++ src/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-09-06 17:29:21.646139350 +0200
+--- src.orig/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-08-19 21:49:10.000000000 +0000
++++ src/chrome/browser/ui/cocoa/browser_window_cocoa.mm	2012-09-26 15:41:22.206674059 +0000
 @@ -326,6 +326,10 @@
    return false;
  }
@@ -347,8 +347,8 @@ Index: src/chrome/browser/ui/cocoa/browser_window_cocoa.mm
      Profile* profile) {
 Index: src/chrome/browser/ui/panels/panel_browser_window_cocoa.h
 ===================================================================
---- src.orig/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-08-19 23:48:53.000000000 +0200
-+++ src/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-09-06 17:29:21.650139350 +0200
+--- src.orig/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-08-19 21:48:53.000000000 +0000
++++ src/chrome/browser/ui/panels/panel_browser_window_cocoa.h	2012-09-26 15:41:22.206674059 +0000
 @@ -61,6 +61,7 @@
    virtual void FullScreenModeChanged(bool is_full_screen) OVERRIDE;
    virtual Browser* GetPanelBrowser() const OVERRIDE;
@@ -359,8 +359,8 @@ Index: src/chrome/browser/ui/panels/panel_browser_window_cocoa.h
    virtual void EnableResizeByMouse(bool enable) OVERRIDE;
 Index: src/chrome/browser/ui/extensions/application_launch.cc
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.cc	2012-09-06 17:28:10.186142039 +0200
-+++ src/chrome/browser/ui/extensions/application_launch.cc	2012-09-06 17:29:21.650139350 +0200
+--- src.orig/chrome/browser/ui/extensions/application_launch.cc	2012-09-26 15:41:22.174674060 +0000
++++ src/chrome/browser/ui/extensions/application_launch.cc	2012-09-27 08:39:03.896376839 +0000
 @@ -125,7 +125,7 @@
      }
      case extension_misc::LAUNCH_WINDOW:
@@ -388,7 +388,18 @@ Index: src/chrome/browser/ui/extensions/application_launch.cc
    Browser::CreateParams params(type, profile);
    params.app_name = app_name;
    params.initial_bounds = window_bounds;
-@@ -242,6 +246,7 @@
+@@ -219,6 +223,10 @@
+       profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
+   }
+ 
++  if (as_desktop) {
++    browser->window()->SetDesktop();
++  }
++
+   TabContents* tab_contents =
+       browser->AddSelectedTabWithURL(url, content::PAGE_TRANSITION_START_PAGE);
+   WebContents* contents = tab_contents->web_contents();
+@@ -242,6 +250,7 @@
  WebContents* OpenAppShortcutWindow(Profile* profile,
                                     const GURL& url,
                                     const FilePath& icon_id,
@@ -396,7 +407,7 @@ Index: src/chrome/browser/ui/extensions/application_launch.cc
                                     bool update_shortcut) {
    Browser* app_browser;
    WebContents* tab = OpenApplicationWindow(
-@@ -250,6 +255,7 @@
+@@ -250,6 +259,7 @@
        extension_misc::LAUNCH_WINDOW,
        url,
        icon_id,
@@ -406,8 +417,8 @@ Index: src/chrome/browser/ui/extensions/application_launch.cc
    if (!tab)
 Index: src/chrome/browser/ui/extensions/application_launch.h
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.h	2012-09-06 17:28:10.186142039 +0200
-+++ src/chrome/browser/ui/extensions/application_launch.h	2012-09-06 17:29:21.650139350 +0200
+--- src.orig/chrome/browser/ui/extensions/application_launch.h	2012-09-26 15:41:22.174674060 +0000
++++ src/chrome/browser/ui/extensions/application_launch.h	2012-09-26 15:41:22.206674059 +0000
 @@ -57,6 +57,7 @@
      extension_misc::LaunchContainer container,
      const GURL& url,
@@ -426,8 +437,8 @@ Index: src/chrome/browser/ui/extensions/application_launch.h
  // Open an application for |extension| using |disposition|.  Returns NULL if
 Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 ===================================================================
---- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-06 17:28:10.000000000 +0200
-+++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-06 17:31:04.418134971 +0200
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-26 15:41:22.174674060 +0000
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-09-26 15:41:22.210674059 +0000
 @@ -357,7 +357,8 @@
  
      if (process_startup) {
@@ -462,8 +473,8 @@ Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
        if (out_app_contents)
 Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.h
 ===================================================================
---- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-08-19 23:49:04.000000000 +0200
-+++ src/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-09-06 17:29:21.650139350 +0200
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-08-19 21:49:04.000000000 +0000
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.h	2012-09-26 15:41:22.210674059 +0000
 @@ -74,6 +74,9 @@
    // In this case |app_url| or |app_id| are populated if they're non-null.
    bool IsAppLaunch(std::string* app_url, std::string* app_id);
@@ -476,8 +487,8 @@ Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.h
    // returns false to specify default processing. |out_app_contents| is an
 Index: src/chrome/browser/ui/panels/panel_browser_window.h
 ===================================================================
---- src.orig/chrome/browser/ui/panels/panel_browser_window.h	2012-08-19 23:48:53.000000000 +0200
-+++ src/chrome/browser/ui/panels/panel_browser_window.h	2012-09-06 17:32:35.594131736 +0200
+--- src.orig/chrome/browser/ui/panels/panel_browser_window.h	2012-08-19 21:48:53.000000000 +0000
++++ src/chrome/browser/ui/panels/panel_browser_window.h	2012-09-26 15:41:22.210674059 +0000
 @@ -76,6 +76,7 @@
        const GURL& url,
        FullscreenExitBubbleType bubble_type) OVERRIDE;
@@ -488,8 +499,8 @@ Index: src/chrome/browser/ui/panels/panel_browser_window.h
    virtual void UpdateReloadStopState(bool is_loading, bool force) OVERRIDE;
 Index: src/chrome/browser/ui/panels/panel_browser_window.cc
 ===================================================================
---- src.orig/chrome/browser/ui/panels/panel_browser_window.cc	2012-08-19 23:48:53.000000000 +0200
-+++ src/chrome/browser/ui/panels/panel_browser_window.cc	2012-09-06 17:33:53.730128770 +0200
+--- src.orig/chrome/browser/ui/panels/panel_browser_window.cc	2012-08-19 21:48:53.000000000 +0000
++++ src/chrome/browser/ui/panels/panel_browser_window.cc	2012-09-26 15:41:22.210674059 +0000
 @@ -205,6 +205,10 @@
    return false;
  }
