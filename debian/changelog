@@ -1,3 +1,9 @@
+nickel-browser (23.0.1240.0~r152299-1jolicloud0) robby-1.2; urgency=low
+
+  * Imported Upstream version 23.0.1240.0~r152299-1jolicloud1
+
+ -- Arnaud Vallat <arnaud@jolicloud.org>  Wed, 7 Nov 2012 10:21:00 -0600
+
 nickel-browser (21.0.1180.79~r152299-1jolicloud1) robby-1.2; urgency=low
 
   * Bumped version to 21.0.1180.79~r152299-1jolicloud1
