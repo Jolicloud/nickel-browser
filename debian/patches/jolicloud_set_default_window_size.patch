@@ -1,6 +1,8 @@
---- a/chrome/browser/ui/window_sizer.cc
-+++ b/chrome/browser/ui/window_sizer.cc
-@@ -196,8 +196,8 @@
+Index: src/chrome/browser/ui/window_sizer/window_sizer.cc
+===================================================================
+--- src.orig/chrome/browser/ui/window_sizer/window_sizer.cc	2012-11-12 10:59:20.134948433 +0000
++++ src/chrome/browser/ui/window_sizer/window_sizer.cc	2012-11-12 11:00:12.150946476 +0000
+@@ -225,8 +225,8 @@
  
    // The default size is either some reasonably wide width, or if the work
    // area is narrower, then the work area width less some aesthetic padding.

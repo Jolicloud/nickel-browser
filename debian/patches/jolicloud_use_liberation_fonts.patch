@@ -1,5 +1,7 @@
---- a/chrome/app/resources/locale_settings_linux.grd
-+++ b/chrome/app/resources/locale_settings_linux.grd
+Index: src/chrome/app/resources/locale_settings_linux.grd
+===================================================================
+--- src.orig/chrome/app/resources/locale_settings_linux.grd	2012-11-07 10:20:22.000000000 +0000
++++ src/chrome/app/resources/locale_settings_linux.grd	2012-11-12 11:35:45.842866203 +0000
 @@ -155,7 +155,7 @@
        <!-- The font used in Web UI (e.g. History). Note that these are only
             backups. We try to use the system font if possible. -->
@@ -14,25 +16,25 @@
        <!-- The default value for |WebPreference::standard_font_family| -->
        <message name="IDS_STANDARD_FONT_FAMILY" use_name_for_id="true">
 -        Times New Roman
-+        Liberation Serif
++	Liberation Serif
        </message>
  
        <!-- The default value for |WebPreference::fixed_font_family| -->
        <message name="IDS_FIXED_FONT_FAMILY" use_name_for_id="true">
--        Courier New
-+        Liberation Mono
+-        Monospace
++	Liberation Mono
        </message>
  
        <!-- The default value for |WebPreference::serif_font_family| -->
        <message name="IDS_SERIF_FONT_FAMILY" use_name_for_id="true">
 -        Times New Roman
-+        Liberation Serif
++	Liberation Serif
        </message>
  
        <!-- The default value for |WebPreference::sans_serif_font_family| -->
        <message name="IDS_SANS_SERIF_FONT_FAMILY" use_name_for_id="true">
 -        Arial
-+        Liberation Sans
++	Liberation Sans
        </message>
  
        <!-- The default value for |WebPreference::cursive_font_family| -->

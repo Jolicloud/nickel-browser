@@ -1,6 +1,8 @@
---- a/chrome/browser/ui/browser.cc
-+++ b/chrome/browser/ui/browser.cc
-@@ -2058,7 +2058,7 @@
+Index: src/chrome/browser/ui/browser_ui_prefs.cc
+===================================================================
+--- src.orig/chrome/browser/ui/browser_ui_prefs.cc
++++ src/chrome/browser/ui/browser_ui_prefs.cc
+@@ -16,7 +16,7 @@ void SetNewHomePagePrefs(PrefService* pr
    if (home_page_pref &&
        !home_page_pref->IsManaged() &&
        !prefs->HasPrefPath(prefs::kHomePage)) {

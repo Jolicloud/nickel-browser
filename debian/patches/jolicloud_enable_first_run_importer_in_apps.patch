@@ -1,8 +1,10 @@
---- a/chrome/browser/chrome_browser_main.cc
-+++ b/chrome/browser/chrome_browser_main.cc
-@@ -1247,12 +1247,10 @@
+Index: src/chrome/browser/chrome_browser_main.cc
+===================================================================
+--- src.orig/chrome/browser/chrome_browser_main.cc	2012-11-07 10:20:55.000000000 +0000
++++ src/chrome/browser/chrome_browser_main.cc	2012-11-12 11:03:51.514938223 +0000
+@@ -824,12 +824,10 @@
          user_data_dir_, master_prefs_.get());
-     AddFirstRunNewTabs(browser_init_.get(), master_prefs_->new_tabs);
+     AddFirstRunNewTabs(browser_creator_.get(), master_prefs_->new_tabs);
  
 -    // If we are running in App mode, we do not want to show the importer
 +    // Even if we are running in App mode, we do want to show the importer
@@ -11,7 +13,7 @@
 -        (parsed_command_line().HasSwitch(switches::kApp) ||
 -         parsed_command_line().HasSwitch(switches::kAppId) ||
 -         parsed_command_line().HasSwitch(switches::kNoFirstRun)))
-+         parsed_command_line().HasSwitch(switches::kNoFirstRun))
++	parsed_command_line().HasSwitch(switches::kNoFirstRun))
        first_run_ui_bypass_ = true;
  
      // Create Sentinel if no-first-run argument is passed in.
