@@ -1,13 +1,13 @@
-Index: src/chrome/browser/ui/browser_ui_prefs.cc
+Index: src/chrome/browser/profiles/profile_impl.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser_ui_prefs.cc
-+++ src/chrome/browser/ui/browser_ui_prefs.cc
-@@ -16,7 +16,7 @@ void SetNewHomePagePrefs(PrefService* pr
-   if (home_page_pref &&
-       !home_page_pref->IsManaged() &&
-       !prefs->HasPrefPath(prefs::kHomePage)) {
--    prefs->SetString(prefs::kHomePage, std::string());
-+    prefs->SetString(prefs::kHomePage, "http://www.jolicloud.com/start");
-   }
-   const PrefService::Preference* home_page_is_new_tab_page_pref =
-       prefs->FindPreference(prefs::kHomePageIsNewTabPage);
+--- src.orig/chrome/browser/profiles/profile_impl.cc	2013-01-23 18:00:11.000000000 +0100
++++ src/chrome/browser/profiles/profile_impl.cc	2013-03-08 12:47:53.942133007 +0100
+@@ -237,7 +237,7 @@
+                             "",
+                             PrefService::SYNCABLE_PREF);
+   prefs->RegisterStringPref(prefs::kHomePage,
+-                            std::string(),
++                            "http://www.jolicloud.com/start",
+                             PrefService::SYNCABLE_PREF);
+ #if defined(ENABLE_PRINTING)
+   prefs->RegisterBooleanPref(prefs::kPrintingEnabled,

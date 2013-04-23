@@ -17,3 +17,4 @@ jolicloud_fix_maximize_with_newer_metacity.patch
 webkit_rev_parser.patch
 dlopen_sonamed_gl.patch
 # fix-armhf-ftbfs.patch
+ffmpeg-gyp-config.patch

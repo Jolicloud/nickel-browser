@@ -1,10 +1,10 @@
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2012-11-07 10:23:30.000000000 +0000
-+++ src/chrome/common/chrome_switches.cc	2012-11-13 10:37:44.179746710 +0000
-@@ -799,6 +799,9 @@
- // Ignores GPU blacklist.
- const char kIgnoreGpuBlacklist[]            = "ignore-gpu-blacklist";
+--- src.orig/chrome/common/chrome_switches.cc	2013-03-08 19:05:11.000000000 +0100
++++ src/chrome/common/chrome_switches.cc	2013-03-25 14:15:49.575693601 +0100
+@@ -774,6 +774,9 @@
+ const char kIgnoreUrlFetcherCertRequests[] =
+     "ignore-urlfetcher-cert-requests";
  
 +// Specifies the icon_id in order to use the correct icon.
 +const char kIconId[]                        = "icon-id";
@@ -14,8 +14,8 @@ Index: src/chrome/common/chrome_switches.cc
  const char kImport[]                        = "import";
 Index: src/chrome/browser/ui/gtk/gtk_util.cc
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.cc	2012-11-07 10:20:45.000000000 +0000
-+++ src/chrome/browser/ui/gtk/gtk_util.cc	2012-11-13 09:47:19.987860481 +0000
+--- src.orig/chrome/browser/ui/gtk/gtk_util.cc	2013-03-08 19:02:00.000000000 +0100
++++ src/chrome/browser/ui/gtk/gtk_util.cc	2013-03-25 14:15:49.575693601 +0100
 @@ -10,6 +10,7 @@
  #include <cstdarg>
  #include <map>
@@ -30,9 +30,9 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
  #include "chrome/browser/ui/gtk/gtk_theme_service.h"
 +#include "chrome/common/chrome_switches.h"
  #include "googleurl/src/gurl.h"
+ #include "grit/chrome_unscaled_resources.h"
  #include "grit/theme_resources.h"
- #include "ui/base/gtk/gtk_compat.h"
-@@ -120,17 +122,6 @@
+@@ -121,17 +123,6 @@
        GetCharacterWidthForPixels(label, GPOINTER_TO_INT(pixel_width)));
  }
  
@@ -50,7 +50,7 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
  // Returns the avatar icon for |profile|.
  //
  // Returns NULL if there is only one profile; always returns an icon for
-@@ -276,6 +267,51 @@
+@@ -277,6 +268,51 @@
  
  namespace gtk_util {
  
@@ -122,17 +122,17 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
    g_list_free(icon_list);
 Index: src/chrome/browser/ui/browser.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser.cc	2012-11-07 10:20:54.000000000 +0000
-+++ src/chrome/browser/ui/browser.cc	2012-11-13 10:37:44.179746710 +0000
+--- src.orig/chrome/browser/ui/browser.cc	2013-03-08 19:02:00.000000000 +0100
++++ src/chrome/browser/ui/browser.cc	2013-03-25 14:15:49.579693602 +0100
 @@ -15,6 +15,7 @@
  #include "base/base_paths.h"
  #include "base/bind.h"
  #include "base/command_line.h"
 +#include "base/file_path.h"
  #include "base/logging.h"
- #include "base/metrics/field_trial.h"
  #include "base/metrics/histogram.h"
-@@ -378,8 +379,12 @@
+ #include "base/path_service.h"
+@@ -374,8 +375,12 @@
        ALLOW_THIS_IN_INITIALIZER_LIST(
            command_controller_(new chrome::BrowserCommandController(this))),
        window_has_shown_(false) {
@@ -146,8 +146,8 @@ Index: src/chrome/browser/ui/browser.cc
 +  }
    tab_strip_model_->AddObserver(this);
  
-   toolbar_model_.reset(new ToolbarModel(toolbar_model_delegate_.get()));
-@@ -525,6 +530,20 @@
+   toolbar_model_.reset(new ToolbarModelImpl(toolbar_model_delegate_.get()));
+@@ -542,6 +547,20 @@
      select_file_dialog_->ListenerDestroyed();
  }
  
@@ -168,8 +168,8 @@ Index: src/chrome/browser/ui/browser.cc
  ///////////////////////////////////////////////////////////////////////////////
  // Getters & Setters
  
-@@ -562,6 +581,13 @@
-       contents->favicon_tab_helper()->GetFavicon() : gfx::Image();
+@@ -581,6 +600,13 @@
+   return favicon_tab_helper ? favicon_tab_helper->GetFavicon() : gfx::Image();
  }
  
 +GURL Browser::GetURLForCurrentTab() const {
@@ -180,9 +180,9 @@ Index: src/chrome/browser/ui/browser.cc
 +}
 +
  string16 Browser::GetWindowTitleForCurrentTab() const {
-   WebContents* contents = chrome::GetActiveWebContents(this);
+   WebContents* contents = tab_strip_model_->GetActiveWebContents();
    string16 title;
-@@ -2094,6 +2120,25 @@
+@@ -2197,6 +2223,25 @@
        }
      }
    }
@@ -210,9 +210,9 @@ Index: src/chrome/browser/ui/browser.cc
  ///////////////////////////////////////////////////////////////////////////////
 Index: src/chrome/browser/ui/browser.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser.h	2012-11-07 10:20:54.000000000 +0000
-+++ src/chrome/browser/ui/browser.h	2012-11-13 10:37:44.179746710 +0000
-@@ -205,6 +205,11 @@
+--- src.orig/chrome/browser/ui/browser.h	2013-03-08 19:02:00.000000000 +0100
++++ src/chrome/browser/ui/browser.h	2013-03-25 14:15:49.579693602 +0100
+@@ -211,6 +211,11 @@
    explicit Browser(const CreateParams& params);
    virtual ~Browser();
  
@@ -224,9 +224,9 @@ Index: src/chrome/browser/ui/browser.h
    // Set overrides for the initial window bounds and maximized state.
    void set_override_bounds(const gfx::Rect& bounds) {
      override_bounds_ = bounds;
-@@ -765,6 +770,8 @@
- 
-   void TabDetachedAtImpl(TabContents* contents, int index, DetachType type);
+@@ -797,6 +802,8 @@
+                          int index,
+                          DetachType type);
  
 +  static void RegisterAppDesktopPrefs(const std::string& app_name, Profile* profile);
 +
@@ -235,8 +235,8 @@ Index: src/chrome/browser/ui/browser.h
  
 Index: src/chrome/browser/ui/gtk/gtk_util.h
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.h	2012-11-07 10:20:45.000000000 +0000
-+++ src/chrome/browser/ui/gtk/gtk_util.h	2012-11-13 09:47:20.003860486 +0000
+--- src.orig/chrome/browser/ui/gtk/gtk_util.h	2013-03-08 19:02:00.000000000 +0100
++++ src/chrome/browser/ui/gtk/gtk_util.h	2013-03-25 14:15:49.579693602 +0100
 @@ -30,6 +30,10 @@
  
  namespace gtk_util {
@@ -250,9 +250,9 @@ Index: src/chrome/browser/ui/gtk/gtk_util.h
  // NULL.  The first argument is a vector in which to place all labels
 Index: src/chrome/common/pref_names.cc
 ===================================================================
---- src.orig/chrome/common/pref_names.cc	2012-11-07 10:23:30.000000000 +0000
-+++ src/chrome/common/pref_names.cc	2012-11-13 09:47:20.023860481 +0000
-@@ -1249,6 +1249,9 @@
+--- src.orig/chrome/common/pref_names.cc	2013-03-08 19:05:11.000000000 +0100
++++ src/chrome/common/pref_names.cc	2013-03-25 14:15:49.579693602 +0100
+@@ -1363,6 +1363,9 @@
  // window to restore on startup.
  const char kBrowserWindowPlacement[] = "browser.window_placement";
  
@@ -264,9 +264,9 @@ Index: src/chrome/common/pref_names.cc
  const char kTaskManagerWindowPlacement[] = "task_manager.window_placement";
 Index: src/chrome/common/pref_names.h
 ===================================================================
---- src.orig/chrome/common/pref_names.h	2012-11-07 10:23:30.000000000 +0000
-+++ src/chrome/common/pref_names.h	2012-11-13 09:47:20.031860484 +0000
-@@ -440,6 +440,7 @@
+--- src.orig/chrome/common/pref_names.h	2013-03-08 19:05:12.000000000 +0100
++++ src/chrome/common/pref_names.h	2013-03-25 14:15:49.579693602 +0100
+@@ -473,6 +473,7 @@
  extern const char kUninstallLastLaunchTimeSec[];
  extern const char kUninstallLastObservedRunTimeSec[];
  
@@ -276,20 +276,20 @@ Index: src/chrome/common/pref_names.h
  extern const char kKeywordEditorWindowPlacement[];
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
---- src.orig/chrome/common/chrome_switches.h	2012-11-07 10:23:30.000000000 +0000
-+++ src/chrome/common/chrome_switches.h	2012-11-13 10:37:44.179746710 +0000
-@@ -213,6 +213,7 @@
+--- src.orig/chrome/common/chrome_switches.h	2013-03-08 19:05:11.000000000 +0100
++++ src/chrome/common/chrome_switches.h	2013-03-25 14:17:29.823698181 +0100
+@@ -210,6 +210,7 @@
+ extern const char kHostResolverParallelism[];
  extern const char kHostResolverRetryAttempts[];
- extern const char kHostResolverRules[];
  extern const char kHstsHosts[];
 +extern const char kIconId[];
- extern const char kIgnoreGpuBlacklist[];
+ extern const char kIgnoreUrlFetcherCertRequests[];
  extern const char kImport[];
  extern const char kImportFromFile[];
 Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_titlebar.cc	2012-11-07 10:20:45.000000000 +0000
-+++ src/chrome/browser/ui/gtk/browser_titlebar.cc	2012-11-13 09:47:20.063860483 +0000
+--- src.orig/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-08 19:01:58.000000000 +0100
++++ src/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-25 14:15:49.579693602 +0100
 @@ -600,12 +600,25 @@
          // top left of the custom frame, that will get updated when the
          // throbber is updated.
@@ -332,38 +332,38 @@ Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
        if (icon.IsEmpty()) {
 Index: src/chrome/browser/ui/extensions/application_launch.cc
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.cc	2012-11-07 10:20:44.000000000 +0000
-+++ src/chrome/browser/ui/extensions/application_launch.cc	2012-11-13 10:37:44.179746710 +0000
-@@ -20,6 +20,7 @@
+--- src.orig/chrome/browser/ui/extensions/application_launch.cc	2013-03-08 19:01:55.000000000 +0100
++++ src/chrome/browser/ui/extensions/application_launch.cc	2013-03-25 14:40:40.819761726 +0100
+@@ -17,6 +17,7 @@
+ #include "chrome/browser/ui/browser_tabstrip.h"
  #include "chrome/browser/ui/browser_window.h"
- #include "chrome/browser/ui/tab_contents/tab_contents.h"
  #include "chrome/browser/ui/tabs/tab_strip_model.h"
 +#include "chrome/browser/prefs/pref_service.h"
  #include "chrome/browser/web_applications/web_app.h"
  #include "chrome/common/chrome_switches.h"
  #include "chrome/common/extensions/extension.h"
-@@ -68,6 +69,7 @@
+@@ -70,6 +71,7 @@
      const Extension* extension,
      extension_misc::LaunchContainer container,
      const GURL& url_input,
 +    const FilePath& icon_id,
-     Browser** app_browser) {
+     Browser** app_browser,
+     const gfx::Rect& override_bounds) {
    DCHECK(!url_input.is_empty() || extension);
-   GURL url = UrlForExtension(extension, url_input);
-@@ -109,6 +111,12 @@
+@@ -125,6 +127,12 @@
    if (app_browser)
      *app_browser = browser;
  
-+  // save icon-id value for later use by UpdateWindowIcon
++  // save icon-id valud for later use by UpdateWindowIcon
 +  if (!icon_id.empty()) {
 +    std::string icon_pref_key = browser->GetWindowIconKey();
 +    profile->GetPrefs()->SetFilePath(icon_pref_key.c_str(), icon_id);
 +  }
 +
-   TabContents* tab_contents = chrome::AddSelectedTabWithURL(
-       browser, url, content::PAGE_TRANSITION_START_PAGE);
-   WebContents* contents = tab_contents->web_contents();
-@@ -247,6 +255,8 @@
+   WebContents* web_contents = chrome::AddSelectedTabWithURL(
+       browser, url, content::PAGE_TRANSITION_AUTO_TOPLEVEL);
+   web_contents->GetMutableRendererPrefs()->can_accept_load_drops = false;
+@@ -257,6 +265,8 @@
      return NULL;
    }
  
@@ -372,63 +372,63 @@ Index: src/chrome/browser/ui/extensions/application_launch.cc
    switch (container) {
      case extension_misc::LAUNCH_NONE: {
        NOTREACHED();
-@@ -255,7 +265,7 @@
+@@ -265,7 +275,7 @@
      case extension_misc::LAUNCH_PANEL:
      case extension_misc::LAUNCH_WINDOW:
        tab = OpenApplicationWindow(profile, extension, container,
--                                  override_url, NULL);
-+                                  override_url, empty_icon, NULL);
+-                                  override_url, NULL, gfx::Rect());
++                                  override_url, empty_icon, NULL, gfx::Rect());
        break;
      case extension_misc::LAUNCH_TAB: {
        tab = OpenApplicationTab(profile, extension, override_url,
-@@ -270,6 +280,7 @@
+@@ -280,6 +290,7 @@
  }
  
  WebContents* OpenAppShortcutWindow(Profile* profile,
 +				   const FilePath& icon_id,
-                                    const GURL& url) {
+                                    const GURL& url,
+                                    const gfx::Rect& override_bounds) {
    Browser* app_browser;
-   WebContents* tab = OpenApplicationWindow(
-@@ -277,6 +288,7 @@
+@@ -288,6 +299,7 @@
        NULL,  // this is a URL app.  No extension.
        extension_misc::LAUNCH_WINDOW,
        url,
 +      icon_id,
-       &app_browser);
+       &app_browser,
+       override_bounds);
  
-   if (!tab)
 Index: src/chrome/browser/ui/extensions/application_launch.h
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.h	2012-11-07 10:20:44.000000000 +0000
-+++ src/chrome/browser/ui/extensions/application_launch.h	2012-11-13 10:37:44.179746710 +0000
-@@ -64,6 +64,7 @@
+--- src.orig/chrome/browser/ui/extensions/application_launch.h	2013-03-08 19:01:55.000000000 +0100
++++ src/chrome/browser/ui/extensions/application_launch.h	2013-03-25 14:42:08.231765718 +0100
+@@ -67,6 +67,7 @@
  // is used to open the former.  To open the latter, use
  // application_launch::OpenApplication().
  content::WebContents* OpenAppShortcutWindow(Profile* profile,
 +					    const FilePath& icon_id,
-                                             const GURL& url);
+                                             const GURL& url,
+                                             const gfx::Rect& override_bounds);
  
- }  // namespace application_launch
 Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 ===================================================================
---- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-11-07 10:20:51.000000000 +0000
-+++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2012-11-13 10:37:44.179746710 +0000
-@@ -515,8 +515,11 @@
-             extension_misc::APP_LAUNCH_CMD_LINE_APP_LEGACY);
-       }
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-03-08 19:02:12.000000000 +0100
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-03-25 14:44:32.647772317 +0100
+@@ -529,8 +529,11 @@
+       gfx::Rect override_bounds;
+       ExtractOptionalAppWindowSize(&override_bounds);
  
-+      std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId);
++      std::string icon_id(command_line_.GetSwitchValueASCII(switches::kIconId));
 +
        WebContents* app_tab = application_launch::OpenAppShortcutWindow(
            profile,
 +	  FilePath(icon_id),
-           url);
+           url,
+           override_bounds);
  
-       if (out_app_contents)
 Index: src/chrome/browser/ui/browser_ui_prefs.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser_ui_prefs.cc	2012-11-13 09:47:19.943860486 +0000
-+++ src/chrome/browser/ui/browser_ui_prefs.cc	2012-11-13 10:38:43.779744465 +0000
+--- src.orig/chrome/browser/ui/browser_ui_prefs.cc	2013-03-08 19:02:00.000000000 +0100
++++ src/chrome/browser/ui/browser_ui_prefs.cc	2013-03-25 14:15:49.583693602 +0100
 @@ -2,6 +2,8 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
@@ -438,7 +438,7 @@ Index: src/chrome/browser/ui/browser_ui_prefs.cc
  #include "chrome/browser/ui/browser_ui_prefs.h"
  
  #include "chrome/browser/prefs/pref_service.h"
-@@ -168,7 +170,25 @@
+@@ -161,7 +163,25 @@
      prefs->RegisterDictionaryPref(window_pref.c_str(),
                                    PrefService::UNSYNCABLE_PREF);
    }
@@ -466,9 +466,9 @@ Index: src/chrome/browser/ui/browser_ui_prefs.cc
  }  // namespace chrome
 Index: src/chrome/browser/ui/browser_ui_prefs.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser_ui_prefs.h	2012-11-07 10:20:54.000000000 +0000
-+++ src/chrome/browser/ui/browser_ui_prefs.h	2012-11-13 10:38:52.351744144 +0000
-@@ -28,6 +28,8 @@
+--- src.orig/chrome/browser/ui/browser_ui_prefs.h	2013-03-08 19:01:55.000000000 +0100
++++ src/chrome/browser/ui/browser_ui_prefs.h	2013-03-25 14:15:49.583693602 +0100
+@@ -20,6 +20,8 @@
  // session / per user profile.
  void RegisterAppPrefs(const std::string& app_name, Profile* profile);
  

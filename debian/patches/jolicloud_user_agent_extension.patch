@@ -1,8 +1,10 @@
---- a/webkit/glue/user_agent.cc
-+++ b/webkit/glue/user_agent.cc
-@@ -93,7 +93,7 @@
-       os_minor_version,
-       os_bugfix_version
+Index: src/webkit/user_agent/user_agent_util.cc
+===================================================================
+--- src.orig/webkit/user_agent/user_agent_util.cc	2013-03-25 12:33:10.163412223 +0100
++++ src/webkit/user_agent/user_agent_util.cc	2013-03-25 15:14:32.135854522 +0100
+@@ -128,7 +128,7 @@
+       android_version_str.c_str(),
+       android_info_str.c_str()
  #else
 -      "%s %s",
 +      "Jolicloud %s %s",
