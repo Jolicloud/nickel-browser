@@ -1,3 +1,9 @@
+nickel-browser (25.0.1364.160-0ubuntu0) robby-1.2; urgency=low
+
+  * Imported Upstream version 25.0.1364.160-0ubuntu0
+
+ -- Arnaud Vallat <arnaud@jolicloud.org>  Wed, 21 Mar 2013 10:21:00 -0600
+
 nickel-browser (23.0.1240.0~r152299-1jolicloud0) robby-1.2; urgency=low
 
   * Imported Upstream version 23.0.1240.0~r152299-1jolicloud1
