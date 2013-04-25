@@ -1,26 +1,30 @@
---- a/chrome/common/chrome_paths_linux.cc
-+++ b/chrome/common/chrome_paths_linux.cc
-@@ -34,11 +34,7 @@
+Index: src/chrome/common/chrome_paths_linux.cc
+===================================================================
+--- src.orig/chrome/common/chrome_paths_linux.cc	2013-03-08 19:05:11.000000000 +0100
++++ src/chrome/common/chrome_paths_linux.cc	2013-04-25 11:56:42.997863203 +0200
+@@ -61,11 +61,7 @@
    FilePath config_dir(GetXDGDirectory(env.get(),
                                        kXdgConfigHomeEnvVar,
                                        kDotConfigDir));
 -#if defined(GOOGLE_CHROME_BUILD)
-   *result = config_dir.Append("google-chrome");
+-  *result = config_dir.Append("google-chrome");
 -#else
 -  *result = config_dir.Append("chromium");
 -#endif
++  *result = config_dir.Append("nickel");
    return true;
  }
  
-@@ -74,11 +70,7 @@
+@@ -101,11 +97,7 @@
    FilePath config_dir(GetXDGDirectory(env.get(),
                                        kXdgConfigHomeEnvVar,
                                        kDotConfigDir));
 -#if defined(GOOGLE_CHROME_BUILD)
-   *result = config_dir.Append("google-chrome-frame");
+-  *result = config_dir.Append("google-chrome-frame");
 -#else
 -  *result = config_dir.Append("chrome-frame");
 -#endif
++  *result = config_dir.Append("nickel-frame");
    return true;
  }
  
