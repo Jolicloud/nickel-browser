@@ -11,14 +11,4 @@ if [ "$1" = "configure" ] || [ "$1" = "abort-upgrade" ] ; then
         jolicloud-webapps-engine /usr/bin/nickel-browser 60
 fi
 
-if [ "$1" = "configure" ] ; then
-        if dpkg --compare-versions "$2" lt "16.0.912.63~r113337-1jolicloud1+0u1"; then
-            echo "Forcing reboot to switch to new launcher and jolicloud-daemon."
-            echo "Required due to WebSockets protocol upgrade to RFC6455 (formerly hybi-17)."
-            touch /var/run/reboot-required
-
-            apt-queue /usr/lib/jolicloud-notifier/reboot-dialog
-        fi
-fi
-
 rm -f /etc/default/nickel-browser
