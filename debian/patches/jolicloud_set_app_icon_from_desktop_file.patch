@@ -1,7 +1,7 @@
 Index: src/chrome/common/chrome_switches.cc
 ===================================================================
---- src.orig/chrome/common/chrome_switches.cc	2013-03-08 19:05:11.000000000 +0100
-+++ src/chrome/common/chrome_switches.cc	2013-03-25 14:15:49.575693601 +0100
+--- src.orig/chrome/common/chrome_switches.cc	2013-03-08 18:05:11.000000000 +0000
++++ src/chrome/common/chrome_switches.cc	2013-04-02 13:06:14.655243176 +0000
 @@ -774,6 +774,9 @@
  const char kIgnoreUrlFetcherCertRequests[] =
      "ignore-urlfetcher-cert-requests";
@@ -14,8 +14,8 @@ Index: src/chrome/common/chrome_switches.cc
  const char kImport[]                        = "import";
 Index: src/chrome/browser/ui/gtk/gtk_util.cc
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.cc	2013-03-08 19:02:00.000000000 +0100
-+++ src/chrome/browser/ui/gtk/gtk_util.cc	2013-03-25 14:15:49.575693601 +0100
+--- src.orig/chrome/browser/ui/gtk/gtk_util.cc	2013-03-08 18:02:00.000000000 +0000
++++ src/chrome/browser/ui/gtk/gtk_util.cc	2013-03-28 10:13:30.159034801 +0000
 @@ -10,6 +10,7 @@
  #include <cstdarg>
  #include <map>
@@ -122,8 +122,8 @@ Index: src/chrome/browser/ui/gtk/gtk_util.cc
    g_list_free(icon_list);
 Index: src/chrome/browser/ui/browser.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser.cc	2013-03-08 19:02:00.000000000 +0100
-+++ src/chrome/browser/ui/browser.cc	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/browser/ui/browser.cc	2013-03-08 18:02:00.000000000 +0000
++++ src/chrome/browser/ui/browser.cc	2013-04-02 13:06:14.803243183 +0000
 @@ -15,6 +15,7 @@
  #include "base/base_paths.h"
  #include "base/bind.h"
@@ -210,8 +210,8 @@ Index: src/chrome/browser/ui/browser.cc
  ///////////////////////////////////////////////////////////////////////////////
 Index: src/chrome/browser/ui/browser.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser.h	2013-03-08 19:02:00.000000000 +0100
-+++ src/chrome/browser/ui/browser.h	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/browser/ui/browser.h	2013-03-08 18:02:00.000000000 +0000
++++ src/chrome/browser/ui/browser.h	2013-04-02 13:06:14.743243180 +0000
 @@ -211,6 +211,11 @@
    explicit Browser(const CreateParams& params);
    virtual ~Browser();
@@ -235,8 +235,8 @@ Index: src/chrome/browser/ui/browser.h
  
 Index: src/chrome/browser/ui/gtk/gtk_util.h
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/gtk_util.h	2013-03-08 19:02:00.000000000 +0100
-+++ src/chrome/browser/ui/gtk/gtk_util.h	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/browser/ui/gtk/gtk_util.h	2013-03-08 18:02:00.000000000 +0000
++++ src/chrome/browser/ui/gtk/gtk_util.h	2013-03-28 10:13:31.391034856 +0000
 @@ -30,6 +30,10 @@
  
  namespace gtk_util {
@@ -250,8 +250,8 @@ Index: src/chrome/browser/ui/gtk/gtk_util.h
  // NULL.  The first argument is a vector in which to place all labels
 Index: src/chrome/common/pref_names.cc
 ===================================================================
---- src.orig/chrome/common/pref_names.cc	2013-03-08 19:05:11.000000000 +0100
-+++ src/chrome/common/pref_names.cc	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/common/pref_names.cc	2013-03-08 18:05:11.000000000 +0000
++++ src/chrome/common/pref_names.cc	2013-03-28 10:13:32.171034893 +0000
 @@ -1363,6 +1363,9 @@
  // window to restore on startup.
  const char kBrowserWindowPlacement[] = "browser.window_placement";
@@ -264,8 +264,8 @@ Index: src/chrome/common/pref_names.cc
  const char kTaskManagerWindowPlacement[] = "task_manager.window_placement";
 Index: src/chrome/common/pref_names.h
 ===================================================================
---- src.orig/chrome/common/pref_names.h	2013-03-08 19:05:12.000000000 +0100
-+++ src/chrome/common/pref_names.h	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/common/pref_names.h	2013-03-08 18:05:12.000000000 +0000
++++ src/chrome/common/pref_names.h	2013-03-28 10:13:32.175034892 +0000
 @@ -473,6 +473,7 @@
  extern const char kUninstallLastLaunchTimeSec[];
  extern const char kUninstallLastObservedRunTimeSec[];
@@ -276,8 +276,8 @@ Index: src/chrome/common/pref_names.h
  extern const char kKeywordEditorWindowPlacement[];
 Index: src/chrome/common/chrome_switches.h
 ===================================================================
---- src.orig/chrome/common/chrome_switches.h	2013-03-08 19:05:11.000000000 +0100
-+++ src/chrome/common/chrome_switches.h	2013-03-25 14:17:29.823698181 +0100
+--- src.orig/chrome/common/chrome_switches.h	2013-03-08 18:05:11.000000000 +0000
++++ src/chrome/common/chrome_switches.h	2013-04-02 13:06:14.663243177 +0000
 @@ -210,6 +210,7 @@
  extern const char kHostResolverParallelism[];
  extern const char kHostResolverRetryAttempts[];
@@ -288,8 +288,8 @@ Index: src/chrome/common/chrome_switches.h
  extern const char kImportFromFile[];
 Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
 ===================================================================
---- src.orig/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-08 19:01:58.000000000 +0100
-+++ src/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-25 14:15:49.579693602 +0100
+--- src.orig/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-08 18:01:58.000000000 +0000
++++ src/chrome/browser/ui/gtk/browser_titlebar.cc	2013-03-28 10:13:32.467034905 +0000
 @@ -600,12 +600,25 @@
          // top left of the custom frame, that will get updated when the
          // throbber is updated.
@@ -332,8 +332,8 @@ Index: src/chrome/browser/ui/gtk/browser_titlebar.cc
        if (icon.IsEmpty()) {
 Index: src/chrome/browser/ui/extensions/application_launch.cc
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.cc	2013-03-08 19:01:55.000000000 +0100
-+++ src/chrome/browser/ui/extensions/application_launch.cc	2013-03-25 14:40:40.819761726 +0100
+--- src.orig/chrome/browser/ui/extensions/application_launch.cc	2013-03-08 18:01:55.000000000 +0000
++++ src/chrome/browser/ui/extensions/application_launch.cc	2013-04-02 13:06:14.723243179 +0000
 @@ -17,6 +17,7 @@
  #include "chrome/browser/ui/browser_tabstrip.h"
  #include "chrome/browser/ui/browser_window.h"
@@ -399,8 +399,8 @@ Index: src/chrome/browser/ui/extensions/application_launch.cc
  
 Index: src/chrome/browser/ui/extensions/application_launch.h
 ===================================================================
---- src.orig/chrome/browser/ui/extensions/application_launch.h	2013-03-08 19:01:55.000000000 +0100
-+++ src/chrome/browser/ui/extensions/application_launch.h	2013-03-25 14:42:08.231765718 +0100
+--- src.orig/chrome/browser/ui/extensions/application_launch.h	2013-03-08 18:01:55.000000000 +0000
++++ src/chrome/browser/ui/extensions/application_launch.h	2013-04-02 13:06:14.735243180 +0000
 @@ -67,6 +67,7 @@
  // is used to open the former.  To open the latter, use
  // application_launch::OpenApplication().
@@ -411,8 +411,8 @@ Index: src/chrome/browser/ui/extensions/application_launch.h
  
 Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
 ===================================================================
---- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-03-08 19:02:12.000000000 +0100
-+++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-03-25 14:44:32.647772317 +0100
+--- src.orig/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-03-08 18:02:12.000000000 +0000
++++ src/chrome/browser/ui/startup/startup_browser_creator_impl.cc	2013-04-02 13:06:14.767243181 +0000
 @@ -529,8 +529,11 @@
        gfx::Rect override_bounds;
        ExtractOptionalAppWindowSize(&override_bounds);
@@ -427,8 +427,8 @@ Index: src/chrome/browser/ui/startup/startup_browser_creator_impl.cc
  
 Index: src/chrome/browser/ui/browser_ui_prefs.cc
 ===================================================================
---- src.orig/chrome/browser/ui/browser_ui_prefs.cc	2013-03-08 19:02:00.000000000 +0100
-+++ src/chrome/browser/ui/browser_ui_prefs.cc	2013-03-25 14:15:49.583693602 +0100
+--- src.orig/chrome/browser/ui/browser_ui_prefs.cc	2013-03-08 18:02:00.000000000 +0000
++++ src/chrome/browser/ui/browser_ui_prefs.cc	2013-04-02 13:07:46.207247358 +0000
 @@ -2,6 +2,8 @@
  // Use of this source code is governed by a BSD-style license that can be
  // found in the LICENSE file.
@@ -438,7 +438,7 @@ Index: src/chrome/browser/ui/browser_ui_prefs.cc
  #include "chrome/browser/ui/browser_ui_prefs.h"
  
  #include "chrome/browser/prefs/pref_service.h"
-@@ -161,7 +163,25 @@
+@@ -161,7 +163,27 @@
      prefs->RegisterDictionaryPref(window_pref.c_str(),
                                    PrefService::UNSYNCABLE_PREF);
    }
@@ -447,8 +447,10 @@ Index: src/chrome/browser/ui/browser_ui_prefs.cc
 +  std::string icon_pref(prefs::kBrowserWindowIcon);
 +  icon_pref.append("_");
 +  icon_pref.append(app_name);
-+  prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath(),
-+			      PrefService::UNSYNCABLE_PREF);
++  if (!prefs->FindPreference(icon_pref.c_str())) {
++    prefs->RegisterFilePathPref(icon_pref.c_str(), FilePath(),
++				PrefService::UNSYNCABLE_PREF);
++  }
  }
  
 +void RegisterAppDesktopPrefs(const std::string& app_name, Profile* profile) {
@@ -466,8 +468,8 @@ Index: src/chrome/browser/ui/browser_ui_prefs.cc
  }  // namespace chrome
 Index: src/chrome/browser/ui/browser_ui_prefs.h
 ===================================================================
---- src.orig/chrome/browser/ui/browser_ui_prefs.h	2013-03-08 19:01:55.000000000 +0100
-+++ src/chrome/browser/ui/browser_ui_prefs.h	2013-03-25 14:15:49.583693602 +0100
+--- src.orig/chrome/browser/ui/browser_ui_prefs.h	2013-03-08 18:01:55.000000000 +0000
++++ src/chrome/browser/ui/browser_ui_prefs.h	2013-03-28 10:13:32.467034905 +0000
 @@ -20,6 +20,8 @@
  // session / per user profile.
  void RegisterAppPrefs(const std::string& app_name, Profile* profile);
